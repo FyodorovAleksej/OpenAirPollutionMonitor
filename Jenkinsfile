@@ -1,14 +1,28 @@
 pipeline {
     agent { 
-      docker { 
-        image 'python:3.6.2' 
-      } 
+        label 'node_agent' 
     }
     stages {
+        stage('presettings') {
+          steps {
+            sh 'python3 --version'
+          }
+        }
+
         stage('build') {
-            steps {
-                sh 'python --version'
-            }
+          steps {
+            cd ./src/docker
+            sh 'docker-compose up -d'
+            cd -
+          }
+        }
+
+        stage('clean up') {
+          steps {
+            cd ./src/docker
+            docker-compose stop
+            cd -
+          }
         }
     }
 }
