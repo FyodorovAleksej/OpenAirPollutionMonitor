@@ -11,17 +11,17 @@ pipeline {
 
         stage('build') {
           steps {
-            cd ./src/docker
-            sh 'docker-compose up -d'
-            cd -
+            dir ('./src/docker') {
+              sh 'docker-compose up -d'
+            }
           }
         }
 
         stage('clean up') {
           steps {
-            cd ./src/docker
-            docker-compose stop
-            cd -
+            dir ('./src/docker') {
+              sh 'docker-compose stop'
+            }
           }
         }
     }
