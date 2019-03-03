@@ -1,7 +1,6 @@
 pipeline {
-    agent { 
-        label 'node_agent' 
-    }
+    agent any
+
     stages {
         stage('presettings') {
           steps {

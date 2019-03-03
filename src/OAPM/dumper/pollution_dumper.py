@@ -3,7 +3,7 @@ from abc import abstractmethod
 import requests
 
 from dumper.fs_adapter.adapter import FileSystemAdapter
-import json
+
 
 class PollutionDumper:
     def __init__(self, http_host: str, api_key: str, output_path: str, fs_adapter: FileSystemAdapter):
