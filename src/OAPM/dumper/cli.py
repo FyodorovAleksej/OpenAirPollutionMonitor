@@ -39,7 +39,7 @@ def main(config):
                 if not (fs.is_exist(path)):
                     data = co_dumper.dump(latitude, longitude, str(year) + "Z")
                     fs.write_file(path, data)
-                    sender.send(kafka_config["co_topic"], data, fs.to_file_path("", latitude, longitude, year))
+                    sender.send_message(kafka_config["co_topic"], data, str(year))
 
 
 if __name__ == "__main__":
