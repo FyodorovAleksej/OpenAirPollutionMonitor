@@ -28,7 +28,10 @@ def main(config):
 
     fs.mkdir(out)
 
-    sender = KafkaSender(kafka_config["servers"])
+    ser_str = kafka_config["servers"]
+    servers = ser_str.split(",") if "," in ser_str else [ser_str]
+
+    sender = KafkaSender(servers)
     for latitude in range(0, 20):
         for longitude in range(0, 20):
             for year in range(2016, 2019):
@@ -37,7 +40,6 @@ def main(config):
                     data = co_dumper.dump(latitude, longitude, str(year) + "Z")
                     fs.write_file(path, data)
                     sender.send(kafka_config["co_topic"], data, fs.to_file_path("", latitude, longitude, year))
-
 
 
 if __name__ == "__main__":
