@@ -1,0 +1,56 @@
+apply plugin: "scala"
+
+tasks.withType(ScalaCompile) {
+	options.encoding = "UTF-8"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+ext.ver = [
+    scala  : "2.11",
+    hadoop : "2.7.3",
+    spark  : "2.4.0",
+    kafka  : "0.10.1",
+    avro   : "1.7.7"
+]
+
+def spark = { module ->
+    "org.apache.spark:spark-${module}_${ver.scala}:${ver.spark}"
+}
+
+ext.lib = [
+    scala           : "org.scala-lang:scala-library:${ver.scala}.4",
+    sparkCore       : spark("core"),
+    sparkStreaming  : spark("streaming"),
+    sparkStreamKafka: spark("streaming-kafka-0-10"),
+    kafkaConnectJson: "org.apache.kafka:connect-json:${ver.kafka}.0",
+    avro            : "org.apache.avro:avro:${ver.avro}"
+]
+
+ext.providedDependencies = [
+        lib.avro,
+        lib.scala,
+        lib.sparkCore,
+        lib.sparkStreaming
+]
+
+dependencies {
+    compile(
+        lib.sparkStreamKafka
+    )
+    compileOnly providedDependencies
+}
+
+
+jar {
+    from { configurations.compile.collect {
+        def has = configurations.compileOnly.contains(it)
+        // Keep for debug: */ if(!has) println(" * " + it)
+
+        if(has) []
+        else it.isDirectory() ? it : zipTree(it)
+    }}
+}

@@ -25,12 +25,19 @@ def main(config):
     fs = DefaultFileSystem()
 
     fs.mkdir(out)
+
+    ser_str = str(kafka_config["servers"])
+    servers = ser_str.split(",") if "," in ser_str else [ser_str]
+
+    sender = KafkaSender(servers)
     for latitude in range(0, 20):
         for longitude in range(0, 20):
             for year in range(2016, 2019):
                 path = fs.to_file_path(out, latitude, longitude, year)
                 if not (fs.is_exist(path)):
-                    fs.write_file(path, co_dumper.dump(latitude, longitude, str(year) + "Z"))
+                    data = path #co_dumper.dump(latitude, longitude, str(year) + "Z")
+                    #fs.write_file(path, data)
+                    sender.send_message(kafka_config["co_topic"], data, str(year))
 
 
 if __name__ == "__main__":
