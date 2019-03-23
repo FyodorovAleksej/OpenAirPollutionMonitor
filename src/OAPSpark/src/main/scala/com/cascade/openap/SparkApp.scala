@@ -51,6 +51,7 @@ object SparkApp {
     stream.foreachRDD { rdd =>
       val offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
       rdd.foreach { xmlPair: ConsumerRecord[String, String] =>
+        xmlPair.topic()
         println(xmlPair.value())
       }
       println("--COUNT = " + rdd.count())

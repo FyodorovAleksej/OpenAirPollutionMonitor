@@ -275,3 +275,5 @@ src/OAPSpark/\.gradle/5\.3/gc\.properties
 src/OAPSpark/\.gradle/buildOutputCleanup/
 
 src/OAPSpark/\.gradle/vcs-1/gc\.properties
+
+src/docker/zeppelin/notebook/
