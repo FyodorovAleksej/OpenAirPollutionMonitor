@@ -259,3 +259,21 @@ fabric.properties
 .venv/
 src/OAPM/dumper/config/dumper_config.ini
 # End of https://www.gitignore.io/api/pycharm,python,django
+
+\.idea/
+
+src/OAPM/dumper/output/
+
+*.bin
+
+src/OAPSpark/\.gradle/4\.3\.1/fileContent/fileContent\.lock
+
+*.lock
+
+src/OAPSpark/\.gradle/5\.3/gc\.properties
+
+src/OAPSpark/\.gradle/buildOutputCleanup/
+
+src/OAPSpark/\.gradle/vcs-1/gc\.properties
+
+src/docker/zeppelin/notebook/
