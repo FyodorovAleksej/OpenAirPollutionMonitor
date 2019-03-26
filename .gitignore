@@ -257,5 +257,5 @@ fabric.properties
 
 ### Python Patch ###
 .venv/
-
+src/OAPM/dumper/config/dumper_config.ini
 # End of https://www.gitignore.io/api/pycharm,python,django
