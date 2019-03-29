@@ -10,8 +10,7 @@ pipeline {
 
         stage('checkout') {
           steps {
-            sh 'git status'
-            sh 'git pull origin develop --ff-only'
+            git branch: 'develop', poll: true, url: 'git@github.com:FyodorovAleksej/OpenAirPollutionMonitor.git'
           }
         }
 
