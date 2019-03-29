@@ -1,0 +1,170 @@
+\begin{thebibliography}{10}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibDate\def\BibDate#1{}\else\fi
+\ifx\undefined\BibTitleSuffix\def\BibTitleSuffix{}\else\fi
+\ifx\undefined\BibTitleFormat\def\BibTitleFormat#1{}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{#1}\else\fi
+
+\bibitem{esd_book}
+\selectlanguageifdefined{english}
+\BibEmph{Heath,~Steve}. \BibTitleFormat{ Embedded Systems Design}~/
+  Steve~Heath. ---
+\newblock 2nd edition. ---
+\newblock ELSEVIER, 2003. ---
+\newblock Pp.~1 -- 14.
+
+\bibitem{tanenbaum_modern_os_2015_ru}
+\selectlanguageifdefined{russian}
+\BibEmph{Таненбаум,~Э.} \BibTitleFormat{ Современные
+  операционные системы}~/ Э.~Таненбаум. ---
+\newblock Питер, 2015. ---
+\newblock {С.}~178 -- 198.
+
+\bibitem{rtos_valvano}
+\selectlanguageifdefined{english}
+\BibEmph{Valvano,~Jonathan}. \BibTitleFormat{ Embedded Systems: Real-Time
+  Operating Systems for ARM Cortex-M Microcontrollers}~/ Jonathan~Valvano. ---
+\newblock Jonathan Valvano, 2017. ---
+\newblock Pp.~19 -- 22, 292 -- 329.
+
+\bibitem{rtos_arch_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ Real Time Operating System - What is RTOS} \BibTitleSuffix.
+  ---
+\newblock \BibUrl{
+  https://www.engineersgarage.com/articles/rtos-real-time-operating-system}.
+  ---
+\newblock \BibDate{ 2019-03-10}.
+
+\bibitem{tirtos_proc_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ TI-RTOS-PROC TI-RTOS: Real-Time Operating System - Obtain
+  TI-RTOS via Processor SDKs for Sitara Processors \& DSPs | TI.com}
+  \BibTitleSuffix. ---
+\newblock \BibUrl{ http://www.ti.com/tool/TI-RTOS-PROC}. ---
+\newblock \BibDate{ 2019-03-16}.
+
+\bibitem{tirtos_mcu_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ TI-RTOS-MCU TI-RTOS: Real-Time Operating System (RTOS) for
+  Microcontrollers (MCU) | TI.com} \BibTitleSuffix. ---
+\newblock \BibUrl{ http://www.ti.com/tool/TI-RTOS-MCU}. ---
+\newblock \BibDate{ 2019-03-16}.
+
+\bibitem{ma_tirtos_kernel}
+\selectlanguageifdefined{english}
+\BibEmph{Embedded~Advantage,~Texas~Instruments}. \BibTitleFormat{ Intro to the
+  TI-RTOS Kernel Workshop. Student Guide}~/
+  Texas~Instruments~Embedded~Advantage. ---
+\newblock 3.2 edition. ---
+\newblock 2019. ---
+\newblock Pp.~94 -- 271.
+
+\bibitem{tirtos_sysbios_user_guide}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ SYS/BIOS (TI-RTOS Kernel) User's Guide}. ---
+\newblock T edition. ---
+\newblock 2017. ---
+\newblock 261~P.
+
+\bibitem{instrumentation_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ Source code instrumentation overview} \BibTitleSuffix. ---
+\newblock \BibUrl{
+  https://www.ibm.com/support/knowledgecenter/SSSHUF_8.0.0/com.ibm.rational.testrt.doc/topics/cinstruovw.html}.
+  ---
+\newblock \BibDate{ 2019-03-11}.
+
+\bibitem{resharper_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ ReSharper: The Visual Studio Extension for .NET Developers by
+  JetBrains} \BibTitleSuffix. ---
+\newblock \BibUrl{ https://www.jetbrains.com/resharper/}. ---
+\newblock \BibDate{ 2019-03-11}.
+
+\bibitem{tracing_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ TracingBook - TracingWiki} \BibTitleSuffix. ---
+\newblock \BibUrl{
+  https://web.archive.org/web/20090224184220/http://ltt.polymtl.ca/tracingwiki/index.php/TracingBook}.
+  ---
+\newblock \BibDate{ 2019-03-13}.
+
+\bibitem{perfomance_counters_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ Performance Counters - Windows applications | Microsoft Docs}
+  \BibTitleSuffix. ---
+\newblock \BibUrl{
+  https://docs.microsoft.com/en-us/windows/desktop/perfctrs/performance-counters-portal}.
+  ---
+\newblock \BibDate{ 2019-03-13}.
+
+\bibitem{uia_wiki}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ Category:UIA - Texas Instruments Wiki} \BibTitleSuffix. ---
+\newblock \BibUrl{ http://processors.wiki.ti.com/index.php/Category:UIA}. ---
+\newblock \BibDate{ 2019-03-09}.
+
+\bibitem{sys_analyzer_doc}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ System Analyzer. User’s Guide}. ---
+\newblock 2014. ---
+\newblock 135~P.
+
+\bibitem{ccs_ti_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ CCSTUDIO Code Composer Studio (CCS) Integrated Development
+  Environment (IDE) | TI.com} \BibTitleSuffix. ---
+\newblock \BibUrl{ http://www.ti.com/tool/CCSTUDIO}. ---
+\newblock \BibDate{ 2019-03-09}.
+
+\bibitem{web_client_server_communication_select_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ javascript - In what situations would AJAX long/short polling
+  be preferred over HTML5 WebSockets? - Stack Overflow} \BibTitleSuffix. ---
+\newblock \BibUrl{ https://stackoverflow.com/a/10029326/6818663}. ---
+\newblock \BibDate{ 2019-03-17}.
+
+\bibitem{professional_js_book}
+\selectlanguageifdefined{english}
+\BibEmph{Zakas,~Nicholas~C.} \BibTitleFormat{ Professional JavaScript for Web
+  Developers}~/ Nicholas~C.~Zakas. ---
+\newblock Wiley John + Sons, 2012. ---
+\newblock Pp.~701 -- 730.
+
+\bibitem{ajax_mdn_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ AJAX - Руководство Web-разработчика |
+  MDN} \BibTitleSuffix. ---
+\newblock \BibUrl{ https://developer.mozilla.org/ru/docs/Web/Guide/AJAX}. ---
+\newblock \BibDate{ 2019-03-17}.
+
+\bibitem{websock_rfc}
+\selectlanguageifdefined{english}
+\BibEmph{Melnikov,~Alexey}. \BibTitleFormat{ The WebSocket Protocol}~/
+  Alexey~Melnikov, Ian~Fette. Request for Comments no. 6455. ---
+\newblock RFC Editor, 2011. ---
+\newblock 71~P.
+
+\bibitem{w3c_webrtc_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ WebRTC 1.0: Real-time Communication Between Browsers}
+  \BibTitleSuffix. ---
+\newblock \BibUrl{ https://w3c.github.io/webrtc-pc/}. ---
+\newblock \BibDate{ 2019-03-17}.
+
+\bibitem{websock_xhr_benchmark_site}
+\selectlanguageifdefined{english}
+\BibTitleFormat{ HTTP vs Websockets: A performance comparison – The Feathers
+  Flightpath} \BibTitleSuffix. ---
+\newblock \BibUrl{
+  https://blog.feathersjs.com/http-vs-websockets-a-performance-comparison-da2533f13a77}.
+  ---
+\newblock \BibDate{ 2019-03-18}.
+
+\end{thebibliography}
