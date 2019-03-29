@@ -12,7 +12,7 @@ pipeline {
           steps {
             sh 'git fetch'
             sh 'git pull origin develop'
-            sh 'git checkout origin/develop'
+            sh 'git checkout develop'
           }
         }
 
