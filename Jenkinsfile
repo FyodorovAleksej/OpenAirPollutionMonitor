@@ -10,9 +10,8 @@ pipeline {
 
         stage('checkout') {
           steps {
-            sh 'git fetch'
-            sh 'git pull origin develop'
-            sh 'git checkout develop'
+            sh 'git status'
+            sh 'git pull origin develop --ff-only'
           }
         }
 
