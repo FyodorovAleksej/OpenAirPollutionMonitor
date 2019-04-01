@@ -34,10 +34,14 @@ pipeline {
           steps {
             dir ('./docs/tex/docker-xelatex-fonts/') {
               sh 'chmod +x *.sh'
+              sh './make.sh make cleanall'
               sh './make.sh make all'
             }
             sh 'git add docs/tex/docker-xelatex-fonts/'
-            sh "git commit -m '[JENKINS_PIPELINE] - update report - BUILD #${BUILD_NUMBER}'"
+            sh "git config --global user.name Jenkins-Agent"
+            sh "git config --global user.email Fyodorov.aleksej@gmail.com"
+
+            sh "git commit -m \"[JENKINS_PIPELINE] - update report - BUILD #${BUILD_NUMBER}\""
             sh "git push origin develop"
           }
         }
