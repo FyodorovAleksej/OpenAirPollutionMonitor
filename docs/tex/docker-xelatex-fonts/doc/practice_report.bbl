@@ -10,14 +10,6 @@
 \ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\else\fi
 \ifx\undefined\BibEmph\def\BibEmph#1{#1}\else\fi
 
-\bibitem{esd_book}
-\selectlanguageifdefined{english}
-\BibEmph{Heath,~Steve}. \BibTitleFormat{ Embedded Systems Design}~/
-  Steve~Heath. ---
-\newblock 2nd edition. ---
-\newblock ELSEVIER, 2003. ---
-\newblock Pp.~1 -- 14.
-
 \bibitem{tanenbaum_modern_os_2015_ru}
 \selectlanguageifdefined{russian}
 \BibEmph{Таненбаум,~Э.} \BibTitleFormat{ Современные
