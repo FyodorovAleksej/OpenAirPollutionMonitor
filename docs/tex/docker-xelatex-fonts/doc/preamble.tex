@@ -600,49 +600,49 @@
 }
 
 % Зачем: список условных сокращений
-\usepackage[russian]{nomencl}
-\makenomenclature
+%\usepackage[russian]{nomencl}
+%\makenomenclature
 
 % Установка заголовка
-\renewcommand{\nomname}{УСЛОВНЫЕ СОКРАЩЕНИЯ}
+%\renewcommand{\nomname}{УСЛОВНЫЕ СОКРАЩЕНИЯ}
 
 % установка расстояния между элементами в номенклатуре = 0 (из документации)
-\setlength{\nomitemsep}{-\parsep}
+%\setlength{\nomitemsep}{-\parsep}
 
 % установка текста для сокращения в номенклатуре
-\renewcommand{\nomlabel}[1]{#1 -- }
+%\renewcommand{\nomlabel}[1]{#1 -- }
 
 % Зачем: установка левого отступа в номенклатуре
-\patchcmd{\thenomenclature}
-  {\leftmargin\labelwidth}
-  {\leftmargin\labelwidth\itemindent\fivecharsapprox }
-  {}{}
+%\patchcmd{\thenomenclature}
+%  {\leftmargin\labelwidth}
+%  {\leftmargin\labelwidth\itemindent\fivecharsapprox }
+%  {}{}
 
 % Зачем: зануление отступа после сокращения
-\patchcmd{\thenomenclature}
-  {\advance\leftmargin\labelsep}
-  {\labelsep=0cm \advance\leftmargin\labelsep}
-  {}{}
+%\patchcmd{\thenomenclature}
+%  {\advance\leftmargin\labelsep}
+%  {\labelsep=0cm \advance\leftmargin\labelsep}
+%  {}{}
 
 % Зачем: обновление форматирования заголовка для номенклатуры
-\makeatletter
-\patchcmd{\thenomenclature}
-  {\tocbasic@listhead{\list@fname}}
-  {\sectioncentered*{\list@fname}}
-  {}{}
-\makeatother
+%\makeatletter
+%\patchcmd{\thenomenclature}
+%  {\tocbasic@listhead{\list@fname}}
+%  {\sectioncentered*{\list@fname}}
+%  {}{}
+%\makeatother
 
 % Зачем: убираем отступ в 1см слева во второй и следующих строках в номенклатуре (отступ label)
-\setlength{\nomlabelwidth}{0pt}
+%\setlength{\nomlabelwidth}{0pt}
 
 % Убирает ошибки для nomenctl о ненахождении соответствующих команд
 % Это проблема совместимости русской polyglossia и nomencl
 % Подробнее:
 %% https://tex.stackexchange.com/questions/449877/xelatex-scrartcl-setmainlanguagerussian-latex-error-chapterformat-und/449880#449880
 %% https://github.com/reutenauer/polyglossia/issues/210
-\providecommand{\chapterformat}{}
-\providecommand{\sectionformat}{}
-\providecommand{\subsectionformat}{}
-\providecommand{\subsubsectionformat}{}
-\providecommand{\paragraphformat}{}
-\providecommand{\subparagraphformat}{}
+%\providecommand{\chapterformat}{}
+%\providecommand{\sectionformat}{}
+%\providecommand{\subsectionformat}{}
+%\providecommand{\subsubsectionformat}{}
+%\providecommand{\paragraphformat}{}
+%\providecommand{\subparagraphformat}{}
