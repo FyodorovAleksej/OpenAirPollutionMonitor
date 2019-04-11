@@ -5,7 +5,7 @@ image: docker:latest
 services:
   - docker:dind
 
-build-master:
+build_pdf:
   stage: build
   script:
     - cd ./docs/tex/docker-xelatex-fonts/
@@ -19,6 +19,4 @@ build-master:
   artifacts:
     paths:
     - ./out/*.pdf
-    expire_in: 2 weeks    
-  only:
-    - develop
+    expire_in: 2 weeks
