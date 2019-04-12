@@ -94,3 +94,5 @@ RUN tlmgr update --self \
   && fc-cache -f \
     && \
   apk add --no-cache make
+
+CMD make clean && make all
