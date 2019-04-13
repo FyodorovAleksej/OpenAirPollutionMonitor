@@ -43,8 +43,10 @@
 
 % Зачем: Настраивает отступы от границ страницы.
 % Почему: Пункт 2.1.2 Требований по оформлению пояснительной записки.
-\usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.7cm]{geometry}
+\usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.695cm]{geometry}
 
+% Зачем: явно выставляем, чтобы отступ до низа листа был 1,7 см
+\setlength{\footskip}{1cm}
 
 % Зачем: Настраивает межстрочный интервал, для размещения 40 +/- 3 строки текста на странице.
 % Почему: Пункт 2.1.1 Требований по оформлению пояснительной записки.
@@ -296,6 +298,51 @@
 % Зачем: Окружения «теорема», «лемма»
 \usepackage{amsthm}
 
+\def\constskip{\par\hrule height 0pt \vskip -\ht\strutbox \vskip 1ex 
+    \noindent\vrule width 0pt height \ht\strutbox}
+
+\def\aconstskip{\par\hrule height 0pt \nobreak\vskip -\baselineskip
+   \noindent \hbox to \hsize{\hfill \vrule width 0pt depth \baselineskip}}
+
+
+% Установка отступов для формул в 0pt
+\def\displayskipzero{
+    \setlength{\abovedisplayskip}{0pt}
+    \setlength{\belowdisplayskip}{0pt}
+    \setlength{\abovedisplayshortskip}{0pt}
+    \setlength{\belowdisplayshortskip}{0pt}
+}
+
+
+% Переопределение однострочных формул
+\let\oldequation=\equation
+\let\endoldequation=\endequation
+\renewenvironment{equation}
+    {
+    \displayskipzero
+    \aconstskip
+    \begin{oldequation}
+    }
+    {
+    \end{oldequation}
+    \constskip
+    }
+
+% Переопределение многострочных формул
+\let\oldalign=\align
+\let\endoldalign=\endalign
+\renewenvironment{align}
+    {
+    \displayskipzero
+    \aconstskip
+    \oldalign
+    }
+    {
+    \endoldalign
+    \constskip
+    }
+    
+
 
 % Зачем: Производить арифметические операции во время компиляции TeX файла
 \usepackage{calc}
@@ -356,9 +403,6 @@
 % Зачем: Включение номера раздела в номер рисунка. Нумерация рисунков внутри раздела.
 \AtBeginDocument{\numberwithin{figure}{section}}
 
-\let\oldequation=\equation
-\let\endoldequation=\endequation
-\renewenvironment{equation}{\vspace{-0.3em}\begin{oldequation}}{\end{oldequation}\vspace{-0.9em}}
 
 % Зачем: Дополнительные возможности в форматировании таблиц
 \usepackage{makecell}
@@ -510,7 +554,9 @@
 % \newdimen\origiwstr
 % \origiwstr=\fontdimen3\font
 % \fontdimen3\font=2\origiwstr
-\fontdimen3\font=2\fontdimen3\font
+
+% Зачем отключает 99% переносов (поэтому нужно все-таки проверить)
+\fontdimen3\font=1000\fontdimen3\font
 
 % Зачем: для генерации автоматических окончаний
 %% Подключен выше
