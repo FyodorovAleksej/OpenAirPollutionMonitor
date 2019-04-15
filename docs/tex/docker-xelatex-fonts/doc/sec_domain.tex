@@ -42,6 +42,94 @@
     \label{pic:lit_review:kafka_structure}
 \end{figure}
 
+
+Kafka - это распределённая потоковая платформа, которая имеет три важных свойства:
+\begin{itemize}
+    \item публикация и подписка к потоку записей схожа на очередь сообщений или производственную систему сообщений;
+    \item сохранение потока записей в отказоустойчивой и надёжной системе;
+    \item обработка потока записей как только они появляются.
+\end{itemize}
+
+Имеется два общих класса приложений, для работы с таким брокером:
+\begin{itemize}
+    \item приложения, которые осуществляют обмен сообщениями для непосредственно передачи данных между компонентами системы;
+    \item приложения, которые преобразуют или реагируют на сообщения.
+\end{itemize}
+
+Kafka - это быстрая, расширяемая, долговечная и отказоустойчивая система обмена сообщениями.
+Обычно она используется для замены традиционных брокеров сообщений наподобие JMS и AMQP из-за своей высокой пропускной способности, надёжности и использования репликаций.
+Может использоваться вместе с такими сервисами, как Storm, Spark, Samza, Flink и другие.
+Такая комбинация позволяет анализировать и обрабатывать данные в режиме реального времени.
+
+У этой системы имеется ещё несколько особенностей:
+\begin{itemize}
+    \item сбор и мониторинг метрик;
+    \item отслеживание активности с помощью веб-сервиса;
+    \item использование репликаций в системе логирования.
+\end{itemize}
+
+Для каждого топика в кластере  maintains the structure commit log with 1 or more partitions.
+Раздел (partition) в kafke представляет из себя упорядоченую неизменяемую последовательность.
+Каждое сообщение в таком разделе ассоциируется числом, которое обозначает номер сообщения в последовательности раздела.
+Это число называется смещением (англ. offset).
+Смещение используется для сохранения позиции получателя при получении сообщения.
+В свою очередь, каждый топик состоит из одного или более раздела.
+
+Репликации никогда не используются для записи или чтения.
+Их единственная задача - в момент отказа лидирующей реплики заменить её.
+
+
+Within a cluster of brokers - 1 broker will also function as a cluster controller, elected automatically from the live members of the cluster.
+
+The controller responsible for administrative operations, including assigning partitions to brokers and monitoring for broker failures.
+
+A partition is owned by a single broker in a cluster. That broker is called **"Leader" of the partition**
+
+### Kafka replication
+2 types of replicas:
+1. Leader replica - each partition has a single replica, designated as the **Leader**. All produce and consume requests go through the leader in order to guarantee consistency
+2. Follower replica - all others in a partition -> **Followers**. Don't serve client requests. They only job - replicate messages from the leader and stay up to date with the most recent messages, that the leader has. On a leader crushes - 1 of the follower replica will be promoted to become a new leader for the partition
+
+### In-sync replicas
+**replica - In-sync, if it:**
+- has an active session with Zookeeper. (it sent a heartbeat to Zookeeper in the last 6 seconds (configurable))
+- fetched messages from the leader in the last 10 seconds (configurable)
+- fetched the most recent messages from the leader in the last 10 seconds
+
+If requirement doesn't following - replica is **Out-sync**
+it isn't enough the followers still getting messages from the leader. It must have **almost known leg**
+If Out-sync replica connect to Zookeeper again and fetch most recent messages -> this become In-sync again
+
+
+can be Out-sync with the leader in following reasons:
+1. slow replica (follower replica not able to catch up with the rights of the leader of the settled period of time (input-output bottleneck))
+2. stack replica (follower replica, that stopped fetching of the leader for the settled period of time (when replica reduced by garbage collector pose or it failed or died))
+3. bootstrapping replica (when user increases the replication factor of the topic, the new follower replicas are Out of sync, until they fully copied up to the leader log)
+
+A replica is consider to be Out of sync or legging when it falls sufficiently behind the leader of the partition
+
+In Kafka 0.8.2 a replica's leg is measured either intern of number of messages it is behind the leader or the time for witch the replica has not attempted to fetch new data from the leader.
+The former is used to detect slow replicas while the letter is used to detect halted or dead replicas
+
+one configured to rule them all.
+Offer realize that there is only one thing, that really matters another to detect either stack or a slow replica. And that's a time, which replica has been out of sync with the leader
+removing the leg definition in terms of number of messages gets read to the need to gas the right value based on the expected traffic for the topic
+
+### Producer load balance
+Producers publish data to the topics of their choice. The producer is responsible for choosing which message to assign to which partition within the topic.
+This can be done in round-row been a fashion simply to balance load or it can be done according to some semantic partition function
+
+### Consumer load balance
+
+messaging have 2 models:
+- querying - pool of consumers may read from a server and each message goes to one of them
+- publish subscribe - the message is broadcast to all consumers
+
+Kafka - the single consumer abstraction, that generalizes both of them = **The consumer group** - Consumers labels themselves with a consumer group name, and each message published to a topic, is delivered to 1 consumer instance within each subscribe consumer group
+If all consumers have same consumer group -
+
+
+
 Все сообщения имеют определённое количество реплик, тем самым при размещении на кластере - такая система становится отказоустойчивой, ведь при выходе из строя некоторой машины - на остальных маштнах останутся реплики сообщений, что позволит продолжть работу.
 Также работы kafka на кластере необходим координирующий сервис, который будет определять текущее состояние машин и отслеживать размещение сообщений на кластере.
 В качестве такого менеджера как раз выступает zookeeper ~\cite{zookeeper_documentation_intro}.
