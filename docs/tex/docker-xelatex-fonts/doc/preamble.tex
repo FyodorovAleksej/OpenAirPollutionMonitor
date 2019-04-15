@@ -46,7 +46,8 @@
 \usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.695cm]{geometry}
 
 % Зачем: явно выставляем, чтобы отступ до низа листа был 1,7 см
-\setlength{\footskip}{1cm}
+%% (хотя будет он больше в документе tex-а)
+\setlength{\footskip}{0.85cm}
 
 % Зачем: Настраивает межстрочный интервал, для размещения 40 +/- 3 строки текста на странице.
 % Почему: Пункт 2.1.1 Требований по оформлению пояснительной записки.
@@ -131,7 +132,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\raggedright\hyphenpenalty=10000\normalfont\MakeUppercase}}
+    {\bfseries\pretolerance=10000\normalfont\MakeUppercase}}
 \makeatother
 
 % Зачем: Задает стиль заголовков подразделов
@@ -142,7 +143,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\raggedright\hyphenpenalty=10000\normalfont\normalsize}}
+    {\bfseries\pretolerance=10000\normalfont\normalsize}}
 \makeatother
 
 
@@ -154,7 +155,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\raggedright\hyphenpenalty=10000\normalfont\normalsize}}
+    {\bfseries\pretolerance=10000\normalfont\normalsize}}
 \makeatother
 
 % Зачем: для оформления введения и заключения, они должны быть выровнены по центру.
@@ -165,19 +166,16 @@
     {\z@}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\centering\hyphenpenalty=10000\normalfont\MakeUppercase}%
+    {\bfseries\pretolerance=10000\centering\normalfont\MakeUppercase}%
     }
 \makeatother
 
 % Зачем: отступ от номера до заголовка должен составлять 1 пробел.
 % Для Times New Roman это приблизительно 0.5em
-\usepackage{titlesec}
-\titleformat{\section}
-  {}{\textbf{\thesection}}{0.5em}{}
-\titleformat{\subsection}
-  {}{\textbf{\thesubsection}}{0.5em}{}
-\titleformat{\subsubsection}
-  {}{\textbf{\thesubsubsection}}{0.5em}{}
+% See https://tex.stackexchange.com/questions/25989/spacing-in-headline-between-number-and-text for updating it for different packages
+\makeatletter
+\renewcommand*{\@seccntformat}[1]{\csname the#1\endcsname\hspace{0.5em}}
+\makeatother
 
 % Зачем: Задает стиль библиографии
 % Почему: Пункт 2.8.6 Требований по оформлению пояснительной записки.
@@ -298,51 +296,6 @@
 % Зачем: Окружения «теорема», «лемма»
 \usepackage{amsthm}
 
-\def\constskip{\par\hrule height 0pt \vskip -\ht\strutbox \vskip 1ex 
-    \noindent\vrule width 0pt height \ht\strutbox}
-
-\def\aconstskip{\par\hrule height 0pt \nobreak\vskip -\baselineskip
-   \noindent \hbox to \hsize{\hfill \vrule width 0pt depth \baselineskip}}
-
-
-% Установка отступов для формул в 0pt
-\def\displayskipzero{
-    \setlength{\abovedisplayskip}{0pt}
-    \setlength{\belowdisplayskip}{0pt}
-    \setlength{\abovedisplayshortskip}{0pt}
-    \setlength{\belowdisplayshortskip}{0pt}
-}
-
-
-% Переопределение однострочных формул
-\let\oldequation=\equation
-\let\endoldequation=\endequation
-\renewenvironment{equation}
-    {
-    \displayskipzero
-    \aconstskip
-    \begin{oldequation}
-    }
-    {
-    \end{oldequation}
-    \constskip
-    }
-
-% Переопределение многострочных формул
-\let\oldalign=\align
-\let\endoldalign=\endalign
-\renewenvironment{align}
-    {
-    \displayskipzero
-    \aconstskip
-    \oldalign
-    }
-    {
-    \endoldalign
-    \constskip
-    }
-    
-
 
 % Зачем: Производить арифметические операции во время компиляции TeX файла
 \usepackage{calc}
@@ -402,6 +355,14 @@
 
 % Зачем: Включение номера раздела в номер рисунка. Нумерация рисунков внутри раздела.
 \AtBeginDocument{\numberwithin{figure}{section}}
+
+\let\oldequation=\equation
+\let\endoldequation=\endequation
+\renewenvironment{equation}{\vspace{-0.3em}\begin{oldequation}}{\end{oldequation}\vspace{-0.9em}}
+
+\let\oldfigure=\figure
+\let\endoldfigure=\endfigure
+\renewenvironment{figure}{\begin{oldfigure}}{\squeezeup\end{oldfigure}}
 
 
 % Зачем: Дополнительные возможности в форматировании таблиц
@@ -556,6 +517,8 @@
 % \fontdimen3\font=2\origiwstr
 
 % Зачем отключает 99% переносов (поэтому нужно все-таки проверить)
+%% Подробнее тут: https://tex.stackexchange.com/a/88993/139966
+%% Подробнее тут для заголовков: https://tex.stackexchange.com/a/31309/139966
 \fontdimen3\font=1000\fontdimen3\font
 
 % Зачем: для генерации автоматических окончаний
@@ -633,7 +596,7 @@
 \newcommand{\annex}[1]{
   \newpage
   \stepcounter{equation_annex}
-  \centerline{ПРИЛОЖЕНИЕ \annexAlph{equation_annex}}
+  \centerline{\textbf{ПРИЛОЖЕНИЕ \annexAlph{equation_annex}}}
   \centerline{(\it{обязательное})}
   \vspace{\baselineskip}
   \centerline{#1}
@@ -646,49 +609,56 @@
 }
 
 % Зачем: список условных сокращений
-%\usepackage[russian]{nomencl}
-%\makenomenclature
+\usepackage[russian]{nomencl}
+\makenomenclature
 
 % Установка заголовка
-%\renewcommand{\nomname}{УСЛОВНЫЕ СОКРАЩЕНИЯ}
+\renewcommand{\nomname}{УСЛОВНЫЕ СОКРАЩЕНИЯ}
 
 % установка расстояния между элементами в номенклатуре = 0 (из документации)
-%\setlength{\nomitemsep}{-\parsep}
-
-% установка текста для сокращения в номенклатуре
-%\renewcommand{\nomlabel}[1]{#1 -- }
+\setlength{\nomitemsep}{-\parsep}
 
 % Зачем: установка левого отступа в номенклатуре
-%\patchcmd{\thenomenclature}
-%  {\leftmargin\labelwidth}
-%  {\leftmargin\labelwidth\itemindent\fivecharsapprox }
-%  {}{}
+\patchcmd{\thenomenclature}
+  {\leftmargin\labelwidth}
+  {\leftmargin\labelwidth\itemindent\fivecharsapprox }
+  {}{}
 
 % Зачем: зануление отступа после сокращения
-%\patchcmd{\thenomenclature}
-%  {\advance\leftmargin\labelsep}
-%  {\labelsep=0cm \advance\leftmargin\labelsep}
-%  {}{}
+\patchcmd{\thenomenclature}
+  {\advance\leftmargin\labelsep}
+  {\labelsep=0cm \advance\leftmargin\labelsep}
+  {}{}
+
+%% #1 - short name
+%% #2 - long name
+%% #3 - long name on russian
+\newcommand{\nomenclaturex}[3]{
+  \nomenclature{#1 }{(#2) -- #3}
+}
 
 % Зачем: обновление форматирования заголовка для номенклатуры
-%\makeatletter
-%\patchcmd{\thenomenclature}
-%  {\tocbasic@listhead{\list@fname}}
-%  {\sectioncentered*{\list@fname}}
-%  {}{}
-%\makeatother
+\makeatletter
+\patchcmd{\thenomenclature}
+  {\tocbasic@listhead{\list@fname}}
+  {\sectioncentered*{\list@fname}}
+  {}{}
+\makeatother
 
 % Зачем: убираем отступ в 1см слева во второй и следующих строках в номенклатуре (отступ label)
-%\setlength{\nomlabelwidth}{0pt}
+\setlength{\nomlabelwidth}{0pt}
 
 % Убирает ошибки для nomenctl о ненахождении соответствующих команд
 % Это проблема совместимости русской polyglossia и nomencl
 % Подробнее:
 %% https://tex.stackexchange.com/questions/449877/xelatex-scrartcl-setmainlanguagerussian-latex-error-chapterformat-und/449880#449880
 %% https://github.com/reutenauer/polyglossia/issues/210
-%\providecommand{\chapterformat}{}
-%\providecommand{\sectionformat}{}
-%\providecommand{\subsectionformat}{}
-%\providecommand{\subsubsectionformat}{}
-%\providecommand{\paragraphformat}{}
-%\providecommand{\subparagraphformat}{}
+\providecommand{\chapterformat}{}
+\providecommand{\sectionformat}{}
+\providecommand{\subsectionformat}{}
+\providecommand{\subsubsectionformat}{}
+\providecommand{\paragraphformat}{}
+\providecommand{\subparagraphformat}{}
+
+
+\newcommand{\squeezeup}{\vspace{-2.5mm}}

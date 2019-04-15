@@ -2,7 +2,7 @@ PDFLATEX = xelatex
 DIPLOMA_REPORT_PDF = diploma_report
 PRACTICE_REPORT_PDF = practice_report
 BIBTEX = bibtex
-#MAKEINDEX = makeindex
+MAKEINDEX = makeindex
 RM = rm -f
 
 
@@ -14,7 +14,7 @@ fast: *.tex
 
 $(DIPLOMA_REPORT_PDF).pdf: *.tex *.bib
 	$(PDFLATEX) $(DIPLOMA_REPORT_PDF)
-#	$(MAKEINDEX) $(DIPLOMA_REPORT_PDF).nlo -s nomencl.ist -o $(DIPLOMA_REPORT_PDF).nls
+	$(MAKEINDEX) $(DIPLOMA_REPORT_PDF).nlo -s nomencl.ist -o $(DIPLOMA_REPORT_PDF).nls
 	$(BIBTEX) $(DIPLOMA_REPORT_PDF).aux
 	$(PDFLATEX) $(DIPLOMA_REPORT_PDF)
 	$(PDFLATEX) $(DIPLOMA_REPORT_PDF)
@@ -24,6 +24,7 @@ $(DIPLOMA_REPORT_PDF).pdf: *.tex *.bib
 
 $(PRACTICE_REPORT_PDF).pdf: *.tex *.bib
 	$(PDFLATEX) $(PRACTICE_REPORT_PDF)
+	$(MAKEINDEX) $(PRACTICE_REPORT_PDF).nlo -s nomencl.ist -o $(PRACTICE_REPORT_PDF).nls
 	$(BIBTEX) $(PRACTICE_REPORT_PDF).aux
 	$(PDFLATEX) $(PRACTICE_REPORT_PDF)
 	$(PDFLATEX) $(PRACTICE_REPORT_PDF)
