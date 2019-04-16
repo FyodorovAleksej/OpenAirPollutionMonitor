@@ -1,0 +1,5 @@
+PWD /home/alexeyfyodorov/Diplom/openair/OpenAirPollutionMonitor/docs/tex/docker-xelatex-fonts/doc
+INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
+INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
+INPUT /home/alexeyfyodorov/.texlive2018/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT /home/alexeyfyodorov/Diplom/openair/OpenAirPollutionMonitor/docs/tex/docker-xelatex-fonts/doc/practice_report.tex
