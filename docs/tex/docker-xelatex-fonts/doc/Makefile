@@ -39,4 +39,4 @@ cleanall: clean
 
 .PHONY: clean cleanall
 clean:
-	$(RM) *.aux *.log *.out *.toc *.gz *.gz\(busy\) *.blg *.bbl *.nlo *.nls
+	$(RM) *.aux *.log *.out *.toc *.gz *.gz\(busy\) *.blg *.bbl *.nlo *.nls *.ilg *.fls *.fdb_latexmk
