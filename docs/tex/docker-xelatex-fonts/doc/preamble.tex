@@ -43,8 +43,11 @@
 
 % Зачем: Настраивает отступы от границ страницы.
 % Почему: Пункт 2.1.2 Требований по оформлению пояснительной записки.
-\usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.7cm]{geometry}
+\usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.695cm]{geometry}
 
+% Зачем: явно выставляем, чтобы отступ до низа листа был 1,7 см
+%% (хотя будет он больше в документе tex-а)
+\setlength{\footskip}{0.85cm}
 
 % Зачем: Настраивает межстрочный интервал, для размещения 40 +/- 3 строки текста на странице.
 % Почему: Пункт 2.1.1 Требований по оформлению пояснительной записки.
@@ -129,7 +132,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\raggedright\hyphenpenalty=10000\normalfont\MakeUppercase}}
+    {\bfseries\pretolerance=10000\normalfont\MakeUppercase}}
 \makeatother
 
 % Зачем: Задает стиль заголовков подразделов
@@ -140,7 +143,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\raggedright\hyphenpenalty=10000\normalfont\normalsize}}
+    {\bfseries\pretolerance=10000\normalfont\normalsize}}
 \makeatother
 
 
@@ -152,7 +155,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\raggedright\hyphenpenalty=10000\normalfont\normalsize}}
+    {\bfseries\pretolerance=10000\normalfont\normalsize}}
 \makeatother
 
 % Зачем: для оформления введения и заключения, они должны быть выровнены по центру.
@@ -163,19 +166,16 @@
     {\z@}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\centering\hyphenpenalty=10000\normalfont\MakeUppercase}%
+    {\bfseries\pretolerance=10000\centering\normalfont\MakeUppercase}%
     }
 \makeatother
 
 % Зачем: отступ от номера до заголовка должен составлять 1 пробел.
 % Для Times New Roman это приблизительно 0.5em
-\usepackage{titlesec}
-\titleformat{\section}
-  {}{\textbf{\thesection}}{0.5em}{}
-\titleformat{\subsection}
-  {}{\textbf{\thesubsection}}{0.5em}{}
-\titleformat{\subsubsection}
-  {}{\textbf{\thesubsubsection}}{0.5em}{}
+% See https://tex.stackexchange.com/questions/25989/spacing-in-headline-between-number-and-text for updating it for different packages
+\makeatletter
+\renewcommand*{\@seccntformat}[1]{\csname the#1\endcsname\hspace{0.5em}}
+\makeatother
 
 % Зачем: Задает стиль библиографии
 % Почему: Пункт 2.8.6 Требований по оформлению пояснительной записки.
@@ -360,6 +360,11 @@
 \let\endoldequation=\endequation
 \renewenvironment{equation}{\vspace{-0.3em}\begin{oldequation}}{\end{oldequation}\vspace{-0.9em}}
 
+\let\oldfigure=\figure
+\let\endoldfigure=\endfigure
+\renewenvironment{figure}{\begin{oldfigure}}{\squeezeup\end{oldfigure}}
+
+
 % Зачем: Дополнительные возможности в форматировании таблиц
 \usepackage{makecell}
 \usepackage{multirow}
@@ -510,7 +515,11 @@
 % \newdimen\origiwstr
 % \origiwstr=\fontdimen3\font
 % \fontdimen3\font=2\origiwstr
-\fontdimen3\font=2\fontdimen3\font
+
+% Зачем отключает 99% переносов (поэтому нужно все-таки проверить)
+%% Подробнее тут: https://tex.stackexchange.com/a/88993/139966
+%% Подробнее тут для заголовков: https://tex.stackexchange.com/a/31309/139966
+\fontdimen3\font=1000\fontdimen3\font
 
 % Зачем: для генерации автоматических окончаний
 %% Подключен выше
@@ -587,7 +596,7 @@
 \newcommand{\annex}[1]{
   \newpage
   \stepcounter{equation_annex}
-  \centerline{ПРИЛОЖЕНИЕ \annexAlph{equation_annex}}
+  \centerline{\textbf{ПРИЛОЖЕНИЕ \annexAlph{equation_annex}}}
   \centerline{(\it{обязательное})}
   \vspace{\baselineskip}
   \centerline{#1}
@@ -609,9 +618,6 @@
 % установка расстояния между элементами в номенклатуре = 0 (из документации)
 \setlength{\nomitemsep}{-\parsep}
 
-% установка текста для сокращения в номенклатуре
-\renewcommand{\nomlabel}[1]{#1 -- }
-
 % Зачем: установка левого отступа в номенклатуре
 \patchcmd{\thenomenclature}
   {\leftmargin\labelwidth}
@@ -623,6 +629,13 @@
   {\advance\leftmargin\labelsep}
   {\labelsep=0cm \advance\leftmargin\labelsep}
   {}{}
+
+%% #1 - short name
+%% #2 - long name
+%% #3 - long name on russian
+\newcommand{\nomenclaturex}[3]{
+  \nomenclature{#1 }{(#2) -- #3}
+}
 
 % Зачем: обновление форматирования заголовка для номенклатуры
 \makeatletter
@@ -646,3 +659,6 @@
 \providecommand{\subsubsectionformat}{}
 \providecommand{\paragraphformat}{}
 \providecommand{\subparagraphformat}{}
+
+
+\newcommand{\squeezeup}{\vspace{-2.5mm}}

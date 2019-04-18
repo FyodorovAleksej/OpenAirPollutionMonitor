@@ -6,6 +6,7 @@ COPY texlive.profile texlive.profile
 # set up packages
 ## &&
 # Remove unnecessary archieves
+
 RUN apk add --no-cache wget perl xz && \
   wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz && \
   tar -xzf install-tl-unx.tar.gz && \
@@ -32,6 +33,7 @@ ENV PATH="/usr/local/texlive/bin/x86_64-linuxmusl:${PATH}"
 ## oberdiek for ifpdf
 ## bigfoot for perpage
 ## zapfding for pzdr
+## koma-script for tocbasic
 ## * for -//-
 ## &&
 # Windows fonts
@@ -56,6 +58,7 @@ RUN tlmgr update --self \
   zapfding \
   xstring \
   datetime \
+  nomencl \
   \
   geometry \
   setspace \
@@ -87,10 +90,13 @@ RUN tlmgr update --self \
   fp \
   extsizes \
   fmtcount \
+  koma-script \
     && \
   apk add --no-cache \
   msttcorefonts-installer \
   && update-ms-fonts \
   && fc-cache -f \
     && \
-  apk add --no-cache make
+apk add --no-cache make
+
+CMD make clean && make all

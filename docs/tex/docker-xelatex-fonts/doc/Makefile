@@ -24,6 +24,7 @@ $(DIPLOMA_REPORT_PDF).pdf: *.tex *.bib
 
 $(PRACTICE_REPORT_PDF).pdf: *.tex *.bib
 	$(PDFLATEX) $(PRACTICE_REPORT_PDF)
+	$(MAKEINDEX) $(PRACTICE_REPORT_PDF).nlo -s nomencl.ist -o $(PRACTICE_REPORT_PDF).nls
 	$(BIBTEX) $(PRACTICE_REPORT_PDF).aux
 	$(PDFLATEX) $(PRACTICE_REPORT_PDF)
 	$(PDFLATEX) $(PRACTICE_REPORT_PDF)
@@ -38,4 +39,4 @@ cleanall: clean
 
 .PHONY: clean cleanall
 clean:
-	$(RM) *.aux *.log *.out *.toc *.gz *.gz\(busy\) *.blg *.bbl *.nlo *.nls
+	$(RM) *.aux *.log *.out *.toc *.gz *.gz\(busy\) *.blg *.bbl *.nlo *.nls *.ilg *.fls *.fdb_latexmk
