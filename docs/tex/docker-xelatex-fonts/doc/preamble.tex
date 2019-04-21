@@ -43,11 +43,14 @@
 
 % Зачем: Настраивает отступы от границ страницы.
 % Почему: Пункт 2.1.2 Требований по оформлению пояснительной записки.
-\usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.695cm]{geometry}
+%% Специфические к используемому принтеру + ОС
+\usepackage[left=3cm,top=1.9cm,right=1.5cm,bottom=2.795cm]{geometry}
+% \usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.695cm]{geometry}
 
 % Зачем: явно выставляем, чтобы отступ до низа листа был 1,7 см
 %% (хотя будет он больше в документе tex-а)
-\setlength{\footskip}{0.85cm}
+\setlength{\footskip}{0.95cm}
+% \setlength{\footskip}{0.85cm}
 
 % Зачем: Настраивает межстрочный интервал, для размещения 40 +/- 3 строки текста на странице.
 % Почему: Пункт 2.1.1 Требований по оформлению пояснительной записки.
@@ -155,7 +158,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\bfseries\pretolerance=10000\normalfont\normalsize}}
+    {\pretolerance=10000\normalfont\normalsize}}
 \makeatother
 
 % Зачем: для оформления введения и заключения, они должны быть выровнены по центру.
@@ -173,8 +176,9 @@
 % Зачем: отступ от номера до заголовка должен составлять 1 пробел.
 % Для Times New Roman это приблизительно 0.5em
 % See https://tex.stackexchange.com/questions/25989/spacing-in-headline-between-number-and-text for updating it for different packages
+%% Номера всегда будут жирным
 \makeatletter
-\renewcommand*{\@seccntformat}[1]{\csname the#1\endcsname\hspace{0.5em}}
+\renewcommand*{\@seccntformat}[1]{\textbf{\csname the#1\endcsname}\hspace{0.5em}}
 \makeatother
 
 % Зачем: Задает стиль библиографии
@@ -204,7 +208,7 @@
 \def\BibUrl#1{Режим доступа : \url{#1}}
 \def\BibDate#1{Дата доступа : \parsedate{#1}}
 \def\BibTitleSuffix{ [Электронный ресурс]}
-\def\BibTitleFormat#1{\StrSubstitute{#1}{ - }{ -- }}
+\def\BibTitleFormat#1{\StrSubstitute{#1}{ - }{ --- }}
 
 % Зачем: Пакет для вставки картинок
 % Примечание: Объяснение, зачем final - http://tex.stackexchange.com/questions/11004/why-does-the-image-not-appear
@@ -360,9 +364,6 @@
 \let\endoldequation=\endequation
 \renewenvironment{equation}{\vspace{-0.3em}\begin{oldequation}}{\end{oldequation}\vspace{-0.9em}}
 
-\let\oldfigure=\figure
-\let\endoldfigure=\endfigure
-\renewenvironment{figure}{\begin{oldfigure}}{\squeezeup\end{oldfigure}}
 
 
 % Зачем: Дополнительные возможности в форматировании таблиц
@@ -661,4 +662,7 @@
 \providecommand{\subparagraphformat}{}
 
 
-\newcommand{\squeezeup}{\vspace{-2.5mm}}
+\let\oldfigure=\figure
+\let\endoldfigure=\endfigure
+
+\renewenvironment{figure}{\vspace{1.5mm}\begin{oldfigure}[h]}{\vspace{1mm}\end{oldfigure}}

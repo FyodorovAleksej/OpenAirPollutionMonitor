@@ -9,7 +9,7 @@ services:
       ZEPPELIN_JAVA_OPTS: >-
         -Dspark.driver.memory=1g
         -Dspark.executor.memory=2g
-      MASTER: "spark://master:7077"
+      MASTER: "local[*]"
     ports:
       - 8090:8090
     volumes:
