@@ -21,4 +21,5 @@ class KafkaSender:
 
     def send_message(self, topic, message, key):
         print(topic, message, key)
-        self._producer.send(topic, message, key).get(timeout=30)
+        self._producer.send(topic, message, key).add_callback(print("succesfull")).get(timeout=30)
+        self._producer.flush()

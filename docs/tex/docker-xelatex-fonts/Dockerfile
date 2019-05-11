@@ -6,7 +6,6 @@ COPY texlive.profile texlive.profile
 # set up packages
 ## &&
 # Remove unnecessary archieves
-
 RUN apk add --no-cache wget perl xz && \
   wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz && \
   tar -xzf install-tl-unx.tar.gz && \
@@ -71,6 +70,7 @@ RUN tlmgr update --self \
   caption \
   amsmath \
   amscls \
+  mathspec \
   enumitem \
   makecell \
   multirow \
@@ -97,6 +97,6 @@ RUN tlmgr update --self \
   && update-ms-fonts \
   && fc-cache -f \
     && \
-apk add --no-cache make
+  apk add --no-cache make
 
 CMD make clean && make all

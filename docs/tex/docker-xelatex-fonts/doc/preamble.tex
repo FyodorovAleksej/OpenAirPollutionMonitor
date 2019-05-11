@@ -3,15 +3,26 @@
 % Примечание: параметр draft помечает строки, вышедшие за границы страницы, прямоугольником, в фильной версии его нужно удалить.
 \documentclass[a4paper,14pt,russian,oneside,final]{extreport}
 
+% Зачем: Удобная верстка многострочных формул, масштабирующийся текст в формулах, формулы в рамках и др
+\usepackage{amsmath}
+
+% Зачем: использование Times New Roman в формулах для всего
+%   И греческие буквы типа Regular по умолчанию
+% !!! данный пакет должен подключаться раньше polyglossia
+%% Подробнее тут: https://tex.stackexchange.com/a/43419/139966
+\usepackage{mathspec}
+\setmathsfont(Latin,Digits){Times New Roman}
+\setmathsfont(Greek)[Uppercase=Regular,Lowercase=Regular]{Times New Roman}
+
 % Поддержка русского языка (XeLaTeX)
 %% Для включения переносов в английском поместите английский текст в секцию \textenglish.
 %%    Например, "привет \textenglish{Hello world} еще привет"
-\usepackage{polyglossia}   %% загружает пакет многоязыковой вёрстки
+\usepackage{polyglossia}   %% загружает пакет многоязыковой верстки
 \setdefaultlanguage{russian}  %% устанавливает главный язык документа
     %\setdefaultlanguage[babelshorthands=true]{russian}  %% вместо предыдущей строки; доступны команды из пакета babel для русского языка
 \setotherlanguage{english} %% объявляет второй язык документа
 \defaultfontfeatures{Ligatures={TeX}}  %% свойства шрифтов по умолчанию. Для XeTeX опцию Renderer=Basic можно не указывать, она необходима для LuaTeX
-\setmainfont[Ligatures={TeX,Historic}]{Times New Roman} %% задаёт основной шрифт документа
+\setmainfont[Ligatures={TeX,Historic}]{Times New Roman} %% задает основной шрифт документа
 \setromanfont{Times New Roman}
 \setsansfont{Arial}
 \setmonofont{Courier New}
@@ -21,9 +32,6 @@
 \newfontfamily{\cyrillicfontrm}{Times New Roman}
 \newfontfamily{\cyrillicfonttt}{Courier New}
 \newfontfamily{\cyrillicfontsf}{Arial}
-
-% Зачем: Чтобы можно было использовать русские буквы в формулах, но в случае использования предупреждать об этом.
-\usepackage[warn]{mathtext}
 
 % Зачем: Добавляет поддержу дополнительных размеров текста 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, and 20pt.
 % Почему: Пункт 2.1.1 Требований по оформлению пояснительной записки.
@@ -158,7 +166,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\bfseries\pretolerance=10000\normalfont\normalsize}}
+    {\pretolerance=10000\normalfont\normalsize}}
 \makeatother
 
 % Зачем: для оформления введения и заключения, они должны быть выровнены по центру.
@@ -219,8 +227,16 @@
 % Зачем: Директория в которой будет происходить поиск картинок
 \graphicspath{{images/}}
 
-\setlength{\belowcaptionskip}{-10pt}
+% Зачем: отступы в таблицах и рисунках
+\setlength{\belowcaptionskip}{0pt}
 \setlength{\abovecaptionskip}{0pt}
+
+% Зачем: убирает отступ до формулы (полезно для новых страниц)
+%% #1 - baseline skip scale (2 by default)
+\newcommand\removeEquantionBeforeSpace[1][2]{
+  \mbox{}\par
+  \kern-#1\baselineskip
+}
 
 % Зачем: Добавление подписей к рисункам
 \usepackage[nooneline]{caption}
@@ -285,18 +301,6 @@
     }
 
 
-% Зачем: Удобная верстка многострочных формул, масштабирующийся текст в формулах, формулы в рамках и др
-\usepackage{amsmath}
-
-
-% Зачем: Поддержка ажурного и готического шрифтов
-\usepackage{amsfonts}
-
-
-% Зачем: amsfonts + несколько сотен дополнительных математических символов
-\usepackage{amssymb}
-
-
 % Зачем: Окружения «теорема», «лемма»
 \usepackage{amsthm}
 
@@ -333,7 +337,17 @@
 
 % Зачем: добавление возможности создания нумерованного списка
 \newenvironment{enumerate_num}
-  {\begin{enumerate}[label=\arabic*]}
+  {\begin{enumerate}[label=\arabic*., ref=\arabic*, align=left,
+    labelindent=\fivecharsapprox,
+    leftmargin=*, itemindent=*]}
+  {\end{enumerate}}
+
+% Зачем: добавление возможности создания нумерованного списка по шагам
+\newenvironment{enumerate_step}
+  {\begin{enumerate}[label=Шаг \arabic*., ref=\arabic*,
+    labelindent=\fivecharsapprox,
+    align=left,
+    leftmargin=*, itemindent=*]}
   {\end{enumerate}}
 
 % Зачем: добавление возможности создания вложеннного нумерованного списка с  "жирными" цифрами
@@ -363,8 +377,6 @@
 \let\oldequation=\equation
 \let\endoldequation=\endequation
 \renewenvironment{equation}{\vspace{-0.3em}\begin{oldequation}}{\end{oldequation}\vspace{-0.9em}}
-
-
 
 % Зачем: Дополнительные возможности в форматировании таблиц
 \usepackage{makecell}
@@ -504,8 +516,8 @@
 \makeatother
 
 \lstdefinestyle{cstyle}{
-   xleftmargin=1.25cm,
-   basicstyle=\fontencoding{T1}\small\ttfamily,
+   xleftmargin=\fivecharsapprox,
+   basicstyle=\small\ttfamily,
    breaklines=true,
    tabsize=8
 }
@@ -661,8 +673,5 @@
 \providecommand{\paragraphformat}{}
 \providecommand{\subparagraphformat}{}
 
-
-\let\oldfigure=\figure
-\let\endoldfigure=\endfigure
-
-\renewenvironment{figure}{\vspace{1.5mm}\begin{oldfigure}[h]}{\vspace{1mm}\end{oldfigure}}
+% Зачем: убирает нумерацию страниц на листах с содержанием
+\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{empty}}}

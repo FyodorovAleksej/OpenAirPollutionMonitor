@@ -1,490 +1,1044 @@
 \newcommand{\rub}{руб}
 
-\newdimen\origiwstr
-\origiwstr=\fontdimen3\font
-\fontdimen3\font=5\origiwstr
-\section{ТЕХНИКО-ЭКОНОМИЧЕСКОЕ ОБОСНОВАНИЕ РАЗРАБОТКИ МОДУЛЯ СБОРА СТАТИСТИКИ В РЕЖИМЕ РЕАЛЬНОГО ВРЕМЕНИ ДЛЯ ОПЕРАЦИОННОЙ СИСТЕМЫ TI-RTOS}
-\fontdimen3\font=\origiwstr
-
-% TODO: rewrite if need
+\section{ТЕХНИКО-ЭКОНОМИЧЕСКОЕ ОБОСНОВАНИЕ РАЗРАБОТКИ ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ ДЛЯ АНАЛИЗА ЗАГРЯЗНЕНИЯ ОКРУЖАЮЩЕЙ СРЕДЫ НА ОСНОВЕ НЕЙРОННОЙ СЕТИ}
 
 % Begin Calculations
 
-\FPeval{\totalProgramSize}{9810}
-\FPeval{\totalProgramSizeCorrected}{2760}
+%% config
+\FPeval{\configRoundSigns}{2}
+%% config end
 
-\FPeval{\normativeManDays}{200}
+%% conf 1.1 from manual
+\FPeval{\valToaDelim}{80}
+\FPeval{\valTbsDelim}{22}
+\FPeval{\valTpDelim}{22}
+\FPeval{\valTotlDelim}{4.5}
+\FPeval{\valTdrDelim}{18}
+\FPeval{\valTdoScale}{0.75}
+\FPeval{\valW}{1.3}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valK}{0.8}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valC}{2.2}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valp}{0.35}%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% operators in your code (approximately)
+\FPeval{\valq}{1900}%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\FPeval{\additionalComplexity}{0.12}
-\FPeval{\complexityFactor}{clip(1 + \additionalComplexity)}
+%% conf 1.4 from manual
+\FPeval{\valNe}{0.085}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valkis}{0.9}
+\FPeval{\valTSe}{0.25}
+\FPeval{\valTSpk}{4200}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valky}{1}
+\FPeval{\valkm}{1.05}
+\FPeval{\valNpka}{10}
+\FPeval{\valkro}{0.13}
+\FPeval{\valNpla}{1.2}
+\FPeval{\valkd}{3}
+\FPeval{\valTSpl}{300}
+\FPeval{\valkre}{0.05}
+\FPeval{\valSpk}{1}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valkar}{13.6}
+\FPeval{\valkkomf}{0.9}
+\FPeval{\valkpov}{0.85}
+\FPeval{\valtss}{8}
+\FPeval{\valTsg}{305}
 
-\FPeval{\stdModuleUsageFactor}{0.7}
-\FPeval{\originalityFactor}{0.65}
+%% conf 1.2 from manual
+\FPeval{\valKpr}{1.7}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valNd}{13}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valNsots}{34.6}
+\FPeval{\valtmes}{170}
+\FPeval{\valZPr}{490}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valkt}{3.54}
+\FPeval{\valF}{1.18}%%%%%%%%%%%%%%%%%%%%%%%%%
+%% crunch - was fixed by 1.4 from manual
+% \FPeval{\valSmch}{11.3}
 
-\FPeval{\adjustedManDaysExact}{clip( \normativeManDays * \complexityFactor * \stdModuleUsageFactor * \originalityFactor )}
-\FPround{\adjustedManDays}{\adjustedManDaysExact}{0}
+%% conf 1.3 from manual
+\FPeval{\valNp}{0.27}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valNDS}{34.6}
 
-\FPeval{\daysInYear}{365}
-\FPeval{\redLettersDaysInYear}{9}
-\FPeval{\weekendDaysInYear}{104}
-\FPeval{\vocationDaysInYear}{21}
-\FPeval{\workingDaysInYear}{ clip( \daysInYear - \redLettersDaysInYear - \weekendDaysInYear - \vocationDaysInYear ) }
+%% conf 2.2 from manual
+\FPeval{\valKz}{70}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valHz}{1}
+\FPeval{\valdpz}{0.17}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valTr}{0}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valTviv}{0}%%%%%%%%%%%%%%%%%%%%%%%%%
+\FPeval{\valk}{402875}%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\FPeval{\developmentTimeMonths}{3}
-\FPeval{\developmentTimeYearsExact}{clip(\developmentTimeMonths / 12)}
-\FPround{\developmentTimeYears}{\developmentTimeYearsExact}{2}
-\FPeval{\requiredNumberOfProgrammersExact}{ clip( \adjustedManDays / (\developmentTimeYears * \workingDaysInYear) + 0.5 ) }
+%% conf 2.2 from manual (for analogue)
+\FPeval{\valKza}{90}%%%---===
+\FPeval{\valdpza}{0.18}%%%---===
+\FPeval{\valTra}{0}%%%---===
+\FPeval{\valTviva}{0.05}%%%---===
 
-% тут должно получаться 2 ))
-\FPtrunc{\requiredNumberOfProgrammers}{\requiredNumberOfProgrammersExact}{0}
+%% conf 2.3 from manual
+\FPeval{\valSnp}{18}
 
-\FPeval{\tariffRateFirst}{50}
-\FPeval{\tariffFactorFst}{3.04}
-\FPeval{\tariffFactorSnd}{3.48}
+%% conf 3 from manual
+\FPeval{\valx}{1}%%%---===
+\FPeval{\valE}{0.1}%%%---===
 
+%% calc 1.1 from manual
+\FPeval{\valQ}{clip(\valq * \valC * (1 + \valp))}
 
-\FPeval{\employmentFstExact}{clip( \adjustedManDays / \requiredNumberOfProgrammers )}
-\FPtrunc{\employmentFst}{\employmentFstExact}{0}
+\FPeval{\valToa}{round((\valQ * \valW * \valK) / \valToaDelim, \configRoundSigns)}
+\FPeval{\valTbs}{round(\valQ * \valK / \valTbsDelim, \configRoundSigns)}
+\FPeval{\valTp}{round(\valQ * \valK / \valTpDelim, \configRoundSigns)}
+\FPeval{\valTotl}{round(\valQ * \valK / \valTotlDelim, \configRoundSigns)}
+\FPeval{\valTdr}{round(\valQ * \valK / \valTdrDelim, \configRoundSigns)}
+\FPeval{\valTdo}{round(\valTdr * \valTdoScale, \configRoundSigns)}
 
-\FPeval{\employmentSnd}{clip(\adjustedManDays - \employmentFst)}
+\FPeval{\valTrz}{clip(\valToa + \valTbs + \valTp + \valTotl + \valTdr + \valTdo)}
 
+%% calc 1.4 from manual
+\FPeval{\valSe}{round(\valNe * \valkis * \valTSe, \configRoundSigns)}
 
-\FPeval{\workingHoursInMonth}{160}
-\FPeval{\salaryPerHourFstExact}{clip( \tariffRateFirst * \tariffFactorFst / \workingHoursInMonth )}
-\FPeval{\salaryPerHourSndExact}{clip( \tariffRateFirst * \tariffFactorSnd / \workingHoursInMonth )}
-\FPround{\salaryPerHourFst}{\salaryPerHourFstExact}{0}
-\FPround{\salaryPerHourSnd}{\salaryPerHourSndExact}{0}
+\FPeval{\valTSpkb}{round(\valTSpk * \valky * \valkm, \configRoundSigns)}
+\FPeval{\valApk}{round(\valTSpkb * \valNpka / 100, \configRoundSigns)}
+\FPeval{\valRpk}{round(\valTSpkb * \valkro, \configRoundSigns)}
 
-\FPeval{\bonusRate}{1.5}
-\FPeval{\workingHoursInDay}{8}
-\FPeval{\totalSalaryExact}{clip( \workingHoursInDay * \bonusRate * ( \salaryPerHourFst * \employmentFst + \salaryPerHourSnd * \employmentSnd ) )}
-\FPround{\totalSalary}{\totalSalaryExact}{0}
+\FPeval{\valTSplb}{round(\valSpk * \valkd * \valTSpl, \configRoundSigns)}
+\FPeval{\valApl}{round(\valTSplb * \valNpla / 100, \configRoundSigns)}
+\FPeval{\valRpl}{round(\valTSplb * \valkre, \configRoundSigns)}
 
-\FPeval{\additionalSalaryNormative}{20}
+\FPeval{\valRar}{round(\valSpk * \valkd * \valkar * \valkkomf * \valkpov * 12, \configRoundSigns)}
 
-\FPeval{\additionalSalaryExact}{clip( \totalSalary * \additionalSalaryNormative / 100 )}
-\FPround{\additionalSalary}{\additionalSalaryExact}{0}
+\FPeval{\valFpk}{round(\valtss * \valTsg, \configRoundSigns)}
 
-\FPeval{\socialNeedsNormative}{0.6}
-\FPeval{\socialProtectionNormative}{34}
-\FPeval{\socialProtectionFund}{ clip(\socialNeedsNormative + \socialProtectionNormative) }
+\FPeval{\valSmch}{round(\valSe + ((\valApk + \valRpk + \valApl + \valRpl + \valRar) / \valFpk), \configRoundSigns)}
 
-\FPeval{\socialProtectionCostExact}{clip( (\totalSalary + \additionalSalary) * \socialProtectionFund / 100 )}
-\FPround{\socialProtectionCost}{\socialProtectionCostExact}{0}
+%% calc 1.2 from manual
+\FPeval{\valtchr}{round((\valZPr * \valkt)/(\valtmes), \configRoundSigns)}
+\FPeval{\valZrz}{round(\valTrz * \valtchr * \valKpr * (1 + (\valNd / 100)) * (1 + (\valNsots / 100)), \configRoundSigns)}
+\FPeval{\valZot}{round(\valTotl * \valSmch, \configRoundSigns)}
+\FPeval{\valSpr}{round(\valZrz * \valF + \valZot, \configRoundSigns)}
 
-\FPeval{\taxWorkProtNormative}{4}
-\FPeval{\taxWorkProtCostExact}{clip( (\totalSalary + \additionalSalary) * \taxWorkProtNormative / 100 )}
-\FPround{\taxWorkProtCost}{\taxWorkProtCostExact}{0}
-\FPeval{\taxWorkProtCost}{0} % это считать не нужно, зануляем чтобы не менять формулы
+%% calc 1.3 from manual
+\FPeval{\valPr}{round(\valSpr * \valNp, \configRoundSigns)}
+\FPeval{\valTSo}{clip(\valSpr + \valPr)}
+\FPeval{\valTSpr}{round(\valTSo + (\valZrz + \valPr) * \valNDS / 100, \configRoundSigns)}
 
-\FPeval{\stuffNormative}{3}
-\FPeval{\stuffCostExact}{clip( \totalSalary * \stuffNormative / 100 )}
-\FPeval{\stuffCost}{\stuffCostExact}
+%% calc 2.2 from manual
+\FPeval{\valTvv}{round((\valKz * \valHz) / 100, \configRoundSigns)}
+\FPeval{\valTz}{round((\valTvv + \valTr + \valTviv) * (1 + \valdpz) / 60, \configRoundSigns)}
 
-\FPeval{\timeToDebugCodeNormative}{15}
-\FPeval{\reducingTimeToDebugFactor}{0.3}
-\FPeval{\adjustedTimeToDebugCodeNormative}{ clip( \timeToDebugCodeNormative * \reducingTimeToDebugFactor ) }
+\FPeval{\valtchp}{\valtchr}
+\FPeval{\valZp}{round((\valTz * \valk * \valtchp * \valKpr) * (1 + (\valNd / 100)) * (1 + (\valNsots / 100)), \configRoundSigns)}
 
-\FPeval{\oneHourMachineTimeCost}{0.5}
+\FPeval{\valZa}{round(\valTz * \valk * \valSmch, \configRoundSigns)}
+\FPeval{\valZt}{clip(\valZp + \valZa)}
 
-\FPeval{\machineTimeCostExact}{ clip( \oneHourMachineTimeCost * \totalProgramSizeCorrected / 100 * \adjustedTimeToDebugCodeNormative ) }
-\FPround{\machineTimeCost}{\machineTimeCostExact}{0}
+%% calc 2.2 from manual (for analogue)
+\FPeval{\valTvva}{round((\valKza * \valHz) / 100, \configRoundSigns)}
+\FPeval{\valTza}{round((\valTvva + \valTra + \valTviva) * (1 + \valdpza) / 60, \configRoundSigns)}
 
-\FPeval{\businessTripNormative}{15}
-\FPeval{\businessTripCostExact}{ clip( \totalSalary * \businessTripNormative / 100 ) }
-\FPround{\businessTripCost}{\businessTripCostExact}{0}
+\FPeval{\valZpa}{round((\valTza * \valk * \valtchp * \valKpr) * (1 + (\valNd / 100)) * (1 + (\valNsots / 100)), \configRoundSigns)}
 
-\FPeval{\otherCostNormative}{20}
-\FPeval{\otherCostExact}{clip( \totalSalary * \otherCostNormative / 100 )}
-\FPround{\otherCost}{\otherCostExact}{0}
+\FPeval{\valZaa}{round(\valTza * \valk * \valSmch, \configRoundSigns)}
+\FPeval{\valZta}{clip(\valZpa + \valZaa)}
 
-\FPeval{\overheadCostNormative}{100}
-\FPeval{\overallCostExact}{clip( \totalSalary * \overheadCostNormative / 100 )}
-\FPround{\overheadCost}{\overallCostExact}{0}
+%% calc 2.3 from manual
+\FPeval{\valPu}{round((\valZta - \valZt) * (1 - \valSnp / 100), \configRoundSigns)}
 
-\FPeval{\overallCost}{clip( \totalSalary + \additionalSalary + \socialProtectionCost + \taxWorkProtCost + \stuffCost + \machineTimeCost + \businessTripCost + \otherCost + \overheadCost ) }
+%% calc 3 from manual
+% \FPeval{\valKz}{round(\valTSpkb * (1 - \valx * \valNpka / 100) * \valTz * \valk / \valFpk, \configRoundSigns)}
+\FPeval{\valKo}{clip(\valKz + \valTSpr)}
 
-\FPeval{\supportNormative}{30}
-\FPeval{\softwareSupportCostExact}{clip( \overallCost * \supportNormative / 100 )}
-\FPround{\softwareSupportCost}{\softwareSupportCostExact}{0}
-
-
-\FPeval{\baseCost}{ clip( \overallCost + \softwareSupportCost ) }
-
-\FPeval{\profitability}{35}
-\FPeval{\incomeExact}{clip( \baseCost / 100 * \profitability )}
-\FPround{\income}{\incomeExact}{0}
-
-\FPeval{\estimatedPrice}{clip( \income + \baseCost )}
-
-\FPeval{\localRepubTaxNormative}{3.9}
-\FPeval{\localRepubTaxExact}{clip( \estimatedPrice * \localRepubTaxNormative / (100 - \localRepubTaxNormative) )}
-\FPround{\localRepubTax}{\localRepubTaxExact}{0}
-\FPeval{\localRepubTax}{0}
-
-\FPeval{\ndsNormative}{20}
-\FPeval{\ndsExact}{clip( (\estimatedPrice + \localRepubTax) / 100 * \ndsNormative )}
-\FPround{\nds}{\ndsExact}{0}
-
-
-\FPeval{\sellingPrice}{clip( \estimatedPrice + \localRepubTax + \nds )}
-
-\FPeval{\taxForIncome}{0}
-\FPeval{\incomeWithTaxes}{clip(\income * (1 - \taxForIncome / 100))}
-\FPround\incomeWithTaxes{\incomeWithTaxes}{0}
+\FPeval{\valEF}{round(\valPu - \valE * \valKo, \configRoundSigns)}
+\FPeval{\valTv}{round(\valKo / \valPu, \configRoundSigns)}
+\FPeval{\valTvRounded}{round(valTv, 0)}
 
 % End Calculations
 
 \subsection{Краткая характеристика программного продукта}
 
-Разработанная в данном дипломном проекте система представляет собой набор
-изменений в ядре Linux, добавляющих функциональность, предназначенную быть
-альтернативой существующей файловой системе \texttt{procfs}, предоставляя данные
-о процессах и файлах более оптимальным способом. Продукт предоставляет
-возможности получать:
+В результате дипломного проектирования был разработан проект, который позволяет осуществлять анализ данных о загрязнении окружающей среды из внешнего источника в режиме реального времени.
+Из-за абстрагирования от источника данных, такой проект может использовать абсолютно любой источник данных.
+Данная особенность предоставляет проекту высокую гибкость.
+Также из-за возможности произведения вычислений на полноценном кластере появляется возможность обрабатывать огромные массивы данных, что позволит увеличить нагрузку на систему.
+При использовании распределённой системы хранения обеспечивается надёжность хранения полученных данных.
+
+Текущий источник данных в лице сервиса OpenWeatherMap не позволяет обеспечить высокую нагрузку и скорость данных.
+Так как используемый API для этого сервиса на текущий момент ещё развивается, то он имеет некоторые ограничения.
+Из-за этих ограничений, для полноценной работы сервиса пришлось эмулировать источник данных с помощью локальных данных.
+Такой подход позволил оценить производительность системы при высокой частоте отправки сообщений и высокой нагрузке.
+
+Для проверки работы на полноценном кластере был использован инструмент контейнеризации, который позволил на одной машине запустить несколько контейнеров, представляющих из себя компоненты кластера.
+Также он позволил организовать связь между запущенными контейнерами, что позволило сэмулировать полноценный кластер, в котором все машины связаны между собой.
+
+В результате полученный продукт обладает следующими качествами:
 \begin{itemize}
-\item список существующих процессов в операционной системе;
-\item информацию о процессах;
-\item список файловых дескрипторов;
-\item информацию об открытых файлах;
-\item открывать файлы процессов, даже если они были удалены, но еще удерживаются
-  программой.
+  \item отказоустойчивость при использовании нескольких машин.
+  \item высокая пропускная способность из-за использования параллельных вычислений.
+  \item гибкий источник данных. Так как в его роли может выступать любой процесс, который будет отправлять данные в брокер сообщений.
+  \item анализ в режиме реального времени из-за использования пакетной обработки данных. 
 \end{itemize}
 
-При этом, программный продукт обеспечивает меньшую нагрузку на систему и более
-быстрое выполнение, а также упрощает разработку программных продуктов, ранее
-использовавших \texttt{procfs}. В результате этого обеспечится прирост прибыли
-за счет экономии расходов на заработную плату в результате снижения трудоемкости
-поддержки будущих проектов.
+\subsection{Определение трудоемкости разработки программного продукта}
 
-Само по себе ядро Linux является свободным (и бесплатным) проектом,
-распространяемым с использованием стандартной общественной лицензией GNU второй
-версии. Свобода программного продукта подразумевает наличие у пользователя
-свободы использования в любых целях, изучения, распространения и публикации
-изменений на тех же условиях. Другими словами, нет возможности получать прибыль
-с продажи разработанного программного продукта. Таким образом, разработанная в
-дипломном проекте система разработана для собственных нужд, однако может
-использоваться коммерческими организациями в своей инфраструктуре, и экономию
-такой организации рассчитать возможно.
-
-\subsection{Расчет затрат на разработку программного продукта}
-
-Оценка стоимости создания ПО со стороны разработчика предполагает составление
-сметы затрат, которая включает следующие статьи расходов:
-\begin{itemize}
-\item основную заработную плату исполнителей ($ \text{З}_{\text{o}} $);
-\item дополнительную заработную плату исполнителей ($\text{З}_{\text{д}} $);
-\item отчисления на социальные нужды ($ \text{З}_\text{сн} $);
-\item прочее (машинное время, накладные расходы, расходы на сопровождение и
-  адаптацию).
-\end{itemize}
-
-Основная заработная плата исполнителей на конкретное ПО рассчитывается по
-формуле:
+Оценка трудоемкости разработки может быть определена с помощью укрупненного метода.
+Для этого требуется использовать следующую формулу:
 
 \begin{equation}
-  \label{eq:econ:total_salary}
-  \text{З}_{\text{о}} = \text{K}_{\text{пр}} \cdot
-                        \sum^{\text{n}}_{\text{i} = 1}
-                        \text{З}_{\text{ч}}^{\text{i}} \cdot
-                        \text{t}_{\text{i}}
-                          \text{\,,}
+  \label{eq:econ:Trz}
+  \text{Т}_\text{рз} = \text{Т}_\text{оа} +
+    \text{Т}_\text{бс} +
+    \text{Т}_\text{п} +
+    \text{Т}_\text{отл} +
+    \text{Т}_\text{др} +
+    \text{Т}_\text{до} ,
 \end{equation}
-\begin{explanation}
-где & $ \text{n} $ & количество исполнителей;\\
-    & $ \text{З}_{\text{ч}}^{\text{i}} $ & часовая заработная плата i-го
-    исполнителя, \rub.$/$час; \\
-    & $ \text{t}_{\text{i}} $ & трудоемкость работ, выполняемых i-ым
-    исполнителем; \\
-    & $ \text{К}_{\text{пр}} $ & коэффициент премирования.
-\end{explanation}
+\begin{explanationx}
+  \item[где] $ \text{Т}_\text{оа} $ -- трудоемкость подготовки описания задачи и исследования алгоритма решения;
+  \item $ \text{Т}_\text{бс} $ -- трудоемкость разработки блок-схемы алгоритма;
+  \item $ \text{Т}_\text{п} $ -- трудоемкость программирования по готовой блок-схеме;
+  \item $ \text{Т}_\text{отл} $ -- трудоемкость отладки программы на ПК;
+  \item $ \text{Т}_\text{др} $ -- трудоемкость подготовки документации по задаче в рукописи;
+  \item $ \text{Т}_\text{до} $ -- трудоемкость редактирования, печати и оформления документации по задаче.
+\end{explanationx}
 
-Информация о работниках перечислена в таблице~\ref{table:econ:programmers}.
-
-\bigskip
-\begin{table}[ht]
-  \caption{Работники, занятые в проекте}
-  \label{table:econ:programmers}
-  \begin{tabular}{| >{\centering}m{0.20\textwidth}
-                  | >{\centering}m{0.16\textwidth}
-                  | >{\centering}m{0.12\textwidth}
-                  | >{\centering}m{0.11\textwidth}
-                  | >{\centering}m{0.11\textwidth}
-                  | >{\centering\arraybackslash}m{0.14\textwidth}|}
-   \hline
-   Исполнитель & Вид работ & Месячная зарплата по тарифу, \rub. & Часовая зарплата по тарифу, \rub. & Трудо-емкость работ, ч. & Зарплата по тарифу, \rub.\\
-   \hline
-   Программист & Разработка & 600 & 3,57 & 336 & 1200 \\
-   \hline
-   Ведущий программист &  Руководство  & 2500 & 11,9 & 168 & 2000 \\
-   \hline
-    \multicolumn{5}{|c|}{ Премия, $\%$ } & 50 \\
-    \hline
-    \multicolumn{5}{|c|}{ Итого на заработную плату работников, \rub. } & 4800 \\
-    \hline
-  \end{tabular}
-\end{table}
-
-Часовая заработная плата определяется путем деления месячной заработной платы на
-количество рабочих часов в месяце. Подставив ранее вычисленные значения и данные
-из таблицы таблицы~\ref{table:econ:programmers} в
-формулу~(\ref{eq:econ:total_salary}) и приняв коэффициент премирования
-$ \text{К}_{\text{пр}} = \text{1,5} $ получим:
+Трудоемкость описания задачи и исследования алгоритма решения может быть определена
+по следующей формуле:
 
 \begin{equation}
-  \label{eq:econ:total_salary_calc}
-  \text{З}_{\text{о}} = (\text{3,57} \times \text{336} + \text{11,9} \times \text{168}) \times \text{1,5} = \text{4800 \rub} \text{\,.}
+  \label{eq:econ:Toa}
+  \text{Т}_\text{оа} = \frac{Q \cdot W \cdot K}{\valToaDelim},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ Q $ -- условное число операторов в разрабатываемом программном продукте;
+  \item $ W $ -- коэффициент увеличения затрат труда вследствие недостаточного или
+  некачественного описания задачи;
+  \item $ K $ -- коэффициент квалификации разработчика алгоритмов и программ.
+\end{explanationx}
+
+Аналогично рассчитываются и оставшиеся неизвестные величины в формуле~(\ref{eq:econ:Trz}):
+
+\begin{equation}
+  \label{eq:econ:Tbs}
+  \text{Т}_\text{бс} = \frac{Q \cdot K}{\num{\valTbsDelim}}
 \end{equation}
 
-Дополнительная заработная плата включает выплаты предусмотренные
-законодательством от труде и определяется по нормативу в процентах от основной
-заработной платы:
-
 \begin{equation}
-  \label{eq:econ:additional_salary}
-  \text{З}_{\text{д}} =
-    \frac {\text{З}_{\text{о}} \cdot \text{Н}_{\text{д}}}
-          {\text{100}\%} \text{\,,}
-\end{equation}
-\begin{explanation}
-  где & $ \text{Н}_{\text{д}} $ & норматив дополнительной заработной платы, $ \% $.
-\end{explanation}
-
-Приняв норматив дополнительной заработной платы
-$ \text{Н}_{\text{д}} = \text{20}\% $ и подставив
-известные данные в формулу~(\ref{eq:econ:additional_salary}) получим:
-
-\begin{equation}
-  \label{eq:econ:additional_salary_calc}
-  \text{З}_{\text{д}} =
-    \frac{\text{4800} \times \text{20}\%}
-         {\text{100}\%} \approx \text{960}{\text{ \rub}} \text{\,.}
+  \label{eq:econ:Tp}
+  \text{Т}_\text{п} = \frac{Q \cdot K}{\num{\valTpDelim}}
 \end{equation}
 
-Согласно действующему законодательству отчисления в фонд социальной защиты
-населения составляют 34\num{\%}, в фонд обязательного
-страхования~--- 0,6\num{\%}, от фонда основной и
-дополнительной заработной платы исполнителей. Общие отчисления на социальную
-защиту рассчитываются по формуле:
-
-\medskip
 \begin{equation}
-  \label{eq:econ:soc_prot}
-  \text{З}_{\text{сз}} =
-    \frac{(\text{З}_{\text{о}} + \text{З}_{\text{д}}) \cdot \text{Н}_{\text{сз}}}
-         {\text{100}\%} \text{\,.}
-\end{equation}
-\medskip
-
-Подставив вычисленные ранее значения в формулу~(\ref{eq:econ:soc_prot}) получаем
-
-\medskip
-\begin{equation}
-  \label{eq:econ:soc_prot_calc}
-  \text{З}_{\text{сз}} =
-    \frac{ (\text{4800} + \text{245}) \times \text{34,6}\% }
-         { \text{100}\% }
-    \approx \text{1745}{\text{ \rub}} \text{\,.}
-\end{equation}
-\medskip
-
-Статья расходов <<прочие затраты>> включает в себя расходы на приобретение и
-подготовку специальной научно-технической  и специальной литературы. Затраты
-определяются по нормативу принятому в организации в процентах от основной
-заработной платы и вычисляются по формуле
-
-\medskip
-\begin{equation}
-  \label{eq:econ:other_cost}
-  \text{П}_{\text{з}} =
-    \frac{ \text{З}_{\text{о}} \cdot \text{Н}_{\text{пз}} }
-         { \text{100}\% } \text{\,,}
-\end{equation}
-\begin{explanation}
-  где & $ \text{Н}_{\text{пз}} $ & норматив прочих затрат в целом по организации, $ \% $.
-\end{explanation}
-
-Приняв значение норматива прочих затрат
-$ \text{Н}_{\text{пз}} = \text{50}\% $ и подставив вычисленные
-ранее значения в формулу~(\ref{eq:econ:other_cost}) получаем
-
-\medskip
-\begin{equation}
-  \label{eq:econ:other_cost_calc}
-  \text{П}_{\text{з}} =
-    \frac{ \text{4800} \times \text{50}\% }
-         { \text{100}\% } =
-    \text{2400}{\text{ \rub}} \text{\,.}
-\end{equation}
-\medskip
-
-Общая стоимость рассчитывается по формуле
-
-\begin{equation}
-  \label{eq:econ:overall_cost}
-  \text{С}_{\text{П}} =
-    \text{З}_{\text{о}} +
-    \text{З}_{\text{д}} +
-    \text{З}_{\text{сз}} +
-    \text{Р}_{\text{н}}\text{\,.}
+  \label{eq:econ:Totl}
+  \text{Т}_\text{отл} = \frac{Q \cdot K}{\num{\valTotlDelim}}
 \end{equation}
 
-Подставляя ранее вычисленные значения в формулу~(\ref{eq:econ:overall_cost})
-получаем
-
 \begin{equation}
-  \label{eq:econ:overall_cost_calc}
-  \text{С}_{\text{П}} = \text{10 147}{\text{ \rub}} \text{\,.}
+  \label{eq:econ:Tdr}
+  \text{Т}_\text{др} = \frac{Q \cdot K}{\num{\valTdrDelim}}
 \end{equation}
 
-\subsection{Расчет экономической эффективности}
-
-Программный продукт разрабатывается для собственных нужд. Внедрение проекта
-позволит оптимизировать существующие затраты операционной системы, применяя его
-в новых проектах. Кроме того, это позволит сократить время разработки будущих
-проектов.
-
-Экономия затрат на заработную плату при использовании программного продукта в
-расчете на объем выполняемых работ рассчитывается по формуле:
-
 \begin{equation}
-  \label{eq:econ:zarplt}
-  \text{Э}_{\text{з}} =
-  \text{K}_{\text{пр}} \cdot
-  (\text{t}_{\text{c}} - \text{t}_{\text{н}}) \cdot
-  \text{T}_{\text{ч}} \cdot
-  \text{N}_{\text{п}} \cdot
-  \text{N}_{\text{п}} \cdot
-  (\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}) \cdot
-  (\text{1} + \frac{\text{Н}_{\text{но}}}{\text{100}}) \text{\,,}
-\end{equation}
-\begin{explanation}
-  где & $ \text{N}_{\text{п}} $ & плановый объем работ; \\
-      & $ \text{t}_{\text{c}}, \text{t}_{\text{н}} $ & трудоемкость выполнения
-      работы до и после внедрения программного продукта, нормо-час; \\
-      & $ \text{T}_{\text{ч}} $ & часовая тарифная ставка, соответствующая
-      разряду выполняемых работ, руб./ч (3,57 руб./ч.); \\
-      & $ \text{K}_{\text{пр}} $ & коэффициент премий (1,5); \\
-
-      & $ \text{Н}_{\text{д}} $ & норматив дополнительной заработной платы (10$\%$); \\
-      & $ \text{Н}_{\text{но}} $ & ставка отчислений от заработной платы,
-      включаемых в себестоимость (34,6$\%$). \\
-\end{explanation}
-
-Выполнение работы, изначально занимавшей все время рабочего часа сотрудника ($
-\text{t}_{\text{c}} = \text{1 ч.}$) стала выполняться на 6$\%$ быстрее, то есть $
-\text{t}_{\text{н}} = \text{0,94 ч.}$ Экономия на заработной плате и
-начислениях на заработную плату составит:
-\begin{equation}
-  \text{Э}_{\text{з}} = \text{1,5} \times (\text{1} - \text{0,94}) \times \text{3,57} \times
-  \text{1000} \times \text{12} \times \text{1,5} \times \text{1,346} \approx \text{7784} \text{ \rub} \text{\,.}
+  \label{eq:econ:Tdo}
+  \text{Т}_\text{до} = \num{\valTdoScale} \cdot \text{Т}_\text{др}
 \end{equation}
 
-Прирост чистой прибыли равен экономии на заработной плате и начислениях на
-заработную плату с вычетом налога на прибыль, равного 18\%:
+Условное число операторов $ Q $ можно рассчитать по формуле:
+
+\removeEquantionBeforeSpace{}
 
 \begin{equation}
-  \Delta\text{П}_{\text{ч}} = \text{7784} \times (\text{100}\% - \text{18}\%) \approx \text{6383} \text{ \rub}\text{\,.}
+  \label{eq:econ:Q}
+  Q = q \cdot C \cdot ( 1 + p ),
+\end{equation}
+\begin{explanationx}
+  \item[где] $ q $ -- число операторов в программе;
+  \item $ C $ -- коэффициент сложности программы;
+  \item $ p $ -- коэффициент коррекции программы в ходе ее разработки.
+\end{explanationx}
+
+Посчитав число операторов в программе, получим $ q = \num{\valq} $. Приняв $ C = \num\valC $,
+а $ p = \num\valp $, рассчитаем условное число операторов $ Q $ по формуле~(\ref{eq:econ:Q}):
+
+\begin{equation}
+  \label{eq:econ:valQ}
+  Q = \num\valq \cdot \num\valC \cdot ( 1 + \num\valp ) = \num\valQ
+\end{equation}
+
+Из-за стажа работы разработчика алгоритмов менее двух лет, получаем $ K = \num\valK $ и
+$ W = \num\valW $. Эти величины понадобятся для расчета по формулам выше.
+
+Подставив результат~(\ref{eq:econ:valQ}) в выражения~(\ref{eq:econ:Toa}) -- (\ref{eq:econ:Tdr}),
+получим следующие результаты:
+
+\begin{equation}
+  \label{eq:econ:valToa}
+  \text{Т}_\text{оа} = \frac{\num\valQ \cdot \num\valW \cdot \num\valK}
+    {\valToaDelim} \approx \num\valToa
+\end{equation}
+
+\begin{equation}
+  \label{eq:econ:valTbs}
+  \text{Т}_\text{бс} = \frac{\num\valQ \cdot \num\valK}{\num{\valTbsDelim}}
+    \approx \num\valTbs
+\end{equation}
+
+\begin{equation}
+  \label{eq:econ:valTp}
+  \text{Т}_\text{п} = \frac{\num\valQ \cdot \num\valK}{\num{\valTpDelim}}
+    \approx \num\valTp
+\end{equation}
+
+\begin{equation}
+  \label{eq:econ:valTotl}
+  \text{Т}_\text{отл} = \frac{\num\valQ \cdot \num\valK}{\num{\valTotlDelim}}
+    \approx \num\valTotl
+\end{equation}
+
+\begin{equation}
+  \label{eq:econ:valTdr}
+  \text{Т}_\text{др} = \frac{\num\valQ \cdot \num\valK}{\num{\valTdrDelim}}
+    \approx \num\valTdr
+\end{equation}
+
+На основании расчетов выше и формулы~(\ref{eq:econ:Tdo}) получим значение
+трудоемкости редактирования, печати и оформления документации по задаче:
+
+\begin{equation}
+  \label{eq:econ:valTdo}
+  \text{Т}_\text{до} = \num\valTdoScale \cdot \num\valTdr \approx \num\valTdo
+\end{equation}
+
+Тогда на основании формулы~(\ref{eq:econ:Trz}) и расчетов ранее,
+трудоемкость разработки составит:
+
+\begin{equation}
+  \label{eq:econ:valTrz}
+  \text{Т}_\text{рз} =
+    \num\valToa + \num\valTbs + \num\valTp + \num\valTotl + \num\valTdr +
+    \num\valTdo = \num\valTrz
+\end{equation}
+
+\subsection{Определение стоимости машино-часа работы ПК}
+
+Произведем расчет стоимости машино-часа работы ПК. Она определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:Smch}
+  S_\text{мч} = \text{С}_\text{э} + \frac{\text{А}_\text{пк} + \text{Р}_\text{пк} +
+  \text{А}_\text{пл} + \text{Р}_\text{пл} + \text{Р}_\text{ар}}{\text{Ф}_\text{пк}},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{С}_\text{э} $ -- расходы на электроэнергию за час работы ПК, \rub;
+  \item $ \text{А}_\text{пк} $ -- годовая величина амортизационных отчислений на реновацию ПК, \rub;
+  \item $ \text{Р}_\text{пк} $ -- годовые затраты на ремонт и техническое обслуживание ПК, \rub;
+  \item $ \text{А}_\text{пл} $ -- годовая величина амортизационных отчислений на реновацию производственных площадей, занимаемых ПК, \rub;
+  \item $ \text{Р}_\text{пл} $ -- годовые затраты на ремонт и содержание производственных площадей, \rub;
+  \item $ \text{Р}_\text{ар} $ -- годовая величина арендных платежей за помещение, занимаемое ПК, \rub;
+  \item $ \text{Ф}_\text{пк} $ -- годовой фонд времени работы ПК, ч.
+\end{explanationx}
+
+Расходы на электроэнергию за час работы ПК определяются по формуле:
+
+\begin{equation}
+  \label{eq:econ:Se}
+  \text{С}_\text{э} = N_\text{э} \cdot k_\text{ис} \cdot \text{Ц}_\text{э},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ N_\text{э} $ -- установленная мощность блока питания ПК, кВт;
+  \item $ k_\text{ис} $ -- коэффициент использования энергоустановок по мощности;
+  \item $ \text{Ц}_\text{э} $ -- стоимость киловатт-часа электроэнергии, \rub.
+\end{explanationx}
+
+Примем установленную мощность блока питания ПК равной \num\valNe кВт и коэффициент использования
+энергоустановок по мощности \num\valkis. Стоимость киловатт-часа электроэнергии на момент расчетов
+составила \num\valTSe { }\rub. Тогда расходы на электроэнергию за час работы ПК составляют:
+
+\begin{equation}
+  \label{eq:econ:valSe}
+  \text{С}_\text{э} = \num\valNe \cdot \num\valkis \cdot \num\valTSe \approx \num\valSe \text{ \rub}
+\end{equation}
+
+
+Годовая величина амортизационных отчислений на реновацию ПК определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:Apk}
+  \text{А}_\text{пк} = \text{Ц}_\text{пк}^\text{б} \cdot \frac{\text{Н}_\text{пк}^\text{а}}{100},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{Ц}_\text{пк}^\text{б} $ -- балансовая стоимость ПК, \rub;
+  \item $ \text{Н}_\text{пк}^\text{а} $ -- норма амортизационных отчислений на ПК, \%.
+\end{explanationx}
+
+Балансовая стоимость ПК определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:TSpk}
+  \text{Ц}_\text{пк}^\text{б} = \text{Ц}_\text{пк} \cdot k_\text{у} \cdot k_\text{м},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{Ц}_\text{пк} $ -- цена ПК на момент его выпуска, \rub;
+  \item $ k_\text{у} $ -- коэффициент удорожания ПК;
+  \item $ k_\text{м} $ -- коэффициент, учитывающий затраты на монтаж и транспортировку ПК.
+\end{explanationx}
+
+Приняв стоимость нового ПК равной \num\valTSpk { \rub}, коэффициент удорожания ПК равным \num\valky,
+а коэффициент $ k_\text{м} $ равным \num\valkm, получим балансовую стоимость ПК:
+
+\begin{equation}
+  \label{eq:econ:valTSpk}
+  \text{Ц}_\text{пк}^\text{б} = \num\valTSpk \cdot \num\valky \cdot \num\valkm \approx \num\valTSpkb
+  \text{ \rub}
+\end{equation}
+
+Если взять норму амортизационных отчислений на ПК, равную \num\valNpka $ \% $, то годовая величина
+амортизационных отчислений на реновацию ПК составит:
+
+\begin{equation}
+  \label{eq:econ:valApk}
+  \text{А}_\text{пк} = \num\valTSpkb \cdot \frac{\num\valNpka}{100} = \num\valApk \text{ \rub}
+\end{equation}
+
+Годовые затраты на ремонт и техническое обслуживание ПК укрупненно могут быть определены по формуле:
+
+\begin{equation}
+  \label{eq:econ:Rpk}
+  \text{Р}_\text{пк} = \text{Ц}_\text{пк}^\text{б} \cdot k_\text{ро},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ k_\text{ро} $ -- коэффициент, учитывающий затраты на ремонт и техническое обслуживание ПК.
+\end{explanationx}
+
+Подставив $ k_\text{ро} = \num\valkro $, найдем затраты на ремонт и техническое обслуживание ПК:
+
+\begin{equation}
+  \label{eq:econ:valRpk}
+  \text{Р}_\text{пк} = \num\valTSpkb \cdot \num\valkro \approx \num\valRpk \text{ \rub}
+\end{equation}
+
+Годовая величина амортизационных отчислений на реновацию производственных площадей, занятых ПК,
+определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:Apl}
+  \text{А}_\text{пл} = \text{Ц}_\text{пл}^\text{б} \cdot \frac{\text{Н}_\text{пл}^\text{а}}{100},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{Ц}_\text{пл}^\text{б}  $ -- балансовая стоимость площадей, \rub;
+  \item $ \text{Н}_\text{пл}^\text{а}  $ -- норма амортизационных отчислений на
+  производственные площади, \%.
+\end{explanationx}
+
+Балансовая стоимость площадей определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:TSplb}
+  \text{Ц}_\text{пл}^\text{б} = S_\text{пк} \cdot k_\text{д} \cdot \text{Ц}_\text{пл},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ S_\text{пк} $ -- площадь, занимаемая ПК, м\textsuperscript{2};
+  \item $ k_\text{д} $ -- коэффициент, учитывающий дополнительную площадь;
+  \item $ \text{Ц}_\text{пл} $ -- цена квадратного метра производственной площади, \rub.
+\end{explanationx}
+
+Если принять, что один ПК занимает \num\valSpk { м}\textsuperscript{2},
+$ k_\text{д} = \num\valkd $, а цена одного квадратного метра
+производственной площади равна \num\valTSpl { \rub}, тогда
+балансовая стоимость площадей составит:
+
+\begin{equation}
+  \label{eq:econ:valTSplb}
+  \text{Ц}_\text{пл}^\text{б} = \num\valSpk \cdot \num\valkd \cdot \num\valTSpl \approx
+  \num\valTSplb \text{ \rub}
+\end{equation}
+
+Подставив $ \text{Н}_\text{пл}^\text{а} = \num\valNpla \% $, получим годовую величину
+амортизационных отчислений на реновацию производственных площадей, занятых ПК:
+
+\begin{equation}
+  \label{eq:econ:valApl}
+  \text{А}_\text{пл} = \num\valTSplb \cdot \frac{\num\valNpla}{100} \approx \num\valApl \text{ \rub}
+\end{equation}
+
+Годовые затраты на ремонт и содержание производственных площадей укрупненно
+могут быть определены по формуле:
+
+\begin{equation}
+  \label{eq:econ:Rpl}
+  \text{Р}_\text{пл} = \text{Ц}_\text{пл}^\text{б} \cdot k_\text{рэ},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ k_\text{рэ} $ -- коэффициент, учитывающий затраты на ремонт и эксплуатацию
+  производственных площадей.
+\end{explanationx}
+
+Подставив $ k_\text{рэ} = \num\valkre $, получим:
+
+\begin{equation}
+  \label{eq:econ:valRpl}
+  \text{Р}_\text{пл} = \num\valTSplb \cdot \num\valkre \approx \num\valRpl \text{ \rub}
+\end{equation}
+
+Годовая величина арендных платежей за помещение, занимаемое ПК,
+рассчитывается по формуле:
+
+\begin{equation}
+  \label{eq:econ:Rar}
+  \text{Р}_\text{ар} = S_\text{пк} \cdot k_\text{д} \cdot k_\text{ар} \cdot k_\text{комф}
+  \cdot k_\text{пов} \cdot 12,
+\end{equation}
+\begin{explanationx}
+  \item[где] $ k_\text{ар} $ -- ставка арендных платежей за помещение;
+  \item $ k_\text{комф} $ -- коэффициент комфортности помещения;
+  \item $ k_\text{пов} $ -- повышающий коэффициент, учитывающий географическое размещение площади.
+\end{explanationx}
+
+Предположим, что ставка арендных платежей за помещение составляют \num\valkar
+{ \rub}/м\textsuperscript{2}. Коэффициент комфортности возьмем равным \num\valkkomf, поскольку
+он соответствует помещениям, расположенным в цокольном этаже. Из-за расположения арендуемых
+зданий в городе Минске, $ k_\text{пов} = \num\valkpov $. Тогда годовая величина арендных
+платежей за помещение, занимаемое ПК, составит:
+
+\begin{equation}
+  \label{eq:econ:valRar}
+  \text{Р}_\text{ар} = \num\valSpk \cdot \num\valkd \cdot \num\valkar \cdot \num\valkkomf
+  \cdot \num\valkpov \cdot 12 \approx \num\valRar \text{ \rub}
+\end{equation}
+
+Годовой фонд времени работы ПК определяется исходя из режима ее работы
+и может быть рассчитан по формуле:
+
+\begin{equation}
+  \label{eq:econ:Fpk}
+  \text{Ф}_\text{пк} = t_\text{сс} \cdot T_\text{сг},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ t_\text{сс} $ -- среднесуточная фактическая загрузка ПК, ч;
+  \item $ T_\text{сг} $ -- среднее количество дней работы ПК в год.
+\end{explanationx}
+
+Приняв, что среднесуточная фактическая нагрузка составляет
+\insertNumSomethingText{\valtss}{час}{часа}{часов},
+а в году в среднем
+\insertNumSomethingText{\valTsg}{рабочий день}{рабочих дня}{рабочих дней},
+рассчитаем годовой фонд времени работы ПК:
+
+\begin{equation}
+  \label{eq:econ:valFpk}
+  \text{Ф}_\text{пк} = \num\valtss \cdot \num\valTsg = \num\valFpk
+\end{equation}
+
+Тогда стоимость машино-часа работы ПК составит:
+
+\begin{equation}
+  \label{eq:econ:Smch}
+  S_\text{мч} = \num\valSe + \frac{\num\valApk + \num\valRpk + \num\valApl +
+  \num\valRpl + \num\valRar}{\num\valFpk} \approx \num\valSmch \text{ \rub}
+\end{equation}
+
+\subsection{Определение себестоимости создания программного продукта}
+
+Для определения себестоимости создания программного продукта необходимо определить затраты
+на заработную плату разработчика по формуле:
+
+\begin{equation}
+  \label{eq:econ:Zrz}
+  \text{З}_{\text{рз}} =
+  \text{Т}_{\text{рз}} \cdot
+  t_{\text{чр}} \cdot
+  \text{К}_{\text{пр}} \cdot
+  \left(\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}\right) \cdot
+  \left(\text{1} + \frac{\text{Н}_{\text{соц}}}{\text{100}}\right),
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{Т}_\text{рз} $ -- трудоемкость разработки программного продукта, чел-ч;
+  \item $ t_\text{чр} $ -- среднечасовая ставка работника, осуществлявшего разработку программного продукта, \rub;
+  \item $ \text{К}_\text{пр} $ -- коэффициент, учитывающий процент премий
+    в организации-раз\-ра\-бот\-чи\-ке;
+  \item $ \text{Н}_\text{д} $ -- норматив дополнительной заработной платы;
+  \item $ \text{Н}_\text{соц} $ -- норматив отчислений от фонда оплаты труда.
+\end{explanationx}
+
+Среднечасовая ставка работника определяется исходя из единой тарифной системы оплаты труда
+в Республике Беларусь по следующей формуле:
+
+\begin{equation}
+  \label{eq:econ:tchr}
+  t_\text{чр} = \frac{\text{ЗП}_\text{1р} \cdot k_\text{т}}{t_\text{мес}},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{ЗП}_\text{1р} $ -- среднемесячная заработная плата работника первого разряда;
+  \item $ k_\text{т} $ -- тарифный коэффициент работника соответствующего разряда;
+  \item $ t_\text{мес} $ -- среднее нормативное количество рабочих часов в месяце.
+\end{explanationx}
+
+Среднемесячную заработную плату работника первого разряда возьмем в размере $ \num\valZPr $ \rub.
+Из-за использования работников первой категории 11 разряда, тарифный коэффициент работника
+$ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в среднем в месяце $ \num\valtmes $
+рабочих часов, на основе формулы~(\ref{eq:econ:tchr}) рассчитаем среднечасовую ставку работника,
+который осуществляет разработку программного продукта:
+
+\clearpage
+\removeEquantionBeforeSpace[1.5]
+
+\begin{equation}
+  \label{eq:econ:valtchr}
+  t_\text{чр} = \frac{\num\valZPr \cdot \num\valkt}{\num\valtmes} \approx \num\valtchr \text{ \rub}
+\end{equation}
+
+На сегодняшний день норматив отчислений от фонда оплаты труда составляет $ \num\valNsots \% $.
+Предположим, что $\text{К}_\text{пр} = \num\valKpr $ и $\text{Н}_\text{д} = \num\valNd \%$.
+На основании расчетов выше и формулы~(\ref{eq:econ:Zrz}) найдем затраты на заработную плату
+разработчика:
+
+\begin{equation}
+  \label{eq:econ:valZrz}
+  \text{З}_\text{рз} = \num\valTrz \cdot \num\valtchr \cdot \num\valKpr \cdot
+    \left( 1 + \frac{\num\valNd}{\num{100}} \right) \cdot
+    \left( 1 + \frac{\num\valNsots}{\num{100}} \right) \approx \num\valZrz \text{ \rub}
+\end{equation}
+
+Также в себестоимость разработки программного продукта включаются также затраты
+на его отладку в процессе создания. Для определения их величины необходимо
+рассчитать стоимость машино-часа работы ПК,
+на котором осуществлялась отладка.
+Данная величина соответствует величине арендной платы за час работы
+ПК и будет определена ниже.
+Затраты на отладку программы определяются по формуле:
+
+\begin{equation}
+  \label{eq:econ:Zot}
+  \text{З}_\text{от} = \text{Т}_\text{отл} \cdot S_\text{мч},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{Т}_\text{отл} $ -- трудоемкость отладки программы, ч;
+  \item $ S_\text{мч} $ -- стоимость машино-часа работы ПК, \rub/ч.
+\end{explanationx}
+
+Подставив все известные данные в формулу~(\ref{eq:econ:Zot}), получим:
+
+\begin{equation}
+  \label{eq:econ:valZot}
+  \text{З}_\text{от} = \num\valTotl \cdot \num\valSmch \approx \num\valZot \text{ \rub},
+\end{equation}
+
+Себестоимость разработки программного продукта определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:Spr}
+  \text{С}_\text{пр} = \text{З}_\text{рз} \cdot F + \text{З}_\text{от},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ F $ -- коэффициент накладных расходов проектной организации без учета эксплуатации ПК.
+\end{explanationx}
+
+Предположив, что $ F = \num\valF $, рассчитаем себестоимость разработки
+по формуле~(\ref{eq:econ:Spr}):
+
+\begin{equation}
+  \label{eq:econ:valSpr}
+  \text{С}_\text{пр} = \num\valZrz \cdot \num\valF + \num\valZot \approx \num\valSpr \text{ \rub}
+\end{equation}
+
+\subsection{Определение оптовой и отпускной цены программного продукта}
+
+Оптовая цена складывается из себестоимости создания ПП и плановой прибыли на программу.
+Оптовая цена определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:TSo}
+  \text{Ц}_\text{о} = \text{С}_\text{пр} + \text{П}_\text{р},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{П}_\text{р} $ -- плановая прибыль на программу, \rub.
+\end{explanationx}
+
+Плановая прибыль на программу определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:Pr}
+  \text{П}_\text{р} = \text{С}_\text{пр} \cdot \text{Н}_\text{п},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{Н}_\text{п} $ -- норма прибыли проектной организации.
+\end{explanationx}
+
+Предположим, что норма прибыли организации составляет $ \num\valNp $. Тогда плановая прибыль
+на программу составит:
+
+\begin{equation}
+  \label{eq:econ:valPr}
+  \text{П}_\text{р} = \num\valSpr \cdot \num\valNp \approx \num\valPr \text{ \rub}
+\end{equation}
+
+Оптовая цена будет составлять:
+
+\begin{equation}
+  \label{eq:econ:valTSo}
+  \text{Ц}_\text{о} = \num\valSpr + \num\valPr = \num\valTSo \text{ \rub}
+\end{equation}
+
+Отпускная цена программы определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:TSpr}
+  \text{Ц}_\text{пр} = \text{Ц}_\text{о} + (\text{З}_\text{рз} + \text{П}_\text{р}) \cdot \text{НДС},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{НДС} $ -- ставка налога на добавленную стоимость.
+\end{explanationx}
+
+На сегодняшний день в Республике Беларусь $ \text{НДС} = \num\valNDS\% $, поэтому отпускная цена
+программы составит:
+
+\begin{equation}
+  \label{eq:econ:valTSpr}
+  \text{Ц}_\text{пр} = \num\valTSo + (\num\valZrz + \num\valPr) \cdot \num\valNDS \% \approx
+    \num\valTSpr \text{ \rub}
+\end{equation}
+
+\subsection{Определение годовых текущих затрат, связанных с эксплуатацией задачи}
+
+Для расчета годовых текущих затрат, связанных с эксплуатацией ПП,
+необходимо определить время решения данной задачи на ПК.
+Время решения задачи на ПК определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:Tz}
+  \text{Т}_\text{з} = (T_\text{вв} + T_\text{р} + T_\text{выв}) \cdot \frac{1 + d_\text{пз}}{60},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ T_\text{вв} $ -- время ввода в ПК исходных данных, необходимых для решения задачи, мин;
+  \item $ T_\text{р} $ -- время вычислений, мин;
+  \item $ T_\text{выв} $ -- время вывода результатов решения задачи, мин;
+  \item $ d_\text{пз} $ -- коэффициент, учитывающий подготовительно-заключительное время.
+\end{explanationx}
+
+Время ввода в ПК исходных данных может быть определено по формуле:
+
+\clearpage
+\removeEquantionBeforeSpace[1.5]
+
+\begin{equation}
+  \label{eq:econ:Tvv}
+  T_\text{вв} = \frac{K_z \cdot H_z}{100},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ K_z $ -- среднее количество знаков, набираемых с клавиатуры при вводе исходных данных;
+  \item $ H_z $ -- норматив набора 100 знаков, мин.
+\end{explanationx}
+
+Ввод исходных данных в ПК подразумевает ввод парольного слова, которое будет в дальнейшем анализироваться. Для определенности возьмем среднее количество знаков, набираемых с клавиатуры, в размере \num\valKz { }символов.
+Предположив, что норматив набора 100 знаков составляет \num\valHz { }минут, получим $ T_\text{вв} $:
+
+\begin{equation}
+  \label{eq:econ:valTvv}
+  T_\text{вв} = \frac{\num\valKz \cdot \num\valHz}{100} \approx \num\valTvv
+\end{equation}
+
+Времена вычислений и вывода результатов составляют доли секунд, поэтому в сравнении с $ T_\text{вв} $
+равны нулю. Взяв величину $ d_\text{пз} = \num\valdpz $, рассчитаем время решения задачи:
+
+\begin{equation}
+  \label{eq:econ:valTz}
+  \text{Т}_\text{з} = (\num\valTvv + \num\valTr + \num\valTviv) \cdot \frac{1 + \num\valdpz}{60}
+  \approx \num\valTz \text{ ч}
+\end{equation}
+
+На основе рассчитанного времени решения задачи может быть определена
+заработная плата пользователя данного программного продукта. Затраты на заработную плату
+пользователя программного продукта определяются по формуле:
+
+\begin{equation}
+  \label{eq:econ:Zp}
+  \text{З}_{\text{п}} =
+  \text{Т}_{\text{з}} \cdot
+  k \cdot
+  t_{\text{чп}} \cdot
+  \text{К}_{\text{пр}} \cdot
+  \left(\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}\right) \cdot
+  \left(\text{1} + \frac{\text{Н}_{\text{соц}}}{\text{100}}\right),
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{Т}_\text{з} $ -- время решения задачи на ПК, ч;
+  \item $ k $  -- периодичность решения задачи в течение года, раз/год;
+  \item $ t_\text{чп} $ -- среднечасовая ставка пользователя программы, \rub.
+\end{explanationx}
+
+Пользователями разрабатываемого продукта также будут являться
+разработчиками аналогичного уровня, поэтому $ t_\text{чп} = t_\text{чр} = \num\valtchp \text{ \rub} $.
+Число использования фреймворка зависит от пользовательской базы, а также от особенностей приложения, в котором используется. Если принять, что ежедневно приложением пользуются от 700 до 1400 пользователей, а фреймворк используется каждый раз при использовании приложения, 
+то $ k = \valk $. Тогда затраты на заработную плату пользователя программного продукта составят:
+
+\begin{equation}
+  \label{eq:econ:valZp}
+  \text{З}_{\text{п}} = \num\valTz \cdot \num\valk \cdot \num\valtchp \cdot \num\valKpr \cdot
+  \left(\text{1} + \frac{\num\valNd}{\text{100}}\right) \cdot
+  \left(\text{1} + \frac{\num\valNsots}{\text{100}}\right) \approx \num\valZp \text{ \rub}
+\end{equation}
+
+В состав затрат, связанных с решением задачи включаются также затраты, связанные с эксплуатацией ПК.
+Затраты на оплату аренды ПК для решения задачи определяются по следующей формуле:
+
+% \clearpage
+% \removeEquantionBeforeSpace[1.5]
+
+\begin{equation}
+  \label{eq:econ:Za}
+  \text{З}_{\text{а}} = \text{Т}_{\text{з}} \cdot k \cdot S_\text{мч}
+\end{equation}
+
+Стоимость одного машино-часа для пользователей и для разработчиков также будет совпадать
+по вышеупомянутой причине. Поэтому $ \text{З}_\text{а} $ составит:
+
+\begin{equation}
+  \label{eq:econ:valZa}
+  \text{З}_{\text{а}} = \num\valTz \cdot \num\valk \cdot \num\valSmch \approx \num\valZa \text{ \rub}
+\end{equation}
+
+Годовые текущие затраты, связанные с эксплуатацией задачи, определяются по формуле:
+
+\begin{equation}
+  \label{eq:econ:Zt}
+  \text{З}_{\text{т}} = \text{З}_\text{п} + \text{З}_\text{а} =
+  \num\valZp + \num\valZa = \num\valZt \text{ \rub}
+\end{equation}
+
+\subsection{Определение годовых затрат при решении задачи с помощью аналога}
+
+Для расчета годовых затрат, связанных с эксплуатацией аналога,
+необходимо определить время решения данной задачи на ПК.
+Время решения задачи на ПК $ \text{Т}_\text{за} $ определяется по формуле,
+аналогичной (\ref{eq:econ:Tz}):
+
+\begin{equation}
+  \label{eq:econ:Tza}
+  \text{Т}_\text{за} = (T_\text{вва} + T_\text{ра} + T_\text{выва}) \cdot \frac{1 + d_\text{пза}}{60}
+\end{equation}
+
+Ввод исходных данных в ПК в этом случае также подразумевает ввод парольного слова. Для определенности, возьмем эту
+величину $K_{za}$ в размере \num\valKza { }символов.
+Предположив, что норматив набора 100 знаков также составляет \num\valHz { }минут,
+в соответствии с формулой (\ref{eq:econ:Tvv}) получим время ввода исходных данных
+для аналога $ T_\text{вва} $ :
+
+\begin{equation}
+  \label{eq:econ:valTvva}
+  T_\text{вва} = \frac{K_{za} \cdot H_z}{100} = \frac{\num\valKza \cdot \num\valHz}
+  {100} \approx \num\valTvva
+\end{equation}
+
+Время вычислений при использовании аналога $T_\text{ра}$ будет пренебрежительно малым. Время вывода результатов $T_\text{выва}$ зависит от скорости интернет соединения, поэтому будет колебаться в пределах от 1 секунды до 6 секунд, то есть составит приблизительно \valTviva { }минут.
+
+Коэффициент $ d_\text{пза} $, учитывающий подготовительно-заключительное время,
+составит \valdpza. Рассчитаем время решения задачи для аналога:
+
+\begin{equation}
+  \label{eq:econ:valTza}
+  \text{Т}_\text{за} = (\num\valTvva + \num\valTra + \num\valTviva) \cdot \frac{1 + \num\valdpza}{60}
+  \approx \num\valTza \text{ ч}
+\end{equation}
+
+На основе рассчитанного времени решения задачи может быть определена
+заработная плата пользователя аналога программного продукта по формуле,
+аналогичной (\ref{eq:econ:Zp}). Она будет отличаться от оригинальной только
+временем решения задачи, найденного в формуле (\ref{eq:econ:valTza}):
+
+\begin{equation}
+  \label{eq:econ:Zpa}
+  \text{З}_{\text{па}} =
+  \text{Т}_{\text{за}} \cdot
+  k \cdot
+  t_{\text{чп}} \cdot
+  \text{К}_{\text{пр}} \cdot
+  \left(\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}\right) \cdot
+  \left(\text{1} + \frac{\text{Н}_{\text{соц}}}{\text{100}}\right)
+\end{equation}
+
+
+Затраты на заработную плату пользователя аналога программного продукта составят:
+
+\begin{equation}
+  \label{eq:econ:valZpa}
+  \text{З}_{\text{па}} = \num\valTza \cdot \num\valk \cdot \num\valtchp \cdot \num\valKpr \cdot
+  \left(\text{1} + \frac{\num\valNd}{\text{100}}\right) \cdot
+  \left(\text{1} + \frac{\num\valNsots}{\text{100}}\right) \approx \num\valZpa \text{ \rub}
+\end{equation}
+
+В состав затрат, связанных с решением задачи включаются также затраты, связанные с эксплуатацией ПК.
+Затраты на оплату аренды ПК для решения задачи определяются формуле, аналогичной
+(\ref{eq:econ:Za}). Тогда $ \text{З}_\text{аа} $ составит:
+
+\begin{equation}
+  \label{eq:econ:valZaa}
+  \text{З}_{\text{аа}} = \num\valTza \cdot \num\valk \cdot \num\valSmch \approx \num\valZaa \text{ \rub}
+\end{equation}
+
+Годовые текущие затраты, связанные с эксплуатацией аналога, определяются по формуле,
+аналогичной (\ref{eq:econ:Zt}):
+
+\begin{equation}
+  \label{eq:econ:Zta}
+  \text{З}_{\text{та}} = \text{З}_\text{па} + \text{З}_\text{аа}
+  = \num\valZpa + \num\valZaa = \num\valZta \text{ \rub}
+\end{equation}
+
+% Тогда годовые текущие затраты составят:
+
+% \begin{equation}
+%   \label{eq:econ:Zta}
+%   \text{З}_{\text{та}}
+% \end{equation}
+
+\subsection{Определение ожидаемого прироста прибыли в результате внедрения
+программного продукта}
+
+Ожидаемый прирост прибыли в результате внедрения задачи вместо ее
+аналога укрупненно может быть определен по формуле:
+
+\begin{equation}
+  \label{eq:econ:Pu}
+  \text{П}_{\text{у}} = (\text{З}_{\text{та}} - \text{З}_{\text{т}}) \cdot
+  \left(1 - \frac{\text{С}_\text{нп}}{100}\right),
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{С}_\text{нп} $ -- ставка налога на прибыль.
+\end{explanationx}
+
+На момент расчетов ставка налога на прибыль составляла \num\valSnp \%. Прирост прибыли
+составит:
+
+\removeEquantionBeforeSpace[1.5]
+
+\begin{equation}
+  \label{eq:econ:valPu}
+  \text{П}_{\text{у}} = (\num\valZta - \num\valZt) \cdot \left(1 - \frac{\num\valSnp}{100}\right)
+  \approx \num\valPu
 \end{equation}
 
 \subsection{Расчет показателей эффективности использования программного продукта}
 
-Для расчета эффективности проекта необходимо суммы прироста чистой прибыли и
-капитальных вложений по годам привести к единому времени (расчетному году) путем
-умножения прироста чистой прибыли и затрат за каждый год на коэффициент
-привидения ALFAt, равный:
+Для определения годового экономического эффекта от разработанной
+программы необходимо определить суммарные капитальные затраты на разработку
+и внедрения программы по формуле:
 
-\begin{equation}
-  \text{ALFA}_{\text{t}} = (\text{1} + \text{E}_{\text{H}})^{\text{t}_\text{p}-\text{t}} \text{\,,}
-\end{equation}
-
-\begin{explanation}
-  где & $ \text{E}_{\text{H}} $ & норматив приведения разновременных затрат и
-  результатов, 25$\%$; \\
-      & $ \text{t}_{\text{p}} $ & расчетный год; \\
-      & $ \text{t} $ & номер года, результаты и затраты которого приводятся к
-      расчетному (2018 – 1, 2019 – 2, 2020 – 3).\\
-\end{explanation}
-
-Подставив в формулу соответствующие значения, получим результат для следующих
-трех лет:
-\begin{equation}
-  \text{ALFA}_{\text{1}} = (\text{1} + \text{0,25})^{(\text{1}-\text{1})} = \text{1\,.}
-\end{equation}
-\begin{equation}
-  \text{ALFA}_{\text{2}} = (\text{1} + \text{0,25})^{(\text{1}-\text{2})} = \text{0,8\,.}
-\end{equation}
-\bigskip
-\begin{equation}
-  \text{ALFA}_{\text{3}} = (\text{1} + \text{0,25})^{(\text{1}-\text{3})} = \text{0,64\,.}
-\end{equation}
-
-Рассчитанная выше экономия будет достигнута за год использования программного
-продукта. В компании запланировано использование системы в 2018 году, поэтому
-прибыль за этот год будет в два раза меньше.
-
-В таблице~\ref{table:econ:calculated_data} приведены результаты расчета
-показателей эффективности. Рентабельность инвестиций в разработку и внедрение
-считается при помощи следующей формулы:
-
-\begin{equation}
-  \text{Р}_{\text{И}} = \frac{\text{П}_{\text{чср}} \cdot \text{100}\%}{\text{З}}\text{\,.}
-\end{equation}
-
-Среднегодовая величина чистой прибыли за расчетный период определяется по
-формуле:
-
-\begin{equation}
-  \text{П}_{\text{чср}} = \frac{\sum_{\text{i=1}}^{\text{n}} \text{П}_{\text{чi}}}{\text{З}}\text{\,.}
-\end{equation}
-
-\begin{table}
-\caption{Результат расчета показателей эффективности}
-\label{table:econ:calculated_data}
-  \begin{tabular}{| >{\raggedright}m{0.47\textwidth}
-                  | >{}m{0.13\textwidth}
-                  | >{}m{0.13\textwidth}
-                  | >{\arraybackslash}m{0.13\textwidth}|}
+\begin{table}[h]
+  \caption{Технико-экономические показатели проекта}
+  \label{table:econ:calculated_data}
+  \begin{tabular}{| >{\raggedright}m{0.797\textwidth}
+                  | >{\centering\arraybackslash}m{0.15\textwidth}|}
     \hline
-    Показатели & 2018 & 2019 & 2020 \\
+    \centering Наименование показателя & Величина показателя \\
 
     \hline
-    Прирост прибыли за счет экономии затрат & 3892 & 6383 & 6383 \\
+    1. Трудоемкость решения задачи, ч & \num\valTrz \\
 
     \hline
-    Коэффициент дисконтирования & 1 & 0,8 & 0,64 \\
+    2. Периодичность решения задачи, раз/год & \num\valk \\
 
     \hline
-    Результат с учетом фактора времени & 3245 & 6227 & 4981 \\
+    3. Годовые текущие затраты, связанные с решением задачи, \rub & \num\valZt \\
 
     \hline
-    Инвестиции в разработку & 10147 & - & - \\
+    4. Отпускная цена программы, \rub & \num\valTSpr \\
 
     \hline
-    Инвестиции с учетом фактора времени & 10147 & - & - \\
+    5. Степень новизны программы & В \\
 
     \hline
-    Чистый дисконтный доход & 6902 & 6227 & 4981 \\
+    6. Группа сложности алгоритма & 2 \\
 
     \hline
-    ЧДД нарастающим итогом & 6902 & 675 & 4306 \\
+    7. Прирост условной прибыли, \rub & \num\valPu \\
+
+    \hline
+    8. Годовой экономический эффект, \rub & \num\valEF \\
+
+    \hline
+    9. Срок возврата инвестиций, лет & \num\valTvRounded \\
 
     \hline
   \end{tabular}
 \end{table}
 
-\begin{equation}
-  \text{П}_{\text{Ч}} = \frac{\text{3892} + \text{6383} + \text{6383}}{\text{З}} = \text{5553 \rub\,.}
-\end{equation}
-
-Таким образом, рентабельность инвестиций в разработку данного программного
-продукта будет равна:
+% \clearpage
+\removeEquantionBeforeSpace{}
 
 \begin{equation}
-  \text{P}_{\text{И}} = \frac{\text{5553} \cdot \text{100}\%}{\text{10147}} = \text{54}\% \text{\,.}
+  \label{eq:econ:Ko}
+  \text{К}_{\text{о}} = \text{К}_{\text{з}} + \text{Ц}_{\text{пр}},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{К}_\text{з} $ -- капитальные и приравненные к ним затраты;
+  \item $ \text{Ц}_\text{пр} $ -- отпускная цена программного продукта.
+\end{explanationx}
+
+Капитальные и приравненные к ним затраты определяются по формуле:
+
+\begin{equation}
+  \label{eq:econ:Kz}
+  \text{К}_{\text{з}} = \text{Ц}_\text{пк}^\text{б} \cdot \left( 1 - x \cdot
+  \frac{\text{Н}_\text{пк}^\text{а}}{100} \right) \cdot \text{Т}_\text{з} \cdot
+  \frac{k}{\text{Ф}_\text{пк}},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ \text{Ц}_\text{пк}^\text{б} $ -- балансовая стоимость комплекта вычислительной техники,
+  необходимой для решения задачи, \rub;
+  \item $ x $ -- возраст используемого ПК, лет.
+\end{explanationx}
+
+Предположив, что для решения задачи будет использован ПК с возрастом
+\insertNumSomethingText{\valx}{год}{года}{лет}, рассчитаем капитальные затраты:
+
+\begin{equation}
+  \label{eq:econ:valKz}
+  \text{К}_{\text{з}} = \num\valTSpkb \cdot \left( 1 - \num\valx \cdot
+  \frac{\num\valNpka}{100} \right) \cdot \num\valTz \cdot \frac{\num\valk}{\num\valFpk}
+  \approx \num\valKz
 \end{equation}
 
-В результате технико-экономического обоснования применения программного продукта
-были получены значения показателей эффективности. Полученные данные показывают,
-что применение программного продукта является эффективным и инвестиции в его
-разработку целесообразны.
+Суммарные капитальные затраты составят:
+
+\begin{equation}
+  \label{eq:econ:valKo}
+  \text{К}_{\text{о}} = \num\valKz + \num\valTSpr = \num\valKo
+\end{equation}
+
+Годовой экономический эффект от замены одного программного продукта на аналогичный
+при обработке информации определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:EF}
+  \text{ЭФ} = \text{П}_\text{у} - E \cdot \text{К}_\text{о},
+\end{equation}
+\begin{explanationx}
+  \item[где] $ E $ -- коэффициент эффективности, равный ставке по кредитам на рынке
+  долгосрочных кредитов.
+\end{explanationx}
+
+Приняв $ E = \num\valE $, получим значение годового экономического эффекта:
+
+\begin{equation}
+  \label{eq:econ:valEF}
+  \text{ЭФ} = \num\valPu - \num\valE \cdot \num\valKo \approx \num\valEF
+\end{equation}
+
+Срок возврата инвестиций определяется по формуле:
+
+\begin{equation}
+  \label{eq:econ:Tv}
+  \text{Т}_\text{в} = \frac{\text{К}_\text{о}}{\text{П}_\text{у}} =
+  \frac{\num\valKo}{\num\valPu} \approx \num\valTvRounded
+\end{equation}
+
+Результаты расчета сводятся в таблице~\ref{table:econ:calculated_data}.
+
+В результате технико-экономического обоснования инвестиций в
+разработку программного продукта были получены следующие значения
+показателей их эффективности:
+\begin{enumerate_num}
+  \item Прирост условной прибыли составит \num\valPu { }\rub.
+  \item Годовой экономический эффект составит \num\valEF { }\rub.
+  \item Все инвестиции окупаются за \insertNumSomethingText{\valTvRounded}{год}{года}{лет}.
+\end{enumerate_num}
+
+Таким образом, разработка данного программного продукта является
+эффективной  с учетом того, что он
+разрабатывается как для нужд самого предприятия, так и для продажи сторонним компаниям.
+Инвестиции в его реализацию целесообразны.

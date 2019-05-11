@@ -17,3 +17,8 @@ services:
       KAFKA_CREATE_TOPICS: "co-topic:1:1,so-topic:1:1,oz-topic:1:1,no-topic:1:1"
     depends_on:
       - zookeeper
+
+networks:
+  default:
+    external:
+      name: sparkcluster_default
