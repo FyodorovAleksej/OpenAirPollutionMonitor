@@ -3,15 +3,26 @@
 % Примечание: параметр draft помечает строки, вышедшие за границы страницы, прямоугольником, в фильной версии его нужно удалить.
 \documentclass[a4paper,14pt,russian,oneside,final]{extreport}
 
+% Зачем: Удобная верстка многострочных формул, масштабирующийся текст в формулах, формулы в рамках и др
+\usepackage{amsmath}
+
+% Зачем: использование Times New Roman в формулах для всего
+%   И греческие буквы типа Regular по умолчанию
+% !!! данный пакет должен подключаться раньше polyglossia
+%% Подробнее тут: https://tex.stackexchange.com/a/43419/139966
+\usepackage{mathspec}
+\setmathsfont(Latin,Digits){Times New Roman}
+\setmathsfont(Greek)[Uppercase=Regular,Lowercase=Regular]{Times New Roman}
+
 % Поддержка русского языка (XeLaTeX)
 %% Для включения переносов в английском поместите английский текст в секцию \textenglish.
 %%    Например, "привет \textenglish{Hello world} еще привет"
-\usepackage{polyglossia}   %% загружает пакет многоязыковой вёрстки
+\usepackage{polyglossia}   %% загружает пакет многоязыковой верстки
 \setdefaultlanguage{russian}  %% устанавливает главный язык документа
     %\setdefaultlanguage[babelshorthands=true]{russian}  %% вместо предыдущей строки; доступны команды из пакета babel для русского языка
 \setotherlanguage{english} %% объявляет второй язык документа
 \defaultfontfeatures{Ligatures={TeX}}  %% свойства шрифтов по умолчанию. Для XeTeX опцию Renderer=Basic можно не указывать, она необходима для LuaTeX
-\setmainfont[Ligatures={TeX,Historic}]{Times New Roman} %% задаёт основной шрифт документа
+\setmainfont[Ligatures={TeX,Historic}]{Times New Roman} %% задает основной шрифт документа
 \setromanfont{Times New Roman}
 \setsansfont{Arial}
 \setmonofont{Courier New}
@@ -21,9 +32,6 @@
 \newfontfamily{\cyrillicfontrm}{Times New Roman}
 \newfontfamily{\cyrillicfonttt}{Courier New}
 \newfontfamily{\cyrillicfontsf}{Arial}
-
-% Зачем: Чтобы можно было использовать русские буквы в формулах, но в случае использования предупреждать об этом.
-\usepackage[warn]{mathtext}
 
 % Зачем: Добавляет поддержу дополнительных размеров текста 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, and 20pt.
 % Почему: Пункт 2.1.1 Требований по оформлению пояснительной записки.
@@ -43,11 +51,14 @@
 
 % Зачем: Настраивает отступы от границ страницы.
 % Почему: Пункт 2.1.2 Требований по оформлению пояснительной записки.
-\usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.695cm]{geometry}
+%% Специфические к используемому принтеру + ОС
+\usepackage[left=3cm,top=1.9cm,right=1.5cm,bottom=2.795cm]{geometry}
+% \usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.695cm]{geometry}
 
 % Зачем: явно выставляем, чтобы отступ до низа листа был 1,7 см
 %% (хотя будет он больше в документе tex-а)
-\setlength{\footskip}{0.85cm}
+\setlength{\footskip}{0.95cm}
+% \setlength{\footskip}{0.85cm}
 
 % Зачем: Настраивает межстрочный интервал, для размещения 40 +/- 3 строки текста на странице.
 % Почему: Пункт 2.1.1 Требований по оформлению пояснительной записки.
@@ -155,7 +166,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\bfseries\pretolerance=10000\normalfont\normalsize}}
+    {\pretolerance=10000\normalfont\normalsize}}
 \makeatother
 
 % Зачем: для оформления введения и заключения, они должны быть выровнены по центру.
@@ -173,8 +184,9 @@
 % Зачем: отступ от номера до заголовка должен составлять 1 пробел.
 % Для Times New Roman это приблизительно 0.5em
 % See https://tex.stackexchange.com/questions/25989/spacing-in-headline-between-number-and-text for updating it for different packages
+%% Номера всегда будут жирным
 \makeatletter
-\renewcommand*{\@seccntformat}[1]{\csname the#1\endcsname\hspace{0.5em}}
+\renewcommand*{\@seccntformat}[1]{\textbf{\csname the#1\endcsname}\hspace{0.5em}}
 \makeatother
 
 % Зачем: Задает стиль библиографии
@@ -204,7 +216,7 @@
 \def\BibUrl#1{Режим доступа : \url{#1}}
 \def\BibDate#1{Дата доступа : \parsedate{#1}}
 \def\BibTitleSuffix{ [Электронный ресурс]}
-\def\BibTitleFormat#1{\StrSubstitute{#1}{ - }{ -- }}
+\def\BibTitleFormat#1{\StrSubstitute{#1}{ - }{ --- }}
 
 % Зачем: Пакет для вставки картинок
 % Примечание: Объяснение, зачем final - http://tex.stackexchange.com/questions/11004/why-does-the-image-not-appear
@@ -215,8 +227,16 @@
 % Зачем: Директория в которой будет происходить поиск картинок
 \graphicspath{{images/}}
 
-\setlength{\belowcaptionskip}{-10pt}
+% Зачем: отступы в таблицах и рисунках
+\setlength{\belowcaptionskip}{0pt}
 \setlength{\abovecaptionskip}{0pt}
+
+% Зачем: убирает отступ до формулы (полезно для новых страниц)
+%% #1 - baseline skip scale (2 by default)
+\newcommand\removeEquantionBeforeSpace[1][2]{
+  \mbox{}\par
+  \kern-#1\baselineskip
+}
 
 % Зачем: Добавление подписей к рисункам
 \usepackage[nooneline]{caption}
@@ -281,18 +301,6 @@
     }
 
 
-% Зачем: Удобная верстка многострочных формул, масштабирующийся текст в формулах, формулы в рамках и др
-\usepackage{amsmath}
-
-
-% Зачем: Поддержка ажурного и готического шрифтов
-\usepackage{amsfonts}
-
-
-% Зачем: amsfonts + несколько сотен дополнительных математических символов
-\usepackage{amssymb}
-
-
 % Зачем: Окружения «теорема», «лемма»
 \usepackage{amsthm}
 
@@ -329,7 +337,17 @@
 
 % Зачем: добавление возможности создания нумерованного списка
 \newenvironment{enumerate_num}
-  {\begin{enumerate}[label=\arabic*]}
+  {\begin{enumerate}[label=\arabic*., ref=\arabic*, align=left,
+    labelindent=\fivecharsapprox,
+    leftmargin=*, itemindent=*]}
+  {\end{enumerate}}
+
+% Зачем: добавление возможности создания нумерованного списка по шагам
+\newenvironment{enumerate_step}
+  {\begin{enumerate}[label=Шаг \arabic*., ref=\arabic*,
+    labelindent=\fivecharsapprox,
+    align=left,
+    leftmargin=*, itemindent=*]}
   {\end{enumerate}}
 
 % Зачем: добавление возможности создания вложеннного нумерованного списка с  "жирными" цифрами
@@ -359,11 +377,6 @@
 \let\oldequation=\equation
 \let\endoldequation=\endequation
 \renewenvironment{equation}{\vspace{-0.3em}\begin{oldequation}}{\end{oldequation}\vspace{-0.9em}}
-
-\let\oldfigure=\figure
-\let\endoldfigure=\endfigure
-\renewenvironment{figure}{\begin{oldfigure}}{\squeezeup\end{oldfigure}}
-
 
 % Зачем: Дополнительные возможности в форматировании таблиц
 \usepackage{makecell}
@@ -503,13 +516,13 @@
 \makeatother
 
 \lstdefinestyle{cstyle}{
-   xleftmargin=1.25cm,
-   basicstyle=\fontencoding{T1}\small\ttfamily,
+   xleftmargin=\fivecharsapprox,
+   basicstyle=\small\ttfamily,
    breaklines=true,
    tabsize=8
 }
 \let\OldTexttt\texttt
-\renewcommand{\texttt}[1]{\OldTexttt{\fontencoding{T1}\ttfamily{#1}}}
+\renewcommand{\texttt}[1]{\OldTexttt{\small\fontencoding{T1}\ttfamily{#1}}}
 
 % Зачем: убрать выход текста за границы страницы при переносе за счет увеличения ширины пробелов (тут в 2 раза)
 % \newdimen\origiwstr
@@ -660,5 +673,7 @@
 \providecommand{\paragraphformat}{}
 \providecommand{\subparagraphformat}{}
 
+% Зачем: убирает нумерацию страниц на листах с содержанием
+\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{empty}}}
 
-\newcommand{\squeezeup}{\vspace{-2.5mm}}
+\lstset{style=cstyle}
