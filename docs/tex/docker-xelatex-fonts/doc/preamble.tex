@@ -522,7 +522,7 @@
    tabsize=8
 }
 \let\OldTexttt\texttt
-\renewcommand{\texttt}[1]{\OldTexttt{\fontencoding{T1}\ttfamily{#1}}}
+\renewcommand{\texttt}[1]{\OldTexttt{\small\fontencoding{T1}\ttfamily{#1}}}
 
 % Зачем: убрать выход текста за границы страницы при переносе за счет увеличения ширины пробелов (тут в 2 раза)
 % \newdimen\origiwstr
@@ -675,3 +675,5 @@
 
 % Зачем: убирает нумерацию страниц на листах с содержанием
 \AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{empty}}}
+
+\lstset{style=cstyle}
