@@ -19,4 +19,4 @@ build_pdf:
   artifacts:
     paths:
     - ./out/*.pdf
-  expire_in: 2 weeks
+    expire_in: 2 weeks
