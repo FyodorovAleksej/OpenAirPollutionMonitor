@@ -13,10 +13,10 @@ build_pdf:
     - docker run -v $(pwd)/doc:/doc -w /doc ctex
     - cd -
     - mkdir -p ./out/
-    - mv ./docs/tex/docker-xelatex-fonts/doc/*.pdf ./out/
+    - mv ./docs/tex/docker-xelatex-fonts/doc/*_out/*.pdf ./out/
     - for filename in ./out/*.pdf; do mv "$filename" "$CI_PIPELINE_ID_$filename"; done;
     
   artifacts:
     paths:
     - ./out/*.pdf
-    expire_in: 2 weeks
+  expire_in: 2 weeks
