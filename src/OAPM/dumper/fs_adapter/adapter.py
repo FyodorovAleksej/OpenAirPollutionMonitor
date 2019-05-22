@@ -30,5 +30,6 @@ class FileSystemAdapter:
     def is_exist(self, path: str):
         raise NotImplementedError("Exist is not implemented")
 
-    def to_file_path(self, dir: str, latitude, longitude, year):
+    @staticmethod
+    def to_file_path(dir: str, latitude, longitude, year):
         return "{}/t{}_l{}_y{}.json".format(str(dir), str(latitude), str(longitude), str(year))

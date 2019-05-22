@@ -13,10 +13,16 @@ class PollutionDumper:
         self._fs_adapter = fs_adapter
 
     def dump(self, latitude, longitude, time):
+        path = FileSystemAdapter.to_file_path(self._output_path, latitude, longitude, time)
+        if self._fs_adapter.is_exist(path):
+            return self._fs_adapter.read_file(path)
         response = requests.get(self.to_address(latitude, longitude, time))
         if response.status_code != 200:
             raise ConnectionError("Can't find records")
-        return str(response.content)
+        content = str(response.content)
+        self._fs_adapter.mkdir(self._output_path)
+        self._fs_adapter.write_file(path, content)
+        return content
 
     @abstractmethod
     def to_address(self, latitude, longitude, time):

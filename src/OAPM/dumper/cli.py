@@ -6,14 +6,15 @@ from configparser import ConfigParser
 
 import click
 
+from configuration.application_config import ApplicationConfig
 from dumper import dump_parser as dp
 from dumper.co_dumper import CODumper
 from dumper.fs_adapter.default_fs import DefaultFileSystem
-from dumper.kafka_adapter.kafka_adapter import KafkaSender
 from dumper.no_dumper import NODumper
 from dumper.oz_dumper import OZDumper
 from dumper.pollution_dumper import PollutionDumper
 from dumper.so_dumper import SODumper
+from fs_adapter.distributed_fs import DistributedFileSystem
 
 
 @click.command()
@@ -23,40 +24,45 @@ def main(config):
     config_parser = ConfigParser()
     config_parser.read(config)
 
-    api_cfg = dict(config_parser["WEATHER_MAP_CONFIG"])
-    fs_config = dict(config_parser["FS_CONFIG"])
-    kafka_config = dict(config_parser["KAFKA_CONFIG"])
+    app_config = ApplicationConfig.parse_from_file(config)
 
-    out = fs_config["dumper_output_path"]
-    co_dumper = CODumper(api_cfg["api_host"], api_cfg["api_key"], "", DefaultFileSystem())
-    so_dumper = SODumper(api_cfg["api_host"], api_cfg["api_key"], "", DefaultFileSystem())
-    no_dumper = NODumper(api_cfg["api_host"], api_cfg["api_key"], "", DefaultFileSystem())
-    oz_dumper = OZDumper(api_cfg["api_host"], api_cfg["api_key"], "", DefaultFileSystem())
-    fs = DefaultFileSystem()
+    api_cfg = app_config.get_api_config()
+    fs_config = app_config.get_fs_config()
+    kafka_config = app_config.get_kafka_config()
 
-    fs.mkdir(out)
+    fs = DefaultFileSystem(fs_config) if fs_config.get_host() is None else DistributedFileSystem(fs_config)
 
-    ser_str = str(kafka_config["servers"])
-    servers = ser_str.split(",") if "," in ser_str else [ser_str]
+    co_dumper = CODumper(api_cfg.get_host(), api_cfg.get_api_key(), "co/", fs)
+    so_dumper = SODumper(api_cfg.get_host(), api_cfg.get_api_key(), "so/", fs)
+    no_dumper = NODumper(api_cfg.get_host(), api_cfg.get_api_key(), "no/", fs)
+    oz_dumper = OZDumper(api_cfg.get_host(), api_cfg.get_api_key(), "oz/", fs)
 
-    sender = KafkaSender(servers)
-    for latitude in range(0, 20):
-        for longitude in range(0, 20):
-            for year in range(2016, 2019):
-                path = fs.to_file_path(out, latitude, longitude, year)
+    fs.mkdir("")
+
+    sender = None
+    for latitude in range(0, 180):
+        for longitude in range(0, 180):
+            for year in range(2015, 2019):
                 key = fs.to_file_path("", latitude, longitude, year)
-                if not (fs.is_exist(path)):
-                    send_dump(co_dumper, sender, kafka_config["co_topic"], key, latitude, longitude, year, dp.parse_co)
-                    send_dump(so_dumper, sender, kafka_config["so_topic"], key, latitude, longitude, year, dp.parse_so)
-                    send_dump(oz_dumper, sender, kafka_config["oz_topic"], key, latitude, longitude, year, dp.parse_oz)
-                    send_dump(no_dumper, sender, kafka_config["no_topic"], key, latitude, longitude, year, dp.parse_no)
+                send_dump(co_dumper, sender, app_config.get_additional_configs()["TOPICS"]["CO_TOPIC"], key, latitude,
+                          longitude, year, dp.parse_co)
+                send_dump(so_dumper, sender, app_config.get_additional_configs()["TOPICS"]["SO_TOPIC"], key, latitude,
+                          longitude, year, dp.parse_so)
+                send_dump(oz_dumper, sender, app_config.get_additional_configs()["TOPICS"]["OZ_TOPIC"], key, latitude,
+                          longitude, year, dp.parse_oz)
+                send_dump(no_dumper, sender, app_config.get_additional_configs()["TOPICS"]["NO_TOPIC"], key, latitude,
+                          longitude, year, dp.parse_no)
 
 
 def send_dump(value_dumper: PollutionDumper, sender, topic, key, latitude, longitude, year, parser):
-    data = value_dumper.dump(latitude, longitude, str(year) + "Z")
-    value = parser(data)
-    for val in value:
-        sender.send_message(topic, str(val), key)
+    try:
+        data = value_dumper.dump(latitude, longitude, str(year) + "Z")
+        print(topic, " -----", data)
+    except ConnectionError:
+        print(topic, " no data")
+    # value = parser(data)
+    # for val in value:
+    #    sender.send_message(topic, str(val), key)
 
 
 if __name__ == "__main__":

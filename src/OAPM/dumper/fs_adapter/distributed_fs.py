@@ -4,8 +4,7 @@ from configuration.fs_config import FSConfig
 from dumper.fs_adapter.adapter import FileSystemAdapter
 
 
-class DefaultFileSystem(FileSystemAdapter):
-    
+class DistributedFileSystem(FileSystemAdapter):
     def __init__(self, config: FSConfig):
         self.__config = config
 
