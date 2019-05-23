@@ -32,24 +32,22 @@ hide footbox
 ' title Footer removed
 
 ' Renaming titles
-!define local_bench "Модуль локального сбора статистики"
-!define curr_load "Структура текущей загрузки"
-!define tirtos "TI-RTOS"
-!define ipc "Модуль межъядерного взаимодействия"
-!define multiproc_buff "Буфер для пересылки межъядерных сообщений"
-!define multiproc_buff_part "Сообщение"
-!define g_ipc "Модуль межъядерного взаимодействия на главном ядре"
-!define g_tirtos "TI-RTOS на главном ядре"
-!define g_bench "Модуль глобального сбора статистики"
-!define g_ws "Модуль сервера веб-сокетов"
+!define user "Пользователь"
+!define module "Модуль сбора данных"
+!define dumper "Dumper"
+!define fs "Файловая система"
+!define OWM "Внешний сервис OpenWeatherMap"
+!define parser "JSON parser"
+!define zookeeper "Сервер zookeeper"
+!define kafkaB "Kafka брокер"
 
-' Grouping
-' box "Каждое ядро системы" #White
-' 	participant local_bench
-'     participant curr_load
+'Grouping
+'box "Каждое ядро системы" #White
+'	participant local_bench
+'   participant curr_load
 ' 	participant tirtos
 ' 	participant ipc
-' end box
+'end box
 
 ' participant multiproc_buff
 
@@ -61,102 +59,63 @@ hide footbox
 ' end box
 
 ' Diagram
-[-> local_bench : Информация готова
-activate local_bench
+user -> module: Запуск приложения
+activate module
 
-create curr_load
-local_bench -> curr_load : Создание структуры загрузки
+module -> dumper: Инициализация дампера
+activate dumper
 
-local_bench -> curr_load : Инициализация
-activate curr_load
+module -> module: Выбор аргументов
 
-curr_load -> tirtos : Получить текущее время
-activate tirtos
-return Текущее время
+module -> dumper: Загрузка данных
 
-curr_load -> curr_load : Получить текущую загрузку
-activate curr_load
+dumper -> fs : Обращение к файловой системе
+activate fs
 
-curr_load -> tirtos : Получить загрузку по аппаратным прерываниям
-activate tirtos
-
-return Загрузка
-
-curr_load -> tirtos : Получить загрузку по программным прерываниям
-activate tirtos
-
-return Загрузка
-
-loop Все задачи на ядре
-    curr_load -> tirtos : Получить загрузку по задаче
-    activate tirtos
-
-    return Загрузка
+alt Файлы найдены в файловой системе
+        fs -> dumper : Возвращение данных из файла
+    else Данные не найдены
+        dumper -> OWM : Отправление запроса на внешний сервис
+        activate OWM
+        alt Данные не найдены на внешнем сервисе
+            OWM -> dumper : Отправление ответа с кодом ошибки
+            dumper -> module : Выбрасывание исключения ConnectionException
+            module -> module : Логгирование ошибки
+        else Данные найдены на внешнем сервисе
+            OWM -> dumper : Отправление ответа с данными
+            dumper -> fs : Сохранение данных в файл
+            dumper -> module : Возвращение данных
+        end
 end
 
-return Структура загрузки ядра
+module -> parser: Инициализация парсера
+activate parser
 
-curr_load -> tirtos : Получить имя ядра
-activate tirtos
-return Имя ядра
+module -> parser: Обработка данных
+return Обработанные данные
 
-return Инициализация завершена
+alt Подключение к kafka серверу
+        module -> zookeeper: Подключение к kafka
+        activate zookeeper
+        module -> zookeeper: Отправка полученных данных
+        zookeeper -> kafkaB: Получение состояния брокеров
+        activate kafkaB
+        return Отправка состояния брокеров
 
-alt Инициализация источника межъядерных сообщений не проведена
-    local_bench -> ipc : Проинициализировать источник сообщений
-    activate ipc
-
-    alt Успешная инициализация
-        return Инициализация прошла успешно
-    else Возникла ошибка
-        ipc -> local_bench : Ошибка
-    end
+        zookeeper -> kafkaB: Отправка и сохранение сообщения
+        activate kafkaB
+        return Метаинформация сообщения
+        return Возвращение метаинформации сообщения
+        module -> module: Вызов callback
+    else kafka сервер не найден
+        module -> zookeeper: Попытка подключения к kafka
+        module -> module: Ожидание ответа от zookeeper
+        module -> zookeeper: Повторное подключение к kafka
+        module -> module: Ожидание ответа от zookeeper
+        module -> module: Выброс исключения KafkaConnectionException
+        module -> module: Логгирование ошибки
 end
 
-alt Инициализация источника межъядерных сообщений проведена
-    local_bench -> ipc : Отправить структуру
-    activate ipc
-
-    ipc -> ipc : Расчет требуемого места для передачи сообщения
-    activate ipc
-    return Требуется x байт
-
-    ipc -> multiproc_buff : Выделение x байт для передачи сообщения
-    activate multiproc_buff
-
-    create multiproc_buff_part
-
-    alt Доступно свободное место требуемого размера
-
-    multiproc_buff -> multiproc_buff_part : Выделение буфера
-
-    return Указатель на выделенный буфер
-
-        ipc -> multiproc_buff_part : Записать заголовок межъядерного сообщения
-        activate multiproc_buff_part
-        return Сообщение обновлено
-
-        ipc -> multiproc_buff_part : Записать сообщение для отправки
-        activate multiproc_buff_part
-        return Сообщение обновлено
-
-        ipc -> multiproc_buff : Отправить сообщение на главное ядро
-        activate multiproc_buff
-        return Статус отправки сообщения
-
-        return Статус отправки сообщения
-
-    else Недостаточно свободного места
-        multiproc_buff -> ipc : NULL
-        ipc -> local_bench : Ошибка выделения памяти сообщения
-    end
-
-end
-
-local_bench -> curr_load : Удалить объект
-
-destroy curr_load
-
-deactivate local_bench
+deactivate module
 
 @enduml
