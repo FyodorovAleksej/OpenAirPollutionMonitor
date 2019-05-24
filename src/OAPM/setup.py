@@ -11,7 +11,7 @@ install_reqs = parse_requirements('requirements.txt', session='hack')
 reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
-    author="Alexej Sergeevich Fyodorov",
+    author="Alexey Sergeevich Fyodorov",
     author_email='Fyodorov.aleksej@gmail.com',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

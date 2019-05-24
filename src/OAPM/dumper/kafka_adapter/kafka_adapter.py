@@ -1,9 +1,12 @@
-from kafka import KafkaProducer
+import logging
 
-from configuration.kafka_producer_config import KafkaProducerConfig
+from kafka import KafkaProducer
+from dumper.configuration.kafka_producer_config import KafkaProducerConfig
 
 
 class KafkaSender:
+    logger = logging.getLogger("dumper.kafka_adapter.KafkaSender")
+
     def __str__(self):
         """
         used for logging added handlers to stream
@@ -31,6 +34,8 @@ class KafkaSender:
                                        api_version=(0, 10, 1))
 
     def send_message(self, topic, message, key):
-        print(topic, message, key)
-        self._producer.send(topic, message, key).add_callback(print("succesfull")).get(timeout=30)
+        KafkaSender.logger.info("Send message to topic = {}; with key = {}".format(topic, key))
+        self._producer.send(topic, message, key)\
+            .add_callback(KafkaSender.logger.info("Sending was completed successful"))\
+            .get(timeout=30)
         self._producer.flush()

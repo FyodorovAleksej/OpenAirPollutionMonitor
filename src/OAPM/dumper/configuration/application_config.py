@@ -30,7 +30,8 @@ class ApplicationConfig:
                and other.__kafka_config == self.__kafka_config
 
     def __str__(self):
-        return """[API]
+        return """
+        [API]
         {}
         [FS]
         {}
