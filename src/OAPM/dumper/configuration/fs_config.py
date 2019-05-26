@@ -1,5 +1,5 @@
 class FSConfig:
-    def __init__(self, dir: str, host: str):
+    def __init__(self, dir: str, host):
         self.__dir = dir
         self.__host = host
 

@@ -12,6 +12,7 @@ class PollutionDumper:
         self._output_path = output_path
         self._fs_adapter = fs_adapter
         self._logger = logger
+        self._request = requests.get
 
     def dump(self, latitude, longitude, time):
         path = FileSystemAdapter.to_file_path(self._output_path, latitude, longitude, time)
@@ -20,7 +21,7 @@ class PollutionDumper:
             self._logger.info("Was founded in file system")
             return self._fs_adapter.read_file(path)
         self._logger.info("Trying to fetch from server")
-        response = requests.get(self.to_address(latitude, longitude, time))
+        response = self._request(self.to_address(latitude, longitude, time))
         if response.status_code != 200:
             self._logger.info("Can't find records on server")
             raise ConnectionError("Can't find records")
@@ -34,3 +35,6 @@ class PollutionDumper:
     @abstractmethod
     def to_address(self, latitude, longitude, time):
         raise NotImplementedError("This functionality is not implemented")
+
+    def set_request_method(self, method):
+        self._request = method

@@ -36,5 +36,5 @@ def parse_no(json_data):
     json_temp = json_data[2:-3]
     data = json.loads(json_temp)
     entities = data["data"]
-    res = [entities["no2"]["value"]]
+    res = [float(entities["no2"]["value"])]
     return res

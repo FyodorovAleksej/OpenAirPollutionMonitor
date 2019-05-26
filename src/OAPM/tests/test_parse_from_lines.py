@@ -1,3 +1,4 @@
+import logging
 from unittest import TestCase
 
 from dumper.configuration.api_config import APIConfig
@@ -6,6 +7,16 @@ from dumper.configuration.kafka_producer_config import KafkaProducerConfig
 
 
 class TestParseFromLines(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        conf = {"FILE": "tests.log", "LEVEL": "debug"}
+        file_handler = logging.FileHandler(conf["FILE"])
+        stderr_handler = logging.StreamHandler()
+        logging.basicConfig(format='%(asctime)s [%(levelname)s] <%(name)s> - %(message)s',
+                            handlers=[file_handler, stderr_handler],
+                            level=conf["LEVEL"].upper())
+        super().setUpClass()
 
     def test_api_parse_from_lines(self):
         lines = [
