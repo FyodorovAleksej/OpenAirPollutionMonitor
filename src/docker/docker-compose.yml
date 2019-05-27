@@ -21,7 +21,6 @@ services:
 
   zeppelin:
     build: ./zeppelin/
-    image: anchormen/zeppelin
     container_name: zeppelin
     environment:
       ZEPPELIN_PORT: 8090
@@ -40,13 +39,13 @@ services:
   
   dumper:
     build: ../OAPM/
-    image: python:3
     container_name: dumper
-    ports:
+    expose:
       - 9092
     links:
-      - dumper
+      - kafka
     volumes:
       - ./dumper/output:/output
     depends_on:
       - kafka
+      - zeppelin

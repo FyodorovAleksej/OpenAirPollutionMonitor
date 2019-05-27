@@ -36,6 +36,6 @@ class KafkaSender:
     def send_message(self, topic, message, key):
         KafkaSender.logger.info("Send message to topic = {}; with key = {}".format(topic, key))
         self._producer.send(topic, message, key)\
-            .add_callback(KafkaSender.logger.info("Sending was completed successful"))\
-            .get(timeout=30)
+            .add_callback(KafkaSender.logger.info)\
+            .get(timeout=60)
         self._producer.flush()

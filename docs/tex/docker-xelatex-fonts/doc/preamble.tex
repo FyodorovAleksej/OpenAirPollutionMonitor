@@ -521,6 +521,7 @@
    breaklines=true,
    tabsize=8
 }
+\lstset{style=cstyle}
 \let\OldTexttt\texttt
 \renewcommand{\texttt}[1]{\OldTexttt{\small\fontencoding{T1}\ttfamily{#1}}}
 
@@ -676,4 +677,6 @@
 % Зачем: убирает нумерацию страниц на листах с содержанием
 \AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{empty}}}
 
-\lstset{style=cstyle}
+% Зачем: устанавливает отступ после рисунков
+%% Подробнее тут: https://tex.stackexchange.com/a/60479/139966
+\setlength{\textfloatsep}{14pt}

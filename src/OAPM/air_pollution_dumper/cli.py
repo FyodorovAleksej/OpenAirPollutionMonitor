@@ -2,6 +2,7 @@
 
 """Console script for OpenAirPolutionMonitor."""
 import logging
+import os
 import sys
 from configparser import ConfigParser
 
@@ -81,6 +82,8 @@ def send_dump(value_dumper: PollutionDumper, sender, topic, key, latitude, longi
 
 
 def init_logger(logger_config: dict):
+    if not os.path.exists(str(logger_config["FILE"]).rsplit("/", 1)[0]):
+        os.mkdir(str(logger_config["FILE"]).rsplit("/", 1)[0])
     file_handler = logging.FileHandler(logger_config["FILE"])
     stderr_handler = logging.StreamHandler()
     logging.basicConfig(format='%(asctime)s [%(levelname)s] <%(name)s> - %(message)s',
