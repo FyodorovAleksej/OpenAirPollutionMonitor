@@ -37,3 +37,16 @@ services:
       - ./zeppelin/data:/zeppelin/data
       - ./zeppelin/notebook:/zeppelin/notebook
       - ./zeppelin/logs:/zeppelin/logs
+  
+  dumper:
+    build: ../OAPM/
+    image: python:3
+    container_name: dumper
+    ports:
+      - 9092
+    links:
+      - dumper
+    volumes:
+      - ./dumper/output:/output
+    depends_on:
+      - kafka

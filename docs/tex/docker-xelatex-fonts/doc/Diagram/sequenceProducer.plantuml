@@ -1,0 +1,121 @@
+@startuml
+
+autonumber
+
+' View config
+' skinparam dpi 300
+skinparam monochrome true
+skinparam shadowing false
+skinparam sequenceParticipant underline
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam defaultFontStyle italic
+
+skinparam SequenceMessageAlign center
+
+skinparam SequenceArrowThickness 1
+skinparam SequenceDividerBorderThickness 1
+skinparam SequenceGroupBorderThickness 1
+skinparam SequenceLifeLineBorderThickness 1
+skinparam SequenceParticipantBorderThickness 1
+skinparam SequenceReferenceBorderThickness 1
+skinparam SequenceParticipantBackgroundColor White
+skinparam SequenceBoxBackgroundColor White
+skinparam SequenceGroupBackgroundColor White
+
+skinparam ParticipantPadding 50
+
+skinparam MinClassWidth 80
+
+hide footbox
+' title Footer removed
+
+' Renaming titles
+!define user "Пользователь"
+!define module "Модуль сбора данных"
+!define dumper "Dumper"
+!define fs "Файловая система"
+!define OWM "Внешний сервис OpenWeatherMap"
+!define parser "JSON parser"
+!define zookeeper "Сервер zookeeper"
+!define kafkaB "Kafka брокер"
+
+'Grouping
+'box "Каждое ядро системы" #White
+'	participant local_bench
+'   participant curr_load
+' 	participant tirtos
+' 	participant ipc
+'end box
+
+' participant multiproc_buff
+
+' box "Главное ядро системы" #White
+' 	participant g_ipc
+' 	participant g_bench
+'     participant g_ws
+' 	participant g_tirtos
+' end box
+
+' Diagram
+user -> module: Запуск приложения
+activate module
+
+module -> dumper: Инициализация дампера
+activate dumper
+
+module -> module: Выбор аргументов
+
+module -> dumper: Загрузка данных
+
+dumper -> fs : Обращение к файловой системе
+activate fs
+
+alt Файлы найдены в файловой системе
+        fs -> dumper : Возвращение данных из файла
+    else Данные не найдены
+        dumper -> OWM : Отправление запроса на внешний сервис
+        activate OWM
+        alt Данные не найдены на внешнем сервисе
+            OWM -> dumper : Отправление ответа с кодом ошибки
+            dumper -> module : Выбрасывание исключения ConnectionException
+            module -> module : Логгирование ошибки
+        else Данные найдены на внешнем сервисе
+            OWM -> dumper : Отправление ответа с данными
+            dumper -> fs : Сохранение данных в файл
+            dumper -> module : Возвращение данных
+        end
+end
+
+module -> parser: Инициализация парсера
+activate parser
+
+module -> parser: Обработка данных
+return Обработанные данные
+
+alt Подключение к kafka серверу
+        module -> zookeeper: Подключение к kafka
+        activate zookeeper
+        module -> zookeeper: Отправка полученных данных
+        zookeeper -> kafkaB: Получение состояния брокеров
+        activate kafkaB
+        return Отправка состояния брокеров
+
+        zookeeper -> kafkaB: Отправка и сохранение сообщения
+        activate kafkaB
+        return Метаинформация сообщения
+        return Возвращение метаинформации сообщения
+        module -> module: Вызов callback
+    else kafka сервер не найден
+        module -> zookeeper: Попытка подключения к kafka
+        module -> module: Ожидание ответа от zookeeper
+        module -> zookeeper: Повторное подключение к kafka
+        module -> module: Ожидание ответа от zookeeper
+        module -> module: Выброс исключения KafkaConnectionException
+        module -> module: Логгирование ошибки
+end
+
+deactivate module
+
+@enduml

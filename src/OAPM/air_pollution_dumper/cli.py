@@ -8,6 +8,7 @@ from configparser import ConfigParser
 import click
 
 from air_pollution_dumper.configuration.application_config import ApplicationConfig
+from air_pollution_dumper.kafka_adapter.kafka_adapter import KafkaSender
 from air_pollution_dumper.parser import dump_parser as dp
 from air_pollution_dumper.pol_dumper.co_dumper import CODumper
 from air_pollution_dumper.fs_adapter.default_fs import DefaultFileSystem
@@ -44,15 +45,15 @@ def main(config):
     logger.info("Create file system adapter")
     fs = DefaultFileSystem(fs_config) if fs_config.get_host() is None else DistributedFileSystem(fs_config)
 
-    co_dumper = CODumper(api_cfg.get_host(), api_cfg.get_api_key(), "co/", fs)
-    so_dumper = SODumper(api_cfg.get_host(), api_cfg.get_api_key(), "so/", fs)
-    no_dumper = NODumper(api_cfg.get_host(), api_cfg.get_api_key(), "no/", fs)
-    oz_dumper = OZDumper(api_cfg.get_host(), api_cfg.get_api_key(), "oz/", fs)
+    co_dumper = CODumper(api_cfg.get_host(), api_cfg.get_api_key(), "co", fs)
+    so_dumper = SODumper(api_cfg.get_host(), api_cfg.get_api_key(), "so", fs)
+    no_dumper = NODumper(api_cfg.get_host(), api_cfg.get_api_key(), "no", fs)
+    oz_dumper = OZDumper(api_cfg.get_host(), api_cfg.get_api_key(), "oz", fs)
 
     logger.info("Create output diretory")
     fs.mkdir("")
 
-    sender = None
+    sender = KafkaSender(kafka_config)
     for latitude in range(0, 180):
         for longitude in range(0, 180):
             for year in range(2015, 2019):
@@ -72,11 +73,11 @@ def send_dump(value_dumper: PollutionDumper, sender, topic, key, latitude, longi
     try:
         logger.info("Trying get data for topic = {}, latitude = {}, longitude = {}, year = {}".format(topic, latitude, longitude, year))
         data = value_dumper.dump(latitude, longitude, str(year) + "Z")
+        value = parser(data)
+        for val in value:
+            sender.send_message(topic, str(val), key)
     except ConnectionError as e:
         logger.warning("Data wasn't founded : {}".format(e))
-    # value = parser(data)
-    # for val in value:
-    #    sender.send_message(topic, str(val), key)
 
 
 def init_logger(logger_config: dict):
