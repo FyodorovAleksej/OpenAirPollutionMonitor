@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 import requests
 
-from dumper.fs_adapter.adapter import FileSystemAdapter
+from air_pollution_dumper.fs_adapter.adapter import FileSystemAdapter
 
 
 class PollutionDumper:

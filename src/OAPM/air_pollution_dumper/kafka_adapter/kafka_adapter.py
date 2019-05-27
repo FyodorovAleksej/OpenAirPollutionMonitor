@@ -1,11 +1,11 @@
 import logging
 
 from kafka import KafkaProducer
-from dumper.configuration.kafka_producer_config import KafkaProducerConfig
+from air_pollution_dumper.configuration.kafka_producer_config import KafkaProducerConfig
 
 
 class KafkaSender:
-    logger = logging.getLogger("dumper.kafka_adapter.KafkaSender")
+    logger = logging.getLogger("air_pollution_dumper.kafka_adapter.KafkaSender")
 
     def __str__(self):
         """

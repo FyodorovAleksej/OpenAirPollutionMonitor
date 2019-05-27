@@ -1,11 +1,11 @@
 import logging
 
-from dumper.fs_adapter.adapter import FileSystemAdapter
-from dumper.pol_dumper.pollution_dumper import PollutionDumper
+from air_pollution_dumper.fs_adapter.adapter import FileSystemAdapter
+from air_pollution_dumper.pol_dumper.pollution_dumper import PollutionDumper
 
 
 class SODumper(PollutionDumper):
-    logger = logging.getLogger("dumper.SODumper")
+    logger = logging.getLogger("air_pollution_dumper.SODumper")
 
     def __init__(self, http_host: str, api_key: str, output_path: str, fs_adapter: FileSystemAdapter):
         PollutionDumper.__init__(self, http_host, api_key, output_path, fs_adapter, SODumper.logger)

@@ -1,9 +1,9 @@
 import logging
 from unittest import TestCase
 
-from dumper.configuration.api_config import APIConfig
-from dumper.configuration.fs_config import FSConfig
-from dumper.configuration.kafka_producer_config import KafkaProducerConfig
+from air_pollution_dumper.configuration.api_config import APIConfig
+from air_pollution_dumper.configuration.fs_config import FSConfig
+from air_pollution_dumper.configuration.kafka_producer_config import KafkaProducerConfig
 
 
 class TestParseFromLines(TestCase):
@@ -30,11 +30,11 @@ class TestParseFromLines(TestCase):
 
     def test_fs_parse_from_lines(self):
         lines = [
-            "Dir   :  /users/hdfs/dumper/test_out/ ",
+            "Dir   :  /users/hdfs/air_pollution_dumper/test_out/ ",
             "Host : 10.0.2.5:8088"
         ]
         actual = FSConfig.parse_from_lines(lines)
-        expected = FSConfig("/users/hdfs/dumper/test_out/", "10.0.2.5:8088")
+        expected = FSConfig("/users/hdfs/air_pollution_dumper/test_out/", "10.0.2.5:8088")
         self.assertEqual(actual, expected, "FS Configs are not equal")
 
     def test_kafka_parse_from_lines(self):
@@ -56,7 +56,7 @@ class TestParseFromLines(TestCase):
                                        "PLAINTEXT")
         self.assertEqual(actual, expected, "Kafka Configs are not equal")
 
-    def test_kafka_parse_from_lines1(self):
+    def test_kafka_parse_from_lines_1(self):
         lines = [
             "SERVERS : localhost:9092,kafka:9092",
             "CLIENT_ID : some_client_id",

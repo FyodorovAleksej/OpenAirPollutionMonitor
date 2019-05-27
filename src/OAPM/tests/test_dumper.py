@@ -1,12 +1,12 @@
 import logging
 from unittest import TestCase
 
-from dumper.configuration.fs_config import FSConfig
-from dumper.fs_adapter.default_fs import DefaultFileSystem
-from dumper.pol_dumper.co_dumper import CODumper
-from dumper.pol_dumper.no_dumper import NODumper
-from dumper.pol_dumper.oz_dumper import OZDumper
-from dumper.pol_dumper.so_dumper import SODumper
+from air_pollution_dumper.configuration.fs_config import FSConfig
+from air_pollution_dumper.fs_adapter.default_fs import DefaultFileSystem
+from air_pollution_dumper.pol_dumper.co_dumper import CODumper
+from air_pollution_dumper.pol_dumper.no_dumper import NODumper
+from air_pollution_dumper.pol_dumper.oz_dumper import OZDumper
+from air_pollution_dumper.pol_dumper.so_dumper import SODumper
 
 
 class TestDumper(TestCase):

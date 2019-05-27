@@ -1,6 +1,6 @@
-from dumper.configuration.api_config import APIConfig
-from dumper.configuration.fs_config import FSConfig
-from dumper.configuration.kafka_producer_config import KafkaProducerConfig
+from air_pollution_dumper.configuration.api_config import APIConfig
+from air_pollution_dumper.configuration.fs_config import FSConfig
+from air_pollution_dumper.configuration.kafka_producer_config import KafkaProducerConfig
 
 
 class ApplicationConfig:

@@ -7,22 +7,22 @@ from configparser import ConfigParser
 
 import click
 
-from dumper.configuration.application_config import ApplicationConfig
-from dumper import dump_parser as dp
-from dumper.pol_dumper.co_dumper import CODumper
-from dumper.fs_adapter.default_fs import DefaultFileSystem
-from dumper.pol_dumper.no_dumper import NODumper
-from dumper.pol_dumper.oz_dumper import OZDumper
-from dumper.pol_dumper.pollution_dumper import PollutionDumper
-from dumper.pol_dumper.so_dumper import SODumper
-from dumper.fs_adapter.distributed_fs import DistributedFileSystem
+from air_pollution_dumper.configuration.application_config import ApplicationConfig
+from air_pollution_dumper.parser import dump_parser as dp
+from air_pollution_dumper.pol_dumper.co_dumper import CODumper
+from air_pollution_dumper.fs_adapter.default_fs import DefaultFileSystem
+from air_pollution_dumper.pol_dumper.no_dumper import NODumper
+from air_pollution_dumper.pol_dumper.oz_dumper import OZDumper
+from air_pollution_dumper.pol_dumper.pollution_dumper import PollutionDumper
+from air_pollution_dumper.pol_dumper.so_dumper import SODumper
+from air_pollution_dumper.fs_adapter.distributed_fs import DistributedFileSystem
 
 logger = logging.getLogger("cli")
 
 
 @click.command()
 @click.option('--config', '-c', default="./config/dumper_config.ini",
-              help='path to dumper config.')
+              help='path to air_pollution_dumper config.')
 def main(config):
     config_parser = ConfigParser()
     config_parser.read(config)
@@ -36,8 +36,8 @@ def main(config):
     logger_config = app_config.get_additional_configs()["LOGGER"]
     init_logger(logger_config)
 
-    logger.info("****** dumper was started *******")
-    logger.info("****** dumper configs: **********")
+    logger.info("****** air_pollution_dumper was started *******")
+    logger.info("****** air_pollution_dumper configs: **********")
     logger.info(app_config)
     logger.info("*********************************")
 

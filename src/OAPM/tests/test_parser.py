@@ -1,9 +1,9 @@
 import logging
 from unittest import TestCase
 
-from dumper.configuration.fs_config import FSConfig
-from dumper.dump_parser import parse_co, parse_no, parse_oz, parse_so
-from dumper.fs_adapter.default_fs import DefaultFileSystem
+from air_pollution_dumper.configuration.fs_config import FSConfig
+from air_pollution_dumper.parser.dump_parser import parse_co, parse_no, parse_oz, parse_so
+from air_pollution_dumper.fs_adapter.default_fs import DefaultFileSystem
 
 
 class TestParser(TestCase):

@@ -1,8 +1,8 @@
 import logging
 from unittest import TestCase
 
-from dumper.configuration.fs_config import FSConfig
-from dumper.fs_adapter.default_fs import DefaultFileSystem
+from air_pollution_dumper.configuration.fs_config import FSConfig
+from air_pollution_dumper.fs_adapter.default_fs import DefaultFileSystem
 
 
 class TestDefaultFileSystem(TestCase):
