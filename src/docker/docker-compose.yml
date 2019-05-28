@@ -30,6 +30,8 @@ services:
       MASTER: "local[*]"
     ports:
       - 8090:8090
+    expose:
+      - 9092
     links:
       - kafka
     volumes:
