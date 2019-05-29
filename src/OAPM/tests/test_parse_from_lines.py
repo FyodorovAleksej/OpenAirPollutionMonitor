@@ -18,6 +18,11 @@ class TestParseFromLines(TestCase):
                             level=conf["LEVEL"].upper())
         super().setUpClass()
 
+    @classmethod
+    def tearDownClass(cls):
+        logging.shutdown()
+        super().tearDownClass()
+
     def test_api_parse_from_lines(self):
         lines = [
             "API_host   :   some.api.com",

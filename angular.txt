@@ -1,0 +1,134 @@
+%angular
+<div id="measurementChart" style="height:400px; width: 700px; float:left;"><svg></svg></div>
+<div id="errorChart" style="height:400px; width: 700px; float:left;"><svg></svg></div>
+<div id="anomalyChart" style="height:400px; width: 700px; float:left;"><svg></svg></div>
+<div id="predictionChart" style="height:400px; width: 700px; float:left;"><svg></svg></div>
+
+<script type="text/javascript">
+var data = {
+	errorData: {
+		values: [],
+		key: "Error",
+		color: "#ff4000",
+		area: true
+	},
+	anomalyData: {
+		values: [],
+		key: "Anomly",
+		color: "#0080ff",
+		area: true
+	},
+	predictionData: {
+		values: [],
+		key: "Prediction",
+		color: "#ff8000",
+		area: true
+	},
+	errorPoints: {
+		values: [],
+		key: "Error points",
+		color: "#ff4000"
+	},
+	measurementData: {
+		values: [],
+		key: "Measurement",
+		color: "#00ff80",
+		area: true
+	}
+};
+
+var counter = 0;
+var measurementGraph = null;
+var anomalyGraph = null;
+var predictionGraph = null;
+var predictionMeasurementGraph = null;
+
+var errorTreshold = 0.7;
+var displayWindow = 500;
+var counter = 0;
+
+function pushErrorData(record, index) {
+	if (data.errorData.values.length > displayWindow) {
+		data.errorData.values.shift();
+	}
+	data.errorData.values.push({x: index, y: record["error"]});
+};
+
+function pushAnomalyData(record, index) {
+	if (data.anomalyData.values.length > displayWindow) {
+		data.anomalyData.values.shift();
+	}
+	data.anomalyData.values.push({x: index, y: record["anomaly"]});
+};
+
+function pushPredictionData(record, index) {
+	if (data.predictionData.values.length > displayWindow) {
+		data.predictionData.values.shift();
+	}
+	data.predictionData.values.push({x: index, y: record["prediction"]});
+
+};
+
+function pushMeasurementData(record, index) {
+	if (data.measurementData.values.length > displayWindow) {
+		var rec = data.measurementData.values.shift();
+		if(rec.anomaly >= errorTreshold) {
+			data.errorPoints.values.shift();
+		}
+	}
+	data.measurementData.values.push({x: index, y: record["sampleMeasurement"], anomaly: record["anomaly"]});
+	if(record["anomaly"] >= errorTreshold) {
+		data.errorPoints.values.push({x: index, y: record["sampleMeasurement"], shape: 'square'})
+	}
+};
+
+var measurementChart = nv.models.lineChart().showLegend(true).showYAxis(true).showXAxis(true);
+measurementChart.xAxis.axisLabel('Time (ms)').tickFormat(d3.format(',r'));
+measurementChart.yAxis.axisLabel('Value').tickFormat(d3.format('.02f'));
+
+var errorChart = nv.models.lineChart().showLegend(true).showYAxis(true).showXAxis(true);
+measurementChart.xAxis.axisLabel('Time (ms)').tickFormat(d3.format(',r'));
+measurementChart.yAxis.axisLabel('Value').tickFormat(d3.format('.02f'));
+
+var anomalyChart = nv.models.lineChart().showLegend(true).showYAxis(true).showXAxis(true);
+measurementChart.xAxis.axisLabel('Time (ms)').tickFormat(d3.format(',r'));
+measurementChart.yAxis.axisLabel('Value').tickFormat(d3.format('.02f'));
+
+var predictionChart = nv.models.lineChart().showLegend(true).showYAxis(true).showXAxis(true);
+measurementChart.xAxis.axisLabel('Time (ms)').tickFormat(d3.format(',r'));
+measurementChart.yAxis.axisLabel('Value').tickFormat(d3.format('.02f'));
+
+var el = angular.element($('#measurementChart').parent('.ng-scope'));
+angular.element(el).ready(function() {
+    window.locationWatcher = el.scope().compiledScope.$watch("data", function(newValue, oldValue) {
+        if(typeof newValue !== "undefined") {
+    		angular.forEach(newValue, function(recordStr) {
+    			var rec = JSON.parse(recordStr);
+    			pushErrorData(rec, counter);
+        		pushAnomalyData(rec, counter);
+        		pushPredictionData(rec, counter);
+        		pushMeasurementData(rec, counter);
+        		counter++;
+        		nv.utils.windowResize(measurementChart.update);
+    			nv.utils.windowResize(errorChart.update);
+    			nv.utils.windowResize(anomalyChart.update);
+    			nv.utils.windowResize(predictionChart.update);
+            });
+		    nv.addGraph(function() {
+        		d3.select('#measurementChart svg').datum([data.measurementData, data.errorPoints]).call(measurementChart);  
+        	});
+        	nv.addGraph(function() {
+        		d3.select('#errorChart svg').datum([data.measurementData, data.errorData]).call(errorChart);  
+        	});
+        	nv.addGraph(function() {
+        		d3.select('#anomalyChart svg').datum([data.measurementData, data.anomalyData]).call(anomalyChart);  
+        	});
+        	nv.addGraph(function() {
+        		d3.select('#predictionChart svg').datum([data.measurementData, data.predictionData]).call(predictionChart);  
+        	});
+        }
+    });
+
+   
+});
+</script>Visualizer Section

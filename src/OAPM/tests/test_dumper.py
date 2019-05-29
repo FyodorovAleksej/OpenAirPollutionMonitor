@@ -24,6 +24,11 @@ class TestDumper(TestCase):
                             level=conf["LEVEL"].upper())
         super().setUpClass()
 
+    @classmethod
+    def tearDownClass(cls):
+        logging.shutdown()
+        super().tearDownClass()
+
     def test_co_address(self):
         co_dumper = CODumper("some_host", "atztpcnk", "test", self.__adapter)
         actual = co_dumper.to_address(25, 45, 2017)

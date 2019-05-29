@@ -24,6 +24,11 @@ class TestDumper(TestCase):
                             level=conf["LEVEL"].upper())
         super().setUpClass()
 
+    @classmethod
+    def tearDownClass(cls):
+        logging.shutdown()
+        super().tearDownClass()
+
     def test_co_dumper(self):
         co_dumper = CODumper("some_host", "atztpcnk", "test_dump_co", self.__adapter)
         co_dumper.set_request_method(mock_co_request)

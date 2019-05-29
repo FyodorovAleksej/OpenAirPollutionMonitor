@@ -18,6 +18,11 @@ class TestDefaultFileSystem(TestCase):
                             level=conf["LEVEL"].upper())
         super().setUpClass()
 
+    @classmethod
+    def tearDownClass(cls):
+        logging.shutdown()
+        super().tearDownClass()
+
     def setUp(self):
         super().setUp()
         self.__config = FSConfig(TestDefaultFileSystem.TEST_DIR, None)
