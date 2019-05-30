@@ -196,7 +196,6 @@ Apache Zeppelin представляет из себя аналог Jupyter.
 Используемые топики должны быть созданы в используемом kafka брокере.
 
 Для этого, необходимо выполнить следующую команду:
-%TODO validate kafka command%
 \begin{lstlisting}    
 $ kafka-topics.sh --create-topic --partitions 1 --replication 1 --bootstrapserver localhost:6667 co-topic
 \end{lstlisting}
@@ -222,11 +221,19 @@ $ kafka-topics.sh --zookeeper zookeeper:2181 --list
 $ sudo pip install -r ./src/OAPM/requirements.txt
 \end{lstlisting}
 Также вместо использования системного интерпретатора можно создать виртуальное окружение, и использовать его.
-%TODO add venv
 
-После утановки необходимых пакетов, достаточно запустить Python скрипт \texttt{./src/OAPM/dumper/cli.py}.
+Для установки самого пакета необходимо использовать команду:
+\begin{lstlisting}
+$ sudo python ./src/OAPM/setup.py install
+\end{lstlisting}
+
+После утановки, достаточно запустить Python модуль \texttt{./src/OAPM/dumper/cli.py}.
+\begin{lstlisting}
+$ sudo air_pollution_dumper
+\end{lstlisting}
+
 В качестве параметра данный скрипт принимает путь к файлу конфигурации.
-Использует предоставляемый файл конфигурации \texttt{./src/OAPM/dumper/config/dumper\_config.ini} в качестве файла по-умолчанию.
+Использует предоставляемый файл конфигурации \texttt{./src/OAPM/config/dumper\_config.ini} в качестве файла по-умолчанию.
 
 После того, как приложение будет запущено, то можно использовать Apache Zeppelin.
 Подключившись к нему, необходимо экспортировать интерактивный документ из файла \texttt{./src/docker/zeppelin/notebooks/spark/note.json}.
