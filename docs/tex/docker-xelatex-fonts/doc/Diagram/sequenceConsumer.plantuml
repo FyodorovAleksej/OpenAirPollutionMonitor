@@ -33,13 +33,15 @@ hide footbox
 
 ' Renaming titles
 !define user "Пользователь"
-!define module "Модуль сбора данных"
-!define dumper "Dumper"
-!define fs "Файловая система"
-!define OWM "Внешний сервис OpenWeatherMap"
-!define parser "JSON parser"
-!define zookeeper "Сервер zookeeper"
-!define kafkaB "Kafka брокер"
+!define s_zeppelin "Сервер Zeppelin"
+!define s_zookeeper "Сервер ZooKeeper"
+!define s_kafka "Брокер Kafka"
+!define s_master "Spark Master"
+!define s_worker "Spark Worker Node"
+!define s_par_spark "Параграф Spark"
+!define s_window "Окно обработки"
+!define s_rdd "RDD"
+!define s_par_angular "Параграф Angular"
 
 'Grouping
 'box "Каждое ядро системы" #White
@@ -59,63 +61,41 @@ hide footbox
 ' end box
 
 ' Diagram
-user -> module: Запуск приложения
-activate module
+user -> s_zeppelin: Запуск Zeppelin
+activate s_zeppelin
 
-module -> dumper: Инициализация дампера
-activate dumper
+s_zeppelin -> s_zeppelin: Инициализация интерпретатора
 
-module -> module: Выбор аргументов
+s_zeppelin -> s_par_spark: Запуск параграфа
+activate s_par_spark
 
-module -> dumper: Загрузка данных
+s_par_spark -> s_zookeeper: Подключение к kafka
+activate s_zookeeper
 
-dumper -> fs : Обращение к файловой системе
-activate fs
+s_zookeeper -> s_kafka: Получение статуса брокеров
+activate s_kafka
 
-alt Файлы найдены в файловой системе
-        fs -> dumper : Возвращение данных из файла
-    else Данные не найдены
-        dumper -> OWM : Отправление запроса на внешний сервис
-        activate OWM
-        alt Данные не найдены на внешнем сервисе
-            OWM -> dumper : Отправление ответа с кодом ошибки
-            dumper -> module : Выбрасывание исключения ConnectionException
-            module -> module : Логгирование ошибки
-        else Данные найдены на внешнем сервисе
-            OWM -> dumper : Отправление ответа с данными
-            dumper -> fs : Сохранение данных в файл
-            dumper -> module : Возвращение данных
-        end
+return Статус брокера
+return Подтвержение подключения
+
+s_par_spark -> s_window: Создание окна
+activate s_window
+
+alt Пока в окне
+    s_par_spark -> s_kafka: Получение сообщений
+    return Сообщение
+    s_par_spark -> s_window: Агрегация сообщений
 end
+s_window -> s_par_spark: Окно сообщений
 
-module -> parser: Инициализация парсера
-activate parser
+s_par_spark -> s_rdd: Создание RDD
+activate s_rdd
 
-module -> parser: Обработка данных
-return Обработанные данные
+s_rdd -> s_rdd: Обработка значений
+return Список индексов
 
-alt Подключение к kafka серверу
-        module -> zookeeper: Подключение к kafka
-        activate zookeeper
-        module -> zookeeper: Отправка полученных данных
-        zookeeper -> kafkaB: Получение состояния брокеров
-        activate kafkaB
-        return Отправка состояния брокеров
+s_par_spark -> s_par_angular: Отображение результата
 
-        zookeeper -> kafkaB: Отправка и сохранение сообщения
-        activate kafkaB
-        return Метаинформация сообщения
-        return Возвращение метаинформации сообщения
-        module -> module: Вызов callback
-    else kafka сервер не найден
-        module -> zookeeper: Попытка подключения к kafka
-        module -> module: Ожидание ответа от zookeeper
-        module -> zookeeper: Повторное подключение к kafka
-        module -> module: Ожидание ответа от zookeeper
-        module -> module: Выброс исключения KafkaConnectionException
-        module -> module: Логгирование ошибки
-end
-
-deactivate module
+deactivate s_par_spark
 
 @enduml
