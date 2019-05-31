@@ -1,16 +1,16 @@
 package com.cascade.openap
 
 import com.cascade.openap.conf.AppConfig
-import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord}
+import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark._
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming._
 import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
 import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.kafka010._
 import org.slf4j.LoggerFactory
-
 
 
 /**
@@ -21,7 +21,6 @@ object SparkApp {
   private val LOGGER = LoggerFactory.getLogger(SparkApp.getClass)
 
   def main(args: Array[String]) {
-
     val appConfig = AppConfig.readAppConfig(args)
 
     val consumerParams = Map[String, Object](
@@ -33,14 +32,18 @@ object SparkApp {
       ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG -> java.lang.Boolean.FALSE
     )
 
-
     val sconf: SparkConf = new SparkConf()
     if (appConfig.sparkMaster != null) {
       sconf.setMaster(appConfig.sparkMaster)
     }
     sconf.setAppName("XmlToAvro_streaming_app")
+    sconf.set("spark.testing.memory", "2147480000")
 
-    val streamingContext = new StreamingContext(sconf, Seconds(appConfig.streamTime))
+
+    val spark: SparkSession = SparkSession.builder().config(sconf).getOrCreate()
+    val sc = spark.sparkContext // Just used to create test RDDs
+
+    val streamingContext = new StreamingContext(sc, Seconds(appConfig.streamTime))
 
     val stream = KafkaUtils.createDirectStream[String, String](
       streamingContext,
@@ -48,19 +51,43 @@ object SparkApp {
       Subscribe[String, String](Array(appConfig.coInputTopic), consumerParams)
     )
 
-    stream.foreachRDD { rdd =>
-      val offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
-      rdd.foreach { xmlPair: ConsumerRecord[String, String] =>
-        xmlPair.topic()
-        println(xmlPair.value())
-      }
-      println("--COUNT = " + rdd.count())
-      stream.asInstanceOf[CanCommitOffsets].commitAsync(offsetRanges)
-    }
+    val basePath = "./"
+    val format = "orc"
+    val saveMode = "append"
+    val storePrefix = "_store_"
+
+    stream.foreachRDD(
+      rdd => {
+        val mapped = rdd.map(x => parseRecord(x.key(), x.value(), x.topic()))
+        spark.createDataFrame(mapped).toDF("topic", "latitude", "longitude", "year", "value")
+          .write
+          .partitionBy("topic")
+          .format(format)
+          .mode(saveMode)
+          .save(basePath + storePrefix + "/")
+      })
 
     streamingContext.start()
     streamingContext.awaitTermination()
     LOGGER.error("Streaming batch finished")
   }
-}
 
+  def parseRecord(key: String, value: String, topic: String) = {
+    val latitudeIndex = key.indexOf("t") + 1
+    val longitudeIndex = key.indexOf("l") + 1
+    val yearIndex = key.indexOf("y") + 1
+
+    val latitude = key.substring(latitudeIndex).split("_")(0)
+    val longitude = key.substring(longitudeIndex).split("_")(0)
+    val year = key.substring(yearIndex).split("\\.")(0)
+
+    PollutionRecord(topic, latitude.toLong, longitude.toLong, year.toLong, value.toDouble)
+  }
+
+  case class PollutionRecord(topic: String,
+                             latitude: Long,
+                             longitude: Long,
+                             year: Long,
+                             value: Double)
+
+}
