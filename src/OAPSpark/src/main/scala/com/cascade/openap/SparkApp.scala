@@ -36,7 +36,7 @@ object SparkApp {
     if (appConfig.sparkMaster != null) {
       sconf.setMaster(appConfig.sparkMaster)
     }
-    sconf.setAppName("XmlToAvro_streaming_app")
+    sconf.setAppName("OAP_streaming_app")
     sconf.set("spark.testing.memory", "2147480000")
 
 
@@ -48,31 +48,36 @@ object SparkApp {
     val stream = KafkaUtils.createDirectStream[String, String](
       streamingContext,
       PreferConsistent,
-      Subscribe[String, String](Array(appConfig.coInputTopic), consumerParams)
+      Subscribe[String, String](Array(appConfig.coInputTopic,
+        appConfig.noInputTopic,
+        appConfig.ozInputTopic,
+        appConfig.soInputTopic), consumerParams)
     )
 
-    val basePath = "./"
-    val format = "orc"
+    val basePath = "/shared/"
+    val format = "csv"
     val saveMode = "append"
-    val storePrefix = "_store_"
+    val storePrefix = "oap_out"
 
     stream.foreachRDD(
       rdd => {
         val mapped = rdd.map(x => parseRecord(x.key(), x.value(), x.topic()))
-        spark.createDataFrame(mapped).toDF("topic", "latitude", "longitude", "year", "value")
-          .write
+        val df = spark.createDataFrame(mapped).toDF("topic", "latitude", "longitude", "year", "value")
+        df.show()
+        df.write
           .partitionBy("topic")
           .format(format)
           .mode(saveMode)
           .save(basePath + storePrefix + "/")
       })
 
+
     streamingContext.start()
     streamingContext.awaitTermination()
     LOGGER.error("Streaming batch finished")
   }
 
-  def parseRecord(key: String, value: String, topic: String) = {
+  def parseRecord(key: String, value: String, topic: String): PollutionRecord = {
     val latitudeIndex = key.indexOf("t") + 1
     val longitudeIndex = key.indexOf("l") + 1
     val yearIndex = key.indexOf("y") + 1

@@ -6,5 +6,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 RUN python setup.py install
-CMD air_pollution_dumper
+CMD sleep 20 && air_pollution_dumper
 

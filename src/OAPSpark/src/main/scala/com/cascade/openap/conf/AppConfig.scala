@@ -16,14 +16,14 @@ object AppConfig {
 
     new AppConfig(
       "consumer_id",
-      "localhost:9092",
+      "kafka:9092",
       "earliest",
       "local[*]",
       5,
-      "co-topic",
-      "no-topic",
-      "oz-topic",
-      "so-topic"
+      "test_co-topic",
+      "test_no-topic",
+      "test_oz-topic",
+      "test_so-topic"
     )
   }
 }

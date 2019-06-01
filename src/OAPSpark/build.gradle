@@ -1,8 +1,11 @@
 apply plugin: "scala"
 
 tasks.withType(ScalaCompile) {
-	options.encoding = "UTF-8"
+    options.encoding = "UTF-8"
 }
+
+version = "0.0.1"
+
 
 repositories {
     mavenLocal()
@@ -10,11 +13,11 @@ repositories {
 }
 
 ext.ver = [
-    scala  : "2.11",
-    hadoop : "2.7.3",
-    spark  : "2.4.0",
-    kafka  : "0.10.1",
-    avro   : "1.7.7"
+        scala  : "2.11",
+        hadoop : "2.7.3",
+        spark  : "2.3.3",
+        kafka  : "0.10.1",
+        jackson: "2.7.8"
 ]
 
 def spark = { module ->
@@ -22,34 +25,54 @@ def spark = { module ->
 }
 
 ext.lib = [
-    scala           : "org.scala-lang:scala-library:${ver.scala}.4",
-    sparkCore       : spark("core"),
-    sparkStreaming  : spark("streaming"),
-    sparkStreamKafka: spark("streaming-kafka-0-10"),
-    avro            : "org.apache.avro:avro:${ver.avro}"
+        scala           : "org.scala-lang:scala-library:${ver.scala}.4",
+        sparkCore       : spark("core"),
+        sparkStreaming  : spark("streaming"),
+        sparkStreamKafka: spark("streaming-kafka-0-10"),
+        sparkSqlKafka   : spark("sql-kafka-0-10"),
+        kafkaConnectJson: "org.apache.kafka:connect-json:${ver.kafka}.0",
+        sparkSql        : spark("sql"),
+        jackson         : "com.fasterxml.jackson.module:jackson-module-scala_2.11:${ver.jackson}",
 ]
 
-ext.providedDependencies = [
-        lib.avro,
-        lib.scala,
-        lib.sparkCore,
-        lib.sparkStreaming
-]
 
 dependencies {
     compile(
-        lib.sparkStreamKafka
+            lib.scala,
+            lib.sparkCore,
+            lib.sparkStreaming,
+            lib.sparkStreamKafka,
+            lib.sparkSqlKafka,
+            lib.jackson,
+            lib.kafkaConnectJson,
+            lib.sparkSql
     )
-    compileOnly providedDependencies
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.scalatest:scalatest_2.11:3.0.5'
 }
 
 
 jar {
-    from { configurations.compile.collect {
-        def has = configurations.compileOnly.contains(it)
-        // Keep for debug: */ if(!has) println(" * " + it)
+    doFirst {
+        from {
+            configurations.compile.collect {
+                def has = configurations.compileOnly.contains(it)
+                // Keep for debug: */ if(!has) println(" * " + it)
 
-        if(has) []
-        else it.isDirectory() ? it : zipTree(it)
-    }}
+                if (has) []
+                else it.isDirectory() ? it : zipTree(it)
+            }
+        }
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+    zip64 = true
 }
+
+task tar(dependsOn: ["jar"], type: Tar) {
+    extension = "tar.gz"
+    compression = Compression.GZIP
+    from("build/libs") {
+        include "**/*.jar"
+    }
+}
+

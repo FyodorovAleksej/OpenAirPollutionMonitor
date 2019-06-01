@@ -1,9 +1,7 @@
 package com.cascade.openap
-import java.util.Properties
 import java.util.concurrent.TimeUnit
 
-import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
-import org.apache.kafka.common.serialization.StringSerializer
+import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 object Producer {
   def main(args: Array[String]): Unit = {
     val conf = new java.util.HashMap[String, AnyRef]()
