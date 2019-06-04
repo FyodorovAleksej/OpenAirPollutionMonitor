@@ -3,7 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=pycharm,python,django
 
 ### Django ###
-*.log
+
 *.pot
 *.pyc
 __pycache__/
@@ -257,7 +257,7 @@ fabric.properties
 
 ### Python Patch ###
 .venv/
-src/OAPM/dumper/config/dumper_config.ini
+
 # End of https://www.gitignore.io/api/pycharm,python,django
 
 \.idea/
@@ -275,5 +275,3 @@ src/OAPSpark/\.gradle/5\.3/gc\.properties
 src/OAPSpark/\.gradle/buildOutputCleanup/
 
 src/OAPSpark/\.gradle/vcs-1/gc\.properties
-
-src/docker/zeppelin/notebook/
