@@ -10,5 +10,7 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-docker network create sparkcluster_default
-docker-compose up -d
+${SPARK_HOME}/bin/spark-class org.apache.spark.deploy.master.Master \
+    --ip ${SPARK_LOCAL_IP} \
+    --port ${SPARK_MASTER_PORT} \
+    --webui-port ${SPARK_MASTER_WEBUI_PORT}

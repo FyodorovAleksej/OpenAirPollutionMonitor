@@ -10,4 +10,15 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-docker-compose down --remove-orphans
+cd /
+
+SPARK_MAJOR_VERSION=2
+sleep 20
+
+${SPARK_HOME}/bin/spark-submit \
+  --class com.cascade.openap.SparkApp \
+  --master "${SPARK_MASTER:-local[*]}" \
+  --conf spark.executor.instances=2 \
+  --conf spark.driver.memory=1024M \
+  --conf spark.executor.memory=1024M \
+  ${APP_JAR}

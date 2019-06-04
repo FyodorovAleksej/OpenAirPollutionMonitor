@@ -10,8 +10,7 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-ZK="zookeeper:2181"
 
-docker-compose up -d
-
-docker-compose exec -T kafka bash -c "kafka-topics.sh --zookeeper zookeeper:2181 --list"
+${SPARK_HOME}/bin/spark-class org.apache.spark.deploy.worker.Worker \
+    --webui-port ${SPARK_WORKER_WEBUI_PORT} \
+    ${SPARK_MASTER}
