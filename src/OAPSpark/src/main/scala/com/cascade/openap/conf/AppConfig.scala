@@ -20,10 +20,10 @@ object AppConfig {
       "earliest",
       "local[*]",
       5,
-      "test_co-topic",
-      "test_no-topic",
-      "test_oz-topic",
-      "test_so-topic"
+      "co-topic",
+      "no-topic",
+      "oz-topic",
+      "so-topic"
     )
   }
 }
