@@ -202,7 +202,7 @@
 
 \begin{equation}
   \label{eq:econ:Toa}
-  \text{Т}_\text{оа} = \frac{Q \cdot W \cdot K}{\valToaDelim},
+  \text{Т}_\text{оа} = \frac{Q * W * K}{\valToaDelim},
 \end{equation}
 \begin{explanationx}
   \item[где] $ Q $ -- условное число операторов в разрабатываемом программном продукте;
@@ -215,27 +215,27 @@
 
 \begin{equation}
   \label{eq:econ:Tbs}
-  \text{Т}_\text{бс} = \frac{Q \cdot K}{\num{\valTbsDelim}}
+  \text{Т}_\text{бс} = \frac{Q * K}{\num{\valTbsDelim}}
 \end{equation}
 
 \begin{equation}
   \label{eq:econ:Tp}
-  \text{Т}_\text{п} = \frac{Q \cdot K}{\num{\valTpDelim}}
+  \text{Т}_\text{п} = \frac{Q * K}{\num{\valTpDelim}}
 \end{equation}
 
 \begin{equation}
   \label{eq:econ:Totl}
-  \text{Т}_\text{отл} = \frac{Q \cdot K}{\num{\valTotlDelim}}
+  \text{Т}_\text{отл} = \frac{Q * K}{\num{\valTotlDelim}}
 \end{equation}
 
 \begin{equation}
   \label{eq:econ:Tdr}
-  \text{Т}_\text{др} = \frac{Q \cdot K}{\num{\valTdrDelim}}
+  \text{Т}_\text{др} = \frac{Q * K}{\num{\valTdrDelim}}
 \end{equation}
 
 \begin{equation}
   \label{eq:econ:Tdo}
-  \text{Т}_\text{до} = \num{\valTdoScale} \cdot \text{Т}_\text{др}
+  \text{Т}_\text{до} = \num{\valTdoScale} * \text{Т}_\text{др}
 \end{equation}
 
 Условное число операторов $ Q $ можно рассчитать по формуле:
@@ -244,7 +244,7 @@
 
 \begin{equation}
   \label{eq:econ:Q}
-  Q = q \cdot C \cdot ( 1 + p ),
+  Q = q * C * ( 1 + p ),
 \end{equation}
 \begin{explanationx}
   \item[где] $ q $ -- число операторов в программе;
@@ -257,7 +257,7 @@
 
 \begin{equation}
   \label{eq:econ:valQ}
-  Q = \num\valq \cdot \num\valC \cdot ( 1 + \num\valp ) = \num\valQ
+  Q = \num\valq * \num\valC * ( 1 + \num\valp ) = \num\valQ
 \end{equation}
 
 Из-за стажа работы разработчика алгоритмов менее двух лет, получаем $ K = \num\valK $ и
@@ -268,31 +268,31 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:valToa}
-  \text{Т}_\text{оа} = \frac{\num\valQ \cdot \num\valW \cdot \num\valK}
+  \text{Т}_\text{оа} = \frac{\num\valQ * \num\valW * \num\valK}
     {\valToaDelim} \approx \num\valToa
 \end{equation}
 
 \begin{equation}
   \label{eq:econ:valTbs}
-  \text{Т}_\text{бс} = \frac{\num\valQ \cdot \num\valK}{\num{\valTbsDelim}}
+  \text{Т}_\text{бс} = \frac{\num\valQ * \num\valK}{\num{\valTbsDelim}}
     \approx \num\valTbs
 \end{equation}
 
 \begin{equation}
   \label{eq:econ:valTp}
-  \text{Т}_\text{п} = \frac{\num\valQ \cdot \num\valK}{\num{\valTpDelim}}
+  \text{Т}_\text{п} = \frac{\num\valQ * \num\valK}{\num{\valTpDelim}}
     \approx \num\valTp
 \end{equation}
 
 \begin{equation}
   \label{eq:econ:valTotl}
-  \text{Т}_\text{отл} = \frac{\num\valQ \cdot \num\valK}{\num{\valTotlDelim}}
+  \text{Т}_\text{отл} = \frac{\num\valQ * \num\valK}{\num{\valTotlDelim}}
     \approx \num\valTotl
 \end{equation}
 
 \begin{equation}
   \label{eq:econ:valTdr}
-  \text{Т}_\text{др} = \frac{\num\valQ \cdot \num\valK}{\num{\valTdrDelim}}
+  \text{Т}_\text{др} = \frac{\num\valQ * \num\valK}{\num{\valTdrDelim}}
     \approx \num\valTdr
 \end{equation}
 
@@ -301,7 +301,7 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:valTdo}
-  \text{Т}_\text{до} = \num\valTdoScale \cdot \num\valTdr \approx \num\valTdo
+  \text{Т}_\text{до} = \num\valTdoScale * \num\valTdr \approx \num\valTdo
 \end{equation}
 
 Тогда на основании формулы~(\ref{eq:econ:Trz}) и расчётов ранее,
@@ -337,7 +337,7 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:Se}
-  \text{С}_\text{э} = N_\text{э} \cdot k_\text{ис} \cdot \text{Ц}_\text{э},
+  \text{С}_\text{э} = N_\text{э} * k_\text{ис} * \text{Ц}_\text{э},
 \end{equation}
 \begin{explanationx}
   \item[где] $ N_\text{э} $ -- установленная мощность блока питания ПК, кВт;
@@ -351,7 +351,7 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:valSe}
-  \text{С}_\text{э} = \num\valNe \cdot \num\valkis \cdot \num\valTSe \approx \num\valSe \text{ \rub}
+  \text{С}_\text{э} = \num\valNe * \num\valkis * \num\valTSe \approx \num\valSe \text{ \rub}
 \end{equation}
 
 
@@ -359,7 +359,7 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:Apk}
-  \text{А}_\text{пк} = \text{Ц}_\text{пк}^\text{б} \cdot \frac{\text{Н}_\text{пк}^\text{а}}{100},
+  \text{А}_\text{пк} = \text{Ц}_\text{пк}^\text{б} * \frac{\text{Н}_\text{пк}^\text{а}}{100},
 \end{equation}
 \begin{explanationx}
   \item[где] $ \text{Ц}_\text{пк}^\text{б} $ -- балансовая стоимость ПК, \rub;
@@ -370,7 +370,7 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:TSpk}
-  \text{Ц}_\text{пк}^\text{б} = \text{Ц}_\text{пк} \cdot k_\text{у} \cdot k_\text{м},
+  \text{Ц}_\text{пк}^\text{б} = \text{Ц}_\text{пк} * k_\text{у} * k_\text{м},
 \end{equation}
 \begin{explanationx}
   \item[где] $ \text{Ц}_\text{пк} $ -- цена ПК на момент его выпуска, \rub;
@@ -383,7 +383,7 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:valTSpk}
-  \text{Ц}_\text{пк}^\text{б} = \num\valTSpk \cdot \num\valky \cdot \num\valkm \approx \num\valTSpkb
+  \text{Ц}_\text{пк}^\text{б} = \num\valTSpk * \num\valky * \num\valkm \approx \num\valTSpkb
   \text{ \rub}
 \end{equation}
 
@@ -392,14 +392,14 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:valApk}
-  \text{А}_\text{пк} = \num\valTSpkb \cdot \frac{\num\valNpka}{100} = \num\valApk \text{ \rub}
+  \text{А}_\text{пк} = \num\valTSpkb * \frac{\num\valNpka}{100} = \num\valApk \text{ \rub}
 \end{equation}
 
 Годовые затраты на ремонт и техническое обслуживание ПК укрупнённо могут быть определены по формуле:
 
 \begin{equation}
   \label{eq:econ:Rpk}
-  \text{Р}_\text{пк} = \text{Ц}_\text{пк}^\text{б} \cdot k_\text{ро},
+  \text{Р}_\text{пк} = \text{Ц}_\text{пк}^\text{б} * k_\text{ро},
 \end{equation}
 \begin{explanationx}
   \item[где] $ k_\text{ро} $ -- коэффициент, учитывающий затраты на ремонт и техническое обслуживание ПК.
@@ -409,7 +409,7 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:valRpk}
-  \text{Р}_\text{пк} = \num\valTSpkb \cdot \num\valkro \approx \num\valRpk \text{ \rub}
+  \text{Р}_\text{пк} = \num\valTSpkb * \num\valkro \approx \num\valRpk \text{ \rub}
 \end{equation}
 
 Годовая величина амортизационных отчислений на реновацию производственных площадей, занятых ПК,
@@ -417,7 +417,7 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:Apl}
-  \text{А}_\text{пл} = \text{Ц}_\text{пл}^\text{б} \cdot \frac{\text{Н}_\text{пл}^\text{а}}{100},
+  \text{А}_\text{пл} = \text{Ц}_\text{пл}^\text{б} * \frac{\text{Н}_\text{пл}^\text{а}}{100},
 \end{equation}
 \begin{explanationx}
   \item[где] $ \text{Ц}_\text{пл}^\text{б}  $ -- балансовая стоимость площадей, \rub;
@@ -429,7 +429,7 @@ $ W = \num\valW $. Эти величины понадобятся для рас�
 
 \begin{equation}
   \label{eq:econ:TSplb}
-  \text{Ц}_\text{пл}^\text{б} = S_\text{пк} \cdot k_\text{д} \cdot \text{Ц}_\text{пл},
+  \text{Ц}_\text{пл}^\text{б} = S_\text{пк} * k_\text{д} * \text{Ц}_\text{пл},
 \end{equation}
 \begin{explanationx}
   \item[где] $ S_\text{пк} $ -- площадь, занимаемая ПК, м\textsuperscript{2};
@@ -444,7 +444,7 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 
 \begin{equation}
   \label{eq:econ:valTSplb}
-  \text{Ц}_\text{пл}^\text{б} = \num\valSpk \cdot \num\valkd \cdot \num\valTSpl \approx
+  \text{Ц}_\text{пл}^\text{б} = \num\valSpk * \num\valkd * \num\valTSpl \approx
   \num\valTSplb \text{ \rub}
 \end{equation}
 
@@ -453,7 +453,7 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 
 \begin{equation}
   \label{eq:econ:valApl}
-  \text{А}_\text{пл} = \num\valTSplb \cdot \frac{\num\valNpla}{100} \approx \num\valApl \text{ \rub}
+  \text{А}_\text{пл} = \num\valTSplb * \frac{\num\valNpla}{100} \approx \num\valApl \text{ \rub}
 \end{equation}
 
 Годовые затраты на ремонт и содержание производственных площадей укрупнённо
@@ -461,7 +461,7 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 
 \begin{equation}
   \label{eq:econ:Rpl}
-  \text{Р}_\text{пл} = \text{Ц}_\text{пл}^\text{б} \cdot k_\text{рэ},
+  \text{Р}_\text{пл} = \text{Ц}_\text{пл}^\text{б} * k_\text{рэ},
 \end{equation}
 \begin{explanationx}
   \item[где] $ k_\text{рэ} $ -- коэффициент, учитывающий затраты на ремонт и эксплуатацию
@@ -472,7 +472,7 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 
 \begin{equation}
   \label{eq:econ:valRpl}
-  \text{Р}_\text{пл} = \num\valTSplb \cdot \num\valkre \approx \num\valRpl \text{ \rub}
+  \text{Р}_\text{пл} = \num\valTSplb * \num\valkre \approx \num\valRpl \text{ \rub}
 \end{equation}
 
 Годовая величина арендных платежей за помещение, занимаемое ПК,
@@ -480,8 +480,8 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 
 \begin{equation}
   \label{eq:econ:Rar}
-  \text{Р}_\text{ар} = S_\text{пк} \cdot k_\text{д} \cdot k_\text{ар} \cdot k_\text{комф}
-  \cdot k_\text{пов} \cdot 12,
+  \text{Р}_\text{ар} = S_\text{пк} * k_\text{д} * k_\text{ар} * k_\text{комф}
+  * k_\text{пов} * 12,
 \end{equation}
 \begin{explanationx}
   \item[где] $ k_\text{ар} $ -- ставка арендных платежей за помещение;
@@ -497,8 +497,8 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 
 \begin{equation}
   \label{eq:econ:valRar}
-  \text{Р}_\text{ар} = \num\valSpk \cdot \num\valkd \cdot \num\valkar \cdot \num\valkkomf
-  \cdot \num\valkpov \cdot 12 \approx \num\valRar \text{ \rub}
+  \text{Р}_\text{ар} = \num\valSpk * \num\valkd * \num\valkar * \num\valkkomf
+  * \num\valkpov * 12 \approx \num\valRar \text{ \rub}
 \end{equation}
 
 Годовой фонд времени работы ПК определяется исходя из режима её работы
@@ -506,7 +506,7 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 
 \begin{equation}
   \label{eq:econ:Fpk}
-  \text{Ф}_\text{пк} = t_\text{сс} \cdot T_\text{сг},
+  \text{Ф}_\text{пк} = t_\text{сс} * T_\text{сг},
 \end{equation}
 \begin{explanationx}
   \item[где] $ t_\text{сс} $ -- среднесуточная фактическая загрузка ПК, ч;
@@ -521,7 +521,7 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 
 \begin{equation}
   \label{eq:econ:valFpk}
-  \text{Ф}_\text{пк} = \num\valtss \cdot \num\valTsg = \num\valFpk
+  \text{Ф}_\text{пк} = \num\valtss * \num\valTsg = \num\valFpk
 \end{equation}
 
 Тогда стоимость машино-часа работы ПК составит:
@@ -540,10 +540,10 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 \begin{equation}
   \label{eq:econ:Zrz}
   \text{З}_{\text{рз}} =
-  \text{Т}_{\text{рз}} \cdot
-  t_{\text{чр}} \cdot
-  \text{К}_{\text{пр}} \cdot
-  \left(\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}\right) \cdot
+  \text{Т}_{\text{рз}} *
+  t_{\text{чр}} *
+  \text{К}_{\text{пр}} *
+  \left(\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}\right) *
   \left(\text{1} + \frac{\text{Н}_{\text{соц}}}{\text{100}}\right),
 \end{equation}
 \begin{explanationx}
@@ -560,7 +560,7 @@ $ k_\text{д} = \num\valkd $, а цена одного квадратного м
 
 \begin{equation}
   \label{eq:econ:tchr}
-  t_\text{чр} = \frac{\text{ЗП}_\text{1р} \cdot k_\text{т}}{t_\text{мес}},
+  t_\text{чр} = \frac{\text{ЗП}_\text{1р} * k_\text{т}}{t_\text{мес}},
 \end{equation}
 \begin{explanationx}
   \item[где] $ \text{ЗП}_\text{1р} $ -- среднемесячная заработная плата работника первого разряда;
@@ -579,7 +579,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valtchr}
-  t_\text{чр} = \frac{\num\valZPr \cdot \num\valkt}{\num\valtmes} \approx \num\valtchr \text{ \rub}
+  t_\text{чр} = \frac{\num\valZPr * \num\valkt}{\num\valtmes} \approx \num\valtchr \text{ \rub}
 \end{equation}
 
 На сегодняшний день норматив отчислений от фонда оплаты труда составляет $ \num\valNsots \% $.
@@ -589,8 +589,8 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valZrz}
-  \text{З}_\text{рз} = \num\valTrz \cdot \num\valtchr \cdot \num\valKpr \cdot
-    \left( 1 + \frac{\num\valNd}{\num{100}} \right) \cdot
+  \text{З}_\text{рз} = \num\valTrz * \num\valtchr * \num\valKpr *
+    \left( 1 + \frac{\num\valNd}{\num{100}} \right) *
     \left( 1 + \frac{\num\valNsots}{\num{100}} \right) \approx \num\valZrz \text{ \rub}
 \end{equation}
 
@@ -604,7 +604,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:Zot}
-  \text{З}_\text{от} = \text{Т}_\text{отл} \cdot S_\text{мч},
+  \text{З}_\text{от} = \text{Т}_\text{отл} * S_\text{мч},
 \end{equation}
 \begin{explanationx}
   \item[где] $ \text{Т}_\text{отл} $ -- трудоёмкость отладки программы, ч;
@@ -615,14 +615,14 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valZot}
-  \text{З}_\text{от} = \num\valTotl \cdot \num\valSmch \approx \num\valZot \text{ \rub},
+  \text{З}_\text{от} = \num\valTotl * \num\valSmch \approx \num\valZot \text{ \rub},
 \end{equation}
 
 Себестоимость разработки программного продукта определяется по формуле:
 
 \begin{equation}
   \label{eq:econ:Spr}
-  \text{С}_\text{пр} = \text{З}_\text{рз} \cdot F + \text{З}_\text{от},
+  \text{С}_\text{пр} = \text{З}_\text{рз} * F + \text{З}_\text{от},
 \end{equation}
 \begin{explanationx}
   \item[где] $ F $ -- коэффициент накладных расходов проектной организации без учёта эксплуатации ПК.
@@ -633,7 +633,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valSpr}
-  \text{С}_\text{пр} = \num\valZrz \cdot \num\valF + \num\valZot \approx \num\valSpr \text{ \rub}
+  \text{С}_\text{пр} = \num\valZrz * \num\valF + \num\valZot \approx \num\valSpr \text{ \rub}
 \end{equation}
 
 \subsection{Определение оптовой и отпускной цены программного продукта}
@@ -653,7 +653,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:Pr}
-  \text{П}_\text{р} = \text{С}_\text{пр} \cdot \text{Н}_\text{п},
+  \text{П}_\text{р} = \text{С}_\text{пр} * \text{Н}_\text{п},
 \end{equation}
 \begin{explanationx}
   \item[где] $ \text{Н}_\text{п} $ -- норма прибыли проектной организации.
@@ -664,7 +664,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valPr}
-  \text{П}_\text{р} = \num\valSpr \cdot \num\valNp \approx \num\valPr \text{ \rub}
+  \text{П}_\text{р} = \num\valSpr * \num\valNp \approx \num\valPr \text{ \rub}
 \end{equation}
 
 Оптовая цена будет составлять:
@@ -678,7 +678,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:TSpr}
-  \text{Ц}_\text{пр} = \text{Ц}_\text{о} + (\text{З}_\text{рз} + \text{П}_\text{р}) \cdot \text{НДС},
+  \text{Ц}_\text{пр} = \text{Ц}_\text{о} + (\text{З}_\text{рз} + \text{П}_\text{р}) * \text{НДС},
 \end{equation}
 \begin{explanationx}
   \item[где] $ \text{НДС} $ -- ставка налога на добавленную стоимость.
@@ -689,7 +689,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valTSpr}
-  \text{Ц}_\text{пр} = \num\valTSo + (\num\valZrz + \num\valPr) \cdot \num\valNDS \% \approx
+  \text{Ц}_\text{пр} = \num\valTSo + (\num\valZrz + \num\valPr) * \num\valNDS \% \approx
     \num\valTSpr \text{ \rub}
 \end{equation}
 
@@ -701,7 +701,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:Tz}
-  \text{Т}_\text{з} = (T_\text{вв} + T_\text{р} + T_\text{выв}) \cdot \frac{1 + d_\text{пз}}{60},
+  \text{Т}_\text{з} = (T_\text{вв} + T_\text{р} + T_\text{выв}) * \frac{1 + d_\text{пз}}{60},
 \end{equation}
 \begin{explanationx}
   \item[где] $ T_\text{вв} $ -- время ввода в ПК исходных данных, необходимых для решения задачи, мин;
@@ -717,7 +717,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:Tvv}
-  T_\text{вв} = \frac{K_z \cdot H_z}{100},
+  T_\text{вв} = \frac{K_z * H_z}{100},
 \end{equation}
 \begin{explanationx}
   \item[где] $ K_z $ -- среднее количество знаков, набираемых с клавиатуры при вводе исходных данных;
@@ -729,7 +729,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valTvv}
-  T_\text{вв} = \frac{\num\valKz \cdot \num\valHz}{100} \approx \num\valTvv
+  T_\text{вв} = \frac{\num\valKz * \num\valHz}{100} \approx \num\valTvv
 \end{equation}
 
 Времена вычислений и вывода результатов составляют доли секунд, поэтому в сравнении с $ T_\text{вв} $
@@ -737,7 +737,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valTz}
-  \text{Т}_\text{з} = (\num\valTvv + \num\valTr + \num\valTviv) \cdot \frac{1 + \num\valdpz}{60}
+  \text{Т}_\text{з} = (\num\valTvv + \num\valTr + \num\valTviv) * \frac{1 + \num\valdpz}{60}
   \approx \num\valTz \text{ ч}
 \end{equation}
 
@@ -748,11 +748,11 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 \begin{equation}
   \label{eq:econ:Zp}
   \text{З}_{\text{п}} =
-  \text{Т}_{\text{з}} \cdot
-  k \cdot
-  t_{\text{чп}} \cdot
-  \text{К}_{\text{пр}} \cdot
-  \left(\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}\right) \cdot
+  \text{Т}_{\text{з}} *
+  k *
+  t_{\text{чп}} *
+  \text{К}_{\text{пр}} *
+  \left(\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}\right) *
   \left(\text{1} + \frac{\text{Н}_{\text{соц}}}{\text{100}}\right),
 \end{equation}
 \begin{explanationx}
@@ -768,8 +768,8 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valZp}
-  \text{З}_{\text{п}} = \num\valTz \cdot \num\valk \cdot \num\valtchp \cdot \num\valKpr \cdot
-  \left(\text{1} + \frac{\num\valNd}{\text{100}}\right) \cdot
+  \text{З}_{\text{п}} = \num\valTz * \num\valk * \num\valtchp * \num\valKpr *
+  \left(\text{1} + \frac{\num\valNd}{\text{100}}\right) *
   \left(\text{1} + \frac{\num\valNsots}{\text{100}}\right) \approx \num\valZp \text{ \rub}
 \end{equation}
 
@@ -781,7 +781,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:Za}
-  \text{З}_{\text{а}} = \text{Т}_{\text{з}} \cdot k \cdot S_\text{мч}
+  \text{З}_{\text{а}} = \text{Т}_{\text{з}} * k * S_\text{мч}
 \end{equation}
 
 Стоимость одного машино-часа для пользователей и для разработчиков также будет совпадать
@@ -789,7 +789,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valZa}
-  \text{З}_{\text{а}} = \num\valTz \cdot \num\valk \cdot \num\valSmch \approx \num\valZa \text{ \rub}
+  \text{З}_{\text{а}} = \num\valTz * \num\valk * \num\valSmch \approx \num\valZa \text{ \rub}
 \end{equation}
 
 Годовые текущие затраты, связанные с эксплуатацией задачи, определяются по формуле:
@@ -809,7 +809,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:Tza}
-  \text{Т}_\text{за} = (T_\text{вва} + T_\text{ра} + T_\text{выва}) \cdot \frac{1 + d_\text{пза}}{60}
+  \text{Т}_\text{за} = (T_\text{вва} + T_\text{ра} + T_\text{выва}) * \frac{1 + d_\text{пза}}{60}
 \end{equation}
 
 Ввод исходных данных в ПК в этом случае также подразумевает ввод парольного слова. Для определенности, возьмём эту
@@ -820,7 +820,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valTvva}
-  T_\text{вва} = \frac{K_{za} \cdot H_z}{100} = \frac{\num\valKza \cdot \num\valHz}
+  T_\text{вва} = \frac{K_{za} * H_z}{100} = \frac{\num\valKza * \num\valHz}
   {100} \approx \num\valTvva
 \end{equation}
 
@@ -831,7 +831,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valTza}
-  \text{Т}_\text{за} = (\num\valTvva + \num\valTra + \num\valTviva) \cdot \frac{1 + \num\valdpza}{60}
+  \text{Т}_\text{за} = (\num\valTvva + \num\valTra + \num\valTviva) * \frac{1 + \num\valdpza}{60}
   \approx \num\valTza \text{ ч}
 \end{equation}
 
@@ -843,11 +843,11 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 \begin{equation}
   \label{eq:econ:Zpa}
   \text{З}_{\text{па}} =
-  \text{Т}_{\text{за}} \cdot
-  k \cdot
-  t_{\text{чп}} \cdot
-  \text{К}_{\text{пр}} \cdot
-  \left(\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}\right) \cdot
+  \text{Т}_{\text{за}} *
+  k *
+  t_{\text{чп}} *
+  \text{К}_{\text{пр}} *
+  \left(\text{1} + \frac{\text{Н}_{\text{д}}}{\text{100}}\right) *
   \left(\text{1} + \frac{\text{Н}_{\text{соц}}}{\text{100}}\right)
 \end{equation}
 
@@ -856,8 +856,8 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valZpa}
-  \text{З}_{\text{па}} = \num\valTza \cdot \num\valk \cdot \num\valtchp \cdot \num\valKpr \cdot
-  \left(\text{1} + \frac{\num\valNd}{\text{100}}\right) \cdot
+  \text{З}_{\text{па}} = \num\valTza * \num\valk * \num\valtchp * \num\valKpr *
+  \left(\text{1} + \frac{\num\valNd}{\text{100}}\right) *
   \left(\text{1} + \frac{\num\valNsots}{\text{100}}\right) \approx \num\valZpa \text{ \rub}
 \end{equation}
 
@@ -867,7 +867,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valZaa}
-  \text{З}_{\text{аа}} = \num\valTza \cdot \num\valk \cdot \num\valSmch \approx \num\valZaa \text{ \rub}
+  \text{З}_{\text{аа}} = \num\valTza * \num\valk * \num\valSmch \approx \num\valZaa \text{ \rub}
 \end{equation}
 
 Годовые текущие затраты, связанные с эксплуатацией аналога, определяются по формуле,
@@ -894,7 +894,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:Pu}
-  \text{П}_{\text{у}} = (\text{З}_{\text{та}} - \text{З}_{\text{т}}) \cdot
+  \text{П}_{\text{у}} = (\text{З}_{\text{та}} - \text{З}_{\text{т}}) *
   \left(1 - \frac{\text{С}_\text{нп}}{100}\right),
 \end{equation}
 \begin{explanationx}
@@ -908,7 +908,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valPu}
-  \text{П}_{\text{у}} = (\num\valZta - \num\valZt) \cdot \left(1 - \frac{\num\valSnp}{100}\right)
+  \text{П}_{\text{у}} = (\num\valZta - \num\valZt) * \left(1 - \frac{\num\valSnp}{100}\right)
   \approx \num\valPu
 \end{equation}
 
@@ -931,8 +931,8 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:Kz}
-  \text{К}_{\text{з}} = \text{Ц}_\text{пк}^\text{б} \cdot \left( 1 - x \cdot
-  \frac{\text{Н}_\text{пк}^\text{а}}{100} \right) \cdot \text{Т}_\text{з} \cdot
+  \text{К}_{\text{з}} = \text{Ц}_\text{пк}^\text{б} * \left( 1 - x *
+  \frac{\text{Н}_\text{пк}^\text{а}}{100} \right) * \text{Т}_\text{з} *
   \frac{k}{\text{Ф}_\text{пк}},
 \end{equation}
 \begin{explanationx}
@@ -946,8 +946,8 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valKz}
-  \text{К}_{\text{з}} = \num\valTSpkb \cdot \left( 1 - \num\valx \cdot
-  \frac{\num\valNpka}{100} \right) \cdot \num\valTz \cdot \frac{\num\valk}{\num\valFpk}
+  \text{К}_{\text{з}} = \num\valTSpkb * \left( 1 - \num\valx *
+  \frac{\num\valNpka}{100} \right) * \num\valTz * \frac{\num\valk}{\num\valFpk}
   \approx \num\valKz
 \end{equation}
 
@@ -963,7 +963,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:EF}
-  \text{ЭФ} = \text{П}_\text{у} - E \cdot \text{К}_\text{о},
+  \text{ЭФ} = \text{П}_\text{у} - E * \text{К}_\text{о},
 \end{equation}
 \begin{explanationx}
   \item[где] $ E $ -- коэффициент эффективности, равный ставке по кредитам на рынке
@@ -974,7 +974,7 @@ $ k_\text{т} $ составит $ \num\valkt $. Учитывая, что в с�
 
 \begin{equation}
   \label{eq:econ:valEF}
-  \text{ЭФ} = \num\valPu - \num\valE \cdot \num\valKo \approx \num\valEF
+  \text{ЭФ} = \num\valPu - \num\valE * \num\valKo \approx \num\valEF
 \end{equation}
 
 Срок возврата инвестиций определяется по формуле:
